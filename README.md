@@ -19,7 +19,7 @@ Le site est développé grâce à [Python3](https://www.python.org/) et au Frame
   *NB:* (_Loïc_) La partie dans la vidéo concernant les wsgi.so ne semble pas obligatoire.
 * **Tutoriels/TP** sur Django : [ici](http://django-story.readthedocs.org/en/latest/).   
   *NB:* Ce tutoriel est écrit par le même auteur que le tuto d'openclassroom, mais il est ici plus complet.
-* **Documentation** Django 1.8 : [ici](https://docs.djangoproject.com/en/1.8/).
+* **Documentation** Française pour Django 1.8 : [ici](https://docs.djangoproject.com/fr/1.8/).
 
 
 ## Lancer le site en local
