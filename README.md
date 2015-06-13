@@ -39,7 +39,7 @@ A la racine du projet :
 * Executer `easy_install pip` : pip étant le gestoinnaire de package, à utiliser pour les téléchargements de packages
 * Obtenir Django avec : `pip install django`   
 * Telecharger le client mysql, qui fournira la DB API driver : `pip install mysqlclient`   
-
+* Sous Windaub : suivre le tuto [ici](http://stackoverflow.com/questions/28251314/error-microsoft-visual-c-10-0-is-required-unable-to-find-vcvarsall-bat)
 ## Configuration 
 Le fichier `settings.py`étant versionné, nous devons respecter ses conditions c'est à dire :   
 * Avoir créé une Base de donnée MySQL :   
