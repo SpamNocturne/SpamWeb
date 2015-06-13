@@ -13,6 +13,8 @@ SpamWeb est un projet communautaire dont les objectifs principaux sont :
 
 ## Techs
 Le site est développé grâce à [Python3](https://www.python.org/) et au Framework [Django](http://www.django-fr.org/).
+La  base de donnée utilise MySql   
+Un IDE sympa pour python : [Pycharm](https://www.jetbrains.com/pycharm/)   
 
 
 ## Liens utiles 
@@ -22,10 +24,28 @@ Le site est développé grâce à [Python3](https://www.python.org/) et au Frame
   *NB:* Ce tutoriel est écrit par le même auteur que le tuto d'openclassroom, mais il est ici plus complet.   
 * **Tutoriels** sur Python : [ici](https://openclassrooms.com/courses/apprenez-a-programmer-en-python).   
 * **Documentation** Française pour Django 1.8 : [ici](https://docs.djangoproject.com/fr/1.8/).
-* **IDE PyCharm** Meilleur IDE Python (gratuit :) ): [ici](https://www.jetbrains.com/pycharm/download/).
 
 
 ## Lancer le site en local
 A la racine du projet :
 * Lancer le serveur : `python manage.py runserver PORC`   
   où _PORC_ est le port (_ex:8081_) de connection au site.
+
+
+## Installation (testé sur windows7)
+* Installer [Python3](https://www.python.org/)   
+  *NB:* Pensez a mettre a jour la variable **PATH** pour lui ajouter les chemins `C:\Python34\Scripts` et `C:\Python34`.   
+* Executer [ez_setup.py](https://pypi.python.org/pypi/ez_setup)   
+* Executer `easy_install pip` : pip étant le gestoinnaire de package, à utiliser pour les téléchargements de packages
+* Obtenir Django avec : `pip install django`   
+* Telecharger le client mysql, qui fournira la DB API driver : `pip install mysqlclient`   
+
+## Configuration 
+Le fichier `settings.py`étant versionné, nous devons respecter ses conditions c'est à dire :   
+* Avoir créé une Base de donnée MySQL :   
+ * Nom de la base : `webspam-bdd`   
+ * Utilisateur : `root`  
+ * Mot de passe : *(vide)*   
+ * Host : *(defaut localhost)*   
+
+Il faut ensuite executer une la commande python manage.py migrate une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
