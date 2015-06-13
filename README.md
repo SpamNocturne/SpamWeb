@@ -2,7 +2,6 @@
 ### LE site web du *Spam Nocturne* !   
 ![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
 ![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
-![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
 
 ## Objectifs
 SpamWeb est un projet communautaire dont les objectifs principaux sont :
@@ -15,7 +14,9 @@ SpamWeb est un projet communautaire dont les objectifs principaux sont :
 
 ## Techs
 Le site est développé grâce à [Python3](https://www.python.org/) et au Framework [Django](http://www.django-fr.org/).   
-La  base de donnée utilise MySql.   
+La  base de donnée utilise MySql.  
+Design basé sur [AdminLTE](https://almsaeedstudio.com/)   
+Avec l'utilisation de [Bootstrap](http://getbootstrap.com/), [JQuery](https://jquery.com/) et [JQueryUI](http://jqueryui.com/)
 
 
 ## Liens utiles 
