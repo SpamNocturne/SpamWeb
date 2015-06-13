@@ -12,9 +12,8 @@ SpamWeb est un projet communautaire dont les objectifs principaux sont :
 * Tout ce dont le spam a besoin pour manquer de sérieux en amphi ! 
 
 ## Techs
-Le site est développé grâce à [Python3](https://www.python.org/) et au Framework [Django](http://www.django-fr.org/).
-La  base de donnée utilise MySql   
-Un IDE sympa pour python : [Pycharm](https://www.jetbrains.com/pycharm/)   
+Le site est développé grâce à [Python3](https://www.python.org/) et au Framework [Django](http://www.django-fr.org/).   
+La  base de donnée utilise MySql.   
 
 
 ## Liens utiles 
@@ -24,6 +23,7 @@ Un IDE sympa pour python : [Pycharm](https://www.jetbrains.com/pycharm/)
   *NB:* Ce tutoriel est écrit par le même auteur que le tuto d'openclassroom, mais il est ici plus complet.   
 * **Tutoriels** sur Python : [ici](https://openclassrooms.com/courses/apprenez-a-programmer-en-python).   
 * **Documentation** Française pour Django 1.8 : [ici](https://docs.djangoproject.com/fr/1.8/).
+* **IDE PyCharm** Meilleur IDE Python (gratuit :) ): [ici](https://www.jetbrains.com/pycharm/download/).
 
 
 ## Lancer le site en local
@@ -48,4 +48,4 @@ Le fichier `settings.py`étant versionné, nous devons respecter ses conditions 
  * Mot de passe : *(vide)*   
  * Host : *(defaut localhost)*   
 
-Il faut ensuite executer une la commande python manage.py migrate une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
+Il faut ensuite executer une la commande `python manage.py migrate` une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
