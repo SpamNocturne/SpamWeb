@@ -1,5 +1,7 @@
 # _*SpamWeb*_
-LE site web du Spam Nocturne !
+### LE site web du *Spam Nocturne* !   
+![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
+![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
 ![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
 
 ## Objectifs
@@ -36,7 +38,7 @@ A la racine du projet :
 * Installer [Python3](https://www.python.org/)   
   *NB:* Pensez a mettre a jour la variable **PATH** pour lui ajouter les chemins `C:\Python34\Scripts` et `C:\Python34`.   
 * Executer [ez_setup.py](https://pypi.python.org/pypi/ez_setup)   
-* Executer `easy_install pip` : pip étant le gestoinnaire de package, à utiliser pour les téléchargements de packages
+* Executer `easy_install pip` : pip étant le gestionnaire de packages, à utiliser pour les téléchargements de packages
 * Obtenir Django avec : `pip install django`   
 * Telecharger le client mysql, qui fournira la DB API driver : `pip install mysqlclient`   
 * Sous Windaub : suivre le tuto [ici](http://stackoverflow.com/questions/28251314/error-microsoft-visual-c-10-0-is-required-unable-to-find-vcvarsall-bat)
@@ -52,3 +54,10 @@ Le fichier `settings.py`étant versionné, nous devons respecter ses conditions 
  * Host : *(defaut localhost)*   
 
 Il faut ensuite executer une la commande `python manage.py migrate` une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
+
+
+## Fonctionnement et commandes de Django :
+### *Pour modifier le modèle et la base de donnée :*   
+* Modifiez les modèles (dans `models.py`).   
+* Exécutez `python manage.py makemigrations` pour créer des migrations correspondant à ces changements.
+* Exécutez `python manage.py migrate` pour appliquer ces modifications à la base de données.
