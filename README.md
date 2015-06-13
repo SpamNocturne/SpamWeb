@@ -22,6 +22,7 @@ Le site est développé grâce à [Python3](https://www.python.org/) et au Frame
   *NB:* Ce tutoriel est écrit par le même auteur que le tuto d'openclassroom, mais il est ici plus complet.   
 * **Tutoriels** sur Python : [ici](https://openclassrooms.com/courses/apprenez-a-programmer-en-python).   
 * **Documentation** Française pour Django 1.8 : [ici](https://docs.djangoproject.com/fr/1.8/).
+* **IDE PyCharm** Meilleur IDE Python (gratuit :) ): [ici](https://www.jetbrains.com/pycharm/download/).
 
 
 ## Lancer le site en local
