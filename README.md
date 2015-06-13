@@ -14,11 +14,12 @@ SpamWeb est un projet communautaire dont les objectifs principaux sont :
 Le site est développé grâce à [Python3](https://www.python.org/) et au Framework [Django](http://www.django-fr.org/).
 
 
-## Liens utiles
+## Liens utiles 
 * **Video explicative** pour **l'installation** de Python et Django sur Windows : [ici](https://www.youtube.com/watch?v=Zn6dx8v8x_w).   
   *NB:* (_Loïc_) La partie dans la vidéo concernant les wsgi.so ne semble pas obligatoire.
 * **Tutoriels/TP** sur Django : [ici](http://django-story.readthedocs.org/en/latest/).   
-  *NB:* Ce tutoriel est écrit par le même auteur que le tuto d'openclassroom, mais il est ici plus complet.
+  *NB:* Ce tutoriel est écrit par le même auteur que le tuto d'openclassroom, mais il est ici plus complet.   
+* **Tutoriels** sur Python : [ici](https://openclassrooms.com/courses/apprenez-a-programmer-en-python).   
 * **Documentation** Française pour Django 1.8 : [ici](https://docs.djangoproject.com/fr/1.8/).
 
 
