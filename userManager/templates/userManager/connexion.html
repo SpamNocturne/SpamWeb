@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+</head>
+<body>
+    {% if error %}
+    <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    Vous êtes connecté, {{ user.username }} !
+    <p><a href="{% url 'userManager:deconnexion' %}">Se déconnecter</a></p>
+    {% else %}
+    <form method="post" action="{% url 'userManager:connexion' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Se connecter" />
+    </form>
+    {% endif %}
+</body>
+</html>
