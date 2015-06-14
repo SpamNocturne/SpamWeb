@@ -1,0 +1,65 @@
+{% extends "LTE/login.html" %}
+{% load staticfiles %}
+
+<!--
+----    HEAD
+---->
+<!-- page head title -->
+{% block login_title %}Changement de mot de passe terminé| SpamWeb{% endblock %}
+
+<!-- here add you own stylesheet -->
+{% block login_additional_stylesheet %}{% endblock %}
+
+<!-- here add you own scripts -->
+{% block login_additional_scripts %}{% endblock %}
+
+<!--
+----    LOGIN BLOCK
+---->
+<!-- logo or text above the block -->
+{%  block login_logo %}
+    <a href="../../index2.html"><b>Spam</b>Web</a>
+{% endblock %}
+
+<!-- text above the form -->
+{% block login_box_msg %}
+    <p class="login-box-msg">{{ title }}</p>
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i> Yeaaah!</h4>
+        Le mot de passe a été changé avec succès.
+    </div>
+{%  endblock %}
+
+<!-- the url which shall receive the form -->
+{% block login_form_action %}{% url 'userManager:password_change' %}{% endblock %}
+
+<!-- fields inside the form -->
+{% block login_form_fields %}
+
+{% endblock %}
+
+<!-- remember me checkbox (same row as submit, check the 12cols rules)-->
+{%  block login_form_remember_me %}
+
+{% endblock %}
+
+<!-- submit button from login form -->
+{% block login_form_submit %}
+
+{% endblock %}
+
+<!-- links for social authentification -->
+{% block login_social_auth %}
+
+{% endblock %}
+
+<!-- links for forgotten password -->
+{% block login_password_forgotten_link %}
+    <a href="../../index2.html">Retour à la page d'acceuil</a><br>
+{% endblock %}
+
+<!-- links for registering -->
+{% block login_register_link %}
+<!-- <a href="register.html" class="text-center">S'enregistrer sur SpamWeb !</a> -->
+{% endblock %}
