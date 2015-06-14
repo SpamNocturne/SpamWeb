@@ -26,7 +26,8 @@ Avec l'utilisation de [Bootstrap](http://getbootstrap.com/), [JQuery](https://jq
   *NB:* Ce tutoriel est écrit par le même auteur que le tuto d'openclassroom, mais il est ici plus complet.   
 * **Tutoriels** sur Python : [ici](https://openclassrooms.com/courses/apprenez-a-programmer-en-python).   
 * **Documentation** Française pour Django 1.8 : [ici](https://docs.djangoproject.com/fr/1.8/).
-* **IDE PyCharm** Meilleur IDE Python (gratuit :) ): [ici](https://www.jetbrains.com/pycharm/download/).
+* **IDE PyCharm** Meilleur IDE Python & Django (gratuit :) ): [ici](https://www.jetbrains.com/pycharm/download/).    
+ *NB:* La version professional est **gratuite** pour les étudiants, avec le mail INSA ! Pour ça inscrivez vous [ici](https://www.jetbrains.com/student/)   
 
 
 ## Lancer le site en local
