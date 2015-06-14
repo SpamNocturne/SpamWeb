@@ -47,15 +47,19 @@ pour pouvoir installer mysql python
 
 
 ## Configuration 
+### Base de donnée
 Le fichier `settings.py`étant versionné, nous devons respecter ses conditions c'est à dire :   
 * Avoir créé une Base de donnée MySQL :   
  * Nom de la base : `webspam-bdd`   
  * Utilisateur : `root`  
  * Mot de passe : *(vide)*   
- * Host : *(defaut localhost)*   
+ * Host : *(defaut localhost)*    
 
-Il faut ensuite executer une la commande `python manage.py migrate` une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
+Il faut ensuite executer une la commande `python manage.py migrate` une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.    
 
+### Super utilisateur
+Pour acceder à l'interface d'administration et se connecter sur le site avec un premier utilisateur, il faut créer un super administrateur :
+Grâce à la commande : `python manage.py createsuperuser`
 
 ## Fonctionnement et commandes de Django :
 ### *Pour modifier le modèle et la base de donnée :*   
