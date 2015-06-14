@@ -1,13 +1,106 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Connexion</title>
-</head>
-<body>
+{% extends "LTE/login.html" %}
+{% load staticfiles %}
+
+<!--
+----    HEAD
+---->
+<!-- page head title -->
+{% block login_title %}Connexion | SpamWeb{% endblock %}
+
+<!-- here add you own stylesheet -->
+{% block login_additional_stylesheet %}{% endblock %}
+
+<!-- here add you own scripts -->
+{% block login_additional_scripts %}{% endblock %}
+
+<!--
+----    LOGIN BLOCK
+---->
+<!-- logo or text above the block -->
+{%  block login_logo %}
+    <a href="../../index2.html"><b>Spam</b>Web</a>
+{% endblock %}
+
+<!-- text above the form -->
+{% block login_box_msg %}
+    <p class="login-box-msg">Connectez vous ici, pour un monde de folies !</p>
     {% if error %}
-    <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> Erreur de connection !</h4>
+            La combinaison identifiant / mot de passe est incorrecte
+        </div>
     {% endif %}
+{%  endblock %}
+
+<!-- the url which shall receive the form -->
+{% block login_form_action %}{% url 'userManager:connexion' %}{% endblock %}
+
+<!-- fields inside the form -->
+{% block login_form_fields %}
+    {% if user.is_authenticated %}
+    Vous êtes connecté, {{ user.username }} !
+    <p><a href="{% url 'userManager:deconnexion' %}">Se déconnecter</a></p>
+    {% else %}
+        <div class="form-group has-feedback {% if form.username.errors %}has-error{% endif %}">
+            {{ form.username.label_tag }} {{ form.username }}
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            {% for error in form.username.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="form-group has-feedback {% if form.password.errors %}has-error{% endif %}">
+            {{ form.password.label_tag }} {{ form.password }}
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            {% for error in form.password.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% csrf_token %}
+    {% endif %}
+{% endblock %}
+
+<!-- remember me checkbox (same row as submit, check the 12cols rules)-->
+{%  block login_form_remember_me %}
+    <div class="col-xs-7">
+      <!--
+      <div class="checkbox icheck">
+        <label>
+          <input type="checkbox"> Remember Me
+        </label>
+      </div>
+      -->
+    </div><!-- /.col -->
+{% endblock %}
+
+<!-- submit button from login form -->
+{% block login_form_submit %}
+    <div class="col-xs-5">
+      <button type="submit" class="btn btn-primary btn-block btn-flat">Se Connecter</button>
+    </div><!-- /.col -->
+{% endblock %}
+
+<!-- links for social authentification -->
+{% block login_social_auth %}
+    <!--
+<div class="social-auth-links text-center">
+  <p>- OR -</p>
+  <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>
+  <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
+</div><!-- /.social-auth-links -->
+{% endblock %}
+
+<!-- links for forgotten password -->
+{% block login_password_forgotten_link %}
+<a href="#">J'ai oublié mon mot de passe ...</a><br>
+{% endblock %}
+
+<!-- links for registering -->
+{% block login_register_link %}
+<a href="register.html" class="text-center">S'enregistrer sur SpamWeb !</a>
+{% endblock %}
+
+<body>
 
     {% if user.is_authenticated %}
     Vous êtes connecté, {{ user.username }} !
@@ -20,4 +113,3 @@
     </form>
     {% endif %}
 </body>
-</html>
