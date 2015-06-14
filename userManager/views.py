@@ -14,6 +14,8 @@ from .forms import ConnexionForm, ChangeMdpForm, InscriptionForm
 
 # Create your views here.
 def inscription(request):
+    if request.user.is_authenticated():
+        return redirect(reverse('home:index'))
     error = False
     if(request.method == "POST"):
         form = InscriptionForm(request.POST)
@@ -23,7 +25,6 @@ def inscription(request):
             password = form.cleaned_data["password"]
 
             user = User.objects.create_user(username, email, password)
-
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             user.first_name = first_name
@@ -33,7 +34,7 @@ def inscription(request):
 
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect(reverse('userManager:connexion'))
+            return redirect(reverse('home:index'))
         else:
             error = True
     else:
@@ -45,8 +46,9 @@ def inscription(request):
 @csrf_protect
 @never_cache
 def connexion(request):
+    if request.user.is_authenticated():
+        return redirect(reverse('home:index'))
     error = False
-
     if(request.method == "POST"):
         form = ConnexionForm(request.POST)
         if form.is_valid():
@@ -55,7 +57,7 @@ def connexion(request):
             user = authenticate(username=username, password=password)
             if user: #!= None
                 login(request, user)
-                return redirect(reverse('userManager:connexion'))
+                return redirect(reverse('home:index'))
             else:
                 error = True
     else:

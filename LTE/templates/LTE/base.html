@@ -58,7 +58,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <header class="main-header">
 
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="{% block base_index_url %}#{% endblock %}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini">{% block base_mini_logo %}<b>A</b>LT{% endblock %}</span>
           <!-- logo for regular state and mobile devices -->

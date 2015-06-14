@@ -18,7 +18,7 @@
 ---->
 <!-- logo or text above the block -->
 {%  block login_logo %}
-    <a href="../../index2.html"><b>Spam</b>Web</a>
+    <a href="{% url 'home:index' %}"><b>Spam</b>Web</a>
 {% endblock %}
 
 <!-- text above the form -->
@@ -56,7 +56,7 @@
 
 <!-- links for forgotten password -->
 {% block login_password_forgotten_link %}
-    <a href="../../index2.html">Retour à la page d'acceuil</a><br>
+    <a href="{% url 'home:index' %}">Retour à la page d'acceuil</a><br>
 {% endblock %}
 
 <!-- links for registering -->
