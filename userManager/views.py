@@ -1,14 +1,49 @@
+# coding: utf8
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, resolve_url
+from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import  authenticate, login, logout, update_session_auth_hash
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-from .forms import ConnexionForm, ChangeMdpForm
+
+from .forms import ConnexionForm, ChangeMdpForm, InscriptionForm
 
 # Create your views here.
+def inscription(request):
+    error = False
+    if(request.method == "POST"):
+        form = InscriptionForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+
+            user = User.objects.create_user(username, email, password)
+
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            user.first_name = first_name
+            user.last_name = last_name
+
+            user.save()
+
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect(reverse('userManager:connexion'))
+        else:
+            error = True
+    else:
+        form = InscriptionForm()
+
+    return render(request, 'userManager/inscription.html', locals())
+
+@sensitive_post_parameters()
+@csrf_protect
+@never_cache
 def connexion(request):
     error = False
 
@@ -20,6 +55,7 @@ def connexion(request):
             user = authenticate(username=username, password=password)
             if user: #!= None
                 login(request, user)
+                return redirect(reverse('userManager:connexion'))
             else:
                 error = True
     else:

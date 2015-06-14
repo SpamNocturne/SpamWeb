@@ -1,0 +1,124 @@
+{% extends "LTE/login.html" %}
+{% load staticfiles %}
+
+<!--
+----    HEAD
+---->
+<!-- page head title -->
+{% block login_title %}Inscription | SpamWeb{% endblock %}
+
+<!-- here add you own stylesheet -->
+{% block login_additional_stylesheet %}{% endblock %}
+
+<!-- here add you own scripts -->
+{% block login_additional_scripts %}{% endblock %}
+
+<!--
+----    LOGIN BLOCK
+---->
+<!-- logo or text above the block -->
+{%  block login_logo %}
+    <a href="../../index2.html"><b>Spam</b>Web</a>
+{% endblock %}
+
+<!-- text above the form -->
+{% block login_box_msg %}
+    <p class="login-box-msg">Inscrivez vous ici, pour un monde de folies !</p>
+    {% if error %}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> Aïe Aïe Aïe !</h4>
+            Alors on est nul(le) ? Allez quoi tu sais remplir un formulaire non ?! :D
+        </div>
+    {% endif %}
+{%  endblock %}
+
+<!-- the url which shall receive the form -->
+{% block login_form_action %}{% url 'userManager:inscription' %}{% endblock %}
+
+<!-- fields inside the form -->
+{% block login_form_fields %}
+    <div class="form-group has-feedback {% if form.username.errors %}has-error{% endif %}">
+        {{ form.username.label_tag }} {{ form.username }}
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        {% for error in form.username.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group has-feedback {% if form.email.errors %}has-error{% endif %}">
+        {{ form.email.label_tag }} {{ form.email }}
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        {% for error in form.email.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group has-feedback {% if form.password.errors %}has-error{% endif %}">
+        {{ form.password.label_tag }} {{ form.password }}
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        {% for error in form.password.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group has-feedback {% if form.password2.errors %}has-error{% endif %}">
+        {{ form.password2.label_tag }} {{ form.password2 }}
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        {% for error in form.password2.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group has-feedback {% if form.first_name.errors %}has-error{% endif %}">
+        {{ form.first_name.label_tag }} {{ form.first_name }}
+        <span class="glyphicon glyphicon-font form-control-feedback"></span>
+        {% for error in form.first_name.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group has-feedback {% if form.last_name.errors %}has-error{% endif %}">
+        {{ form.last_name.label_tag }} {{ form.last_name }}
+        <span class="glyphicon glyphicon-font form-control-feedback"></span>
+        {% for error in form.last_name.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% csrf_token %}
+{% endblock %}
+
+<!-- remember me checkbox (same row as submit, check the 12cols rules)-->
+{%  block login_form_remember_me %}
+    <div class="col-xs-7">
+      <!--
+      <div class="checkbox icheck">
+        <label>
+          <input type="checkbox"> Remember Me
+        </label>
+      </div>
+      -->
+    </div><!-- /.col -->
+{% endblock %}
+
+<!-- submit button from login form -->
+{% block login_form_submit %}
+    <div class="col-xs-5">
+      <button type="submit" class="btn btn-primary btn-block btn-flat">S'inscrire</button>
+    </div><!-- /.col -->
+{% endblock %}
+
+<!-- links for social authentification -->
+{% block login_social_auth %}
+    <!--
+<div class="social-auth-links text-center">
+  <p>- OR -</p>
+  <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>
+  <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
+</div><!-- /.social-auth-links -->
+{% endblock %}
+
+<!-- links for forgotten password -->
+{% block login_password_forgotten_link %}
+<a href="#">J'ai oublié mon mot de passe ...</a><br>
+{% endblock %}
+
+<!-- links for registering -->
+{% block login_register_link %}
+<a href="{% url 'userManager:connexion' %}" class="text-center">J'ai déjà un compte !</a>
+{% endblock %}

@@ -40,6 +40,7 @@
 {% block login_form_fields %}
     {% if user.is_authenticated %}
     Vous êtes connecté, {{ user.username }} !
+    <p><a href="{% url 'userManager:password_change' %}">Changer son mot de passe</a></p>
     <p><a href="{% url 'userManager:deconnexion' %}">Se déconnecter</a></p>
     {% else %}
         <div class="form-group has-feedback {% if form.username.errors %}has-error{% endif %}">
@@ -97,5 +98,5 @@
 
 <!-- links for registering -->
 {% block login_register_link %}
-<a href="register.html" class="text-center">S'enregistrer sur SpamWeb !</a>
+<a href="{% url 'userManager:inscription' %}" class="text-center">S'inscrire sur SpamWeb !</a>
 {% endblock %}
