@@ -65,5 +65,30 @@ Grâce à la commande : `python manage.py createsuperuser`
 ## Fonctionnement et commandes de Django :
 ### *Pour modifier le modèle et la base de donnée :*   
 * Modifiez les modèles (dans `models.py`).   
-* Exécutez `python manage.py makemigrations` pour créer des migrations correspondant à ces changements.
-* Exécutez `python manage.py migrate` pour appliquer ces modifications à la base de données.
+* Exécutez `python manage.py makemigrations` pour créer des migrations correspondant à ces changements.   
+* Exécutez `python manage.py migrate` pour appliquer ces modifications à la base de données.   
+
+
+## Développer une nouvelle fonctionnalité :
+### Participez au développement du site ! :D
+Pour vous aider a créer un nouvelle application (*monApp*) sur le site voici quelques conseils :    
+1. Créer l'application avec `python manage.py startapp monApp`  
+2. Mettre *monApp* dans la variable `INSTALLED_APPS` pour l'ajouter au site dans le fichier **SpamWeb/setting.py**  
+3. Ajouter une route de base du type `url(r'^maroute/', include('monApp.urls', namespace='monApp'))` dans **SpamWeb/urls.py** auteur = models.ForeignKey(User, related_name='idees')  
+4. Développer *monApp*  
+  
+* *Pour les* **modèles** *:*  
+ * Vous pouvez établir des relations avec les utilisateurs en définissant une clé étrangère sur la classe `User`, importés comme ceci : `from django.contrib.auth.models import User`  
+ * Pour établir cette relation penser à nommer la relation inverse c'est plus pratique, comme ceci : `Class Pouce(models.Model):` puis `user = models.ForeignKey(User, related_name='pouces')`  
+  
+* *Pour les* **vues** *(contrôleurs)* :  
+  * Penser à ajouter le décorateur `@login_required` au dessus de vos actions, les utilisateurs déconnectés seront directement redirigés vers la page de connexion  
+  * Ajouter une route vers votre action et nommez la dans **monApp/urls.py** (créez le fichier si besoin) comme ceci : `urlpatterns = [ url(r'^', views.index, name='index'),]`  
+  
+* *Pour les* **templates** *:*  
+  * Copier le fichier **LTE/templates/LTE/starter.html**, et le renommer en **layout.html** dans **monApp/templates/monApp/**  
+  * Faire hériter le **layout.html** du **starter.html** en changeant la première ligne : `{% extends "LTE/starter.html" %}`  
+  * Adapter et redéfinir tout les blocks du **layout.html** pour *monApp*  
+  * Faire hériter hériter les nouveaux templates de *monApp* de **monApp/templates/monApp/layout.html**  
+#### Bonne chance ! :)
+
