@@ -78,16 +78,7 @@ WSGI_APPLICATION = 'SpamWeb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'webspam_bdd',
-        'HOST': '',
-        'PASSWORD': 'root',
-        'PORT': '',
-        'USER': 'root',
-    }
-}
+from . import databases
 
 
 # Internationalization
