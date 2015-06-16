@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 
 class Idee(models.Model):
-    titre = models.CharField(max_length=100)
+    titre = models.CharField(max_length=50)
     idee_text = models.TextField()
     pub_date = models.DateTimeField()
     auteur = models.ForeignKey(User, related_name='idees')
@@ -26,6 +26,7 @@ class Commentaire(models.Model):
     idee = models.ForeignKey(Idee)
     commentaire_text = models.TextField()
     auteur = models.ForeignKey(User)
+    pub_date = models.DateTimeField()
 
     def __str__(self):
         return self.commentaire_text

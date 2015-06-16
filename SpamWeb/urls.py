@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^user/', include('userManager.urls', namespace='userManager')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/', include('home.urls', namespace='home')),
-    url(r'^jacques/Idea/a/dit/', include('jacquesIdea.urls', namespace='jacquesIdea')),
+    url(r'^jacques/a/dit/idea/', include('jacquesIdea.urls', namespace='jacquesIdea')),
 ]

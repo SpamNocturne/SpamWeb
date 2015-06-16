@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 <!-- page head title -->
-{% block base_title %}SpamWeb{% endblock %}
+{% block base_title %}Idées | SpamWeb{% endblock %}
 
 <!-- url of the home page -->
 {% block base_index_url %}{% url 'home:index' %}{% endblock %}
@@ -86,7 +86,7 @@
   <ul class="sidebar-menu">
     <li class="header">MENU PRINCIPAL</li>
     <!-- Optionally, you can add icons to the links -->
-    <li><a href="{% url 'jacquesIdea:index' %}"><i class="fa fa-lightbulb-o"></i> <span>Idées</span></a></li>
+    <li class="active"><a href="{% url 'jacquesIdea:index' %}"><i class="fa fa-lightbulb-o"></i> <span>Idées</span></a></li>
     <li><a href="#"><i class='fa fa-calendar'></i> <span>Calendrier</span></a></li>
     <li><a href="#"><i class='fa fa-euro'></i> <span>Comptes</span></a></li>
     <li class="treeview">
@@ -105,15 +105,15 @@
 ----    PAGE CONTENT HEADER
 ---->
 <!-- Page content header title -->
-{% block base_content_header_title %}Acceuil | <b>Spam</b>Web{% endblock %}
+{% block base_content_header_title %}Jacques a dit : <b>Idea !</b> | <b>Spam</b>Web{% endblock %}
 
 <!-- Page content header optional description -->
-{% block base_content_header_title_description %}Y'a plein de choses ici !{% endblock %}
+{% block base_content_header_title_description %}La boite à idées.{% endblock %}
 
 <!-- Page content breadcrumb (fil d'arianne) -->
 {% block base_content_header_breadcrumb %}
     <li><a href="#"><i class="fa fa-dashboard"></i> <b>Spam</b>Web</a></li>
-    <li class="active">Home</li>
+    <li class="active">Idées</li>
 {% endblock %}
 
 <!--
