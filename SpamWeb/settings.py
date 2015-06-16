@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'SpamWeb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'webspam-bdd',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'webspam_bdd',
         'HOST': '',
-        'PASSWORD': '',
+        'PASSWORD': 'root',
         'PORT': '',
         'USER': 'root',
     }
