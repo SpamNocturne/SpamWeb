@@ -10,7 +10,7 @@
                 <!-- Construct the box with style you want. Here we are using box-danger -->
                 <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                 <!-- The contextual class should match the box, so we are using direct-chat-danger -->
-                <div class="box box-solid box-danger direct-chat direct-chat-danger collapsed-box">
+                <div class="box box-solid box-danger direct-chat direct-chat-danger ">
                   <div class="box-header with-border">
                     <h3 class="box-title">{{ idee.titre }}</h3>
                     <div class="box-tools pull-right">
@@ -22,7 +22,7 @@
                     <!-- Conversations are loaded here -->
 
                   <!-- SUJET DE L'IDEE -->
-                    <div class="direct-chat-messages">
+                    <div class="direct-chat-messages" id="messages-container-{{ idee.id }}">
                       {% ifequal user idee.auteur %}
                           <!-- Message to the right -->
                           <div class="direct-chat-msg right">
@@ -142,13 +142,26 @@
 
                 var paramsEncoded = $.param(params);
                 $.ajax({
-                      method: "POST",
-                      url: "{% url 'ajax:jacquesIdeaEnregistrerCommentaire' %}",
-                      data: paramsEncoded,
-                }).done(function( ) {
-                      alert( "Commentaire enregistré");
+                    method: "POST",
+                    url: "{% url 'ajax:jacquesIdeaEnregistrerCommentaire' %}",
+                    data: paramsEncoded,
+                    dataType : 'html',
+                    cache: false,
+                    success: function(html, statut){
+                        $(html).appendTo('#messages-container-'+idee);
+                        //$('#messages-container-'+idee).slimscroll({start: 'bottom'});
+                        $("#message-text-"+idee).val("");
+                    },
+                    error : function(resultat, statut, erreur){
+                        alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
+                    }
                 });
             }
+        });
+
+        $(function(){
+            //$('.direct-chat-messages').slimscroll({start: $(this).find('.direct-chat-msg').last()});
+            $('.direct-chat-messages').slimscroll({start: 'bottom'});
         });
     });
     </script>
