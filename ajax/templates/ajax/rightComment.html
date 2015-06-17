@@ -1,0 +1,12 @@
+{% load staticfiles %}
+
+<div class="direct-chat-msg right">
+    <div class='direct-chat-info clearfix'>
+      <span class='direct-chat-name pull-right'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
+      <span class='direct-chat-timestamp pull-left'>{{ commentaire.pub_date|date:"d F Y" }}</span>
+    </div><!-- /.direct-chat-info -->
+    <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+    <div class="direct-chat-text">
+      {{ commentaire.commentaire_text }}
+    </div><!-- /.direct-chat-text -->
+</div><!-- /.direct-chat-msg -->
