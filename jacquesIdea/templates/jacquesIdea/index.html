@@ -81,9 +81,9 @@
                   </div><!-- /.box-body -->
                   <div class="box-footer">
                     <div class="input-group">
-                      <input type="text" name="message" placeholder="Répondez a cette idée !" class="form-control"/>
+                      <input id="message-text-{{ idee.id }}" type="text" name="message" placeholder="Répondez a cette idée !" class="form-control"/>
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-danger btn-flat">Commenter</button>
+                        <button type="button" class="btn btn-danger btn-flat button-comment-submit" data-idee="{{ idee.id }}">Commenter</button>
                       </span>
                     </div>
                   </div><!-- /.box-footer-->
@@ -93,4 +93,63 @@
         {% endif %}
     {% endfor %}
     </div>
+{% endblock %}
+
+{% block base_additional_scripts %}
+    <script>
+    $(function() {
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $(".button-comment-submit").click(function(){
+            var idee =$(this).attr("data-idee");
+            var msg = $("#message-text-"+idee).val().trim();
+            if(msg.length > 0)
+            {
+                var params = {
+                    idee_id: idee,
+                    com: msg
+                };
+
+                var paramsEncoded = $.param(params);
+                $.ajax({
+                      method: "POST",
+                      url: "{% url 'ajax:jacquesIdeaEnregistrerCommentaire' %}",
+                      data: paramsEncoded,
+                }).done(function( ) {
+                      alert( "Commentaire enregistré");
+                });
+            }
+        });
+    });
+    </script>
 {% endblock %}

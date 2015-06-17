@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/', include('home.urls', namespace='home')),
     url(r'^jacques/a/dit/idea/', include('jacquesIdea.urls', namespace='jacquesIdea')),
+    url(r'^ajax/', include('ajax.urls', namespace='ajax')),
 ]

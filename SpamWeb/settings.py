@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ajax',
     'home',
     'jacquesIdea',
     'userManager',
@@ -79,6 +80,7 @@ WSGI_APPLICATION = 'SpamWeb.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 from . import databases
+DATABASES = databases.getDatabaseConfig()
 
 
 # Internationalization
