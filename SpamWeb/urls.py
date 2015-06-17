@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^user/', include('userManager.urls', namespace='userManager')),
@@ -22,4 +23,6 @@ urlpatterns = [
     url(r'^home/', include('home.urls', namespace='home')),
     url(r'^jacques/a/dit/idea/', include('jacquesIdea.urls', namespace='jacquesIdea')),
     url(r'^ajax/', include('ajax.urls', namespace='ajax')),
+    url(r'^home/', include('home.urls', namespace='home')),
+    url(r'^$', RedirectView.as_view(pattern_name='home:index')),
 ]
