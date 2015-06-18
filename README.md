@@ -49,14 +49,9 @@ pour pouvoir installer mysql python
 
 ## Configuration 
 ### Base de donnée
-Le fichier `settings.py`étant versionné, nous devons respecter ses conditions c'est à dire : 
-* Avoir crée un utilisateur (ou rôle) postgres : 
- * Utilisateur : `root`
- * Mot de passe : `root`
- * Donner certains droits à root (par défaut il y a rien) : CREATEDB, LOGIN etc. [ici](http://docs.postgresqlfr.org/8.2/sql-alterrole.html)
-* Avoir créé une Base de donnée postgres :   
- * Nom de la base : `webspam_bdd`   
- * Host : *(defaut localhost)*    
+Le fichier `settings.py`étant versionné, nous devons respecter certaines conditions c'est à dire.
+Vous devez créer un fichier `SpamWeb/databases.py` dans lequel vous mettrez la configuration de votre base
+de données en vous inspirant du fichier `databases-example.py`.
 
 Il faut ensuite executer une la commande `python manage.py migrate` une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
 
