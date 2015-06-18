@@ -1,5 +1,6 @@
 {% extends "jacquesIdea/layout.html" %}
 {% load staticfiles %}
+{% load jacquesIdea_extras %}
 
 {% block body %}
     <div class="row">
@@ -10,11 +11,12 @@
                 <!-- Construct the box with style you want. Here we are using box-danger -->
                 <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                 <!-- The contextual class should match the box, so we are using direct-chat-danger -->
-                <div class="box box-solid box-danger direct-chat direct-chat-danger ">
-                  <div class="box-header with-border">
+                <div class="box box-solid box-info direct-chat direct-chat-info ">
+                  <div class="box-header with-border idee-header">
                     <h3 class="box-title">{{ idee.titre }}</h3>
                     <div class="box-tools pull-right">
-                      <!--<span data-toggle="tooltip" title="3 New Messages" class='badge bg-red'>3</span>-->
+                        <button class="btn btn-box-tool {% if idee|is_upvoted_by:user %}bg-green{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active">{{ idee.get_upvotes|length }}</span></button>
+                        <button class="btn btn-box-tool {% if idee|is_downvoted_by:user %}bg-red{% endif %}" data-toggle="tooltip" title="Pas&nbsp;Pouce"><i class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active">{{ idee.get_downvotes|length }}</span></button>
                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                     </div>
                   </div><!-- /.box-header -->
@@ -28,7 +30,7 @@
                           <div class="direct-chat-msg right">
                             <div class='direct-chat-info clearfix'>
                               <span class='direct-chat-name pull-right'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-left'>{{ idee.pub_date|date:"d F Y" }}</span>
+                              <span class='direct-chat-timestamp pull-left'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
                             <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
@@ -40,7 +42,7 @@
                           <div class="direct-chat-msg">
                             <div class='direct-chat-info clearfix'>
                               <span class='direct-chat-name pull-left'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-right'>{{ idee.pub_date|date:"d F Y" }}</span>
+                              <span class='direct-chat-timestamp pull-right'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
                             <img class="direct-chat-img" src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
@@ -56,7 +58,7 @@
                           <div class="direct-chat-msg right">
                             <div class='direct-chat-info clearfix'>
                               <span class='direct-chat-name pull-right'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-left'>{{ commentaire.pub_date|date:"d F Y" }}</span>
+                              <span class='direct-chat-timestamp pull-left'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
                             <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
@@ -68,7 +70,7 @@
                           <div class="direct-chat-msg">
                             <div class='direct-chat-info clearfix'>
                               <span class='direct-chat-name pull-left'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-right'>{{ commentaire.pub_date|date:"d F Y" }}</span>
+                              <span class='direct-chat-timestamp pull-right'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
                             <img class="direct-chat-img" src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
@@ -81,9 +83,9 @@
                   </div><!-- /.box-body -->
                   <div class="box-footer">
                     <div class="input-group">
-                      <input id="message-text-{{ idee.id }}" type="text" name="message" placeholder="Répondez a cette idée !" class="form-control"/>
+                      <input id="message-text-{{ idee.id }}" onKeyPress="if (event.keyCode == 13) sendIdeaComment({{ idee.id }})" type="text" name="message" placeholder="Répondez a cette idée !" class="form-control"/>
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-danger btn-flat button-comment-submit" data-idee="{{ idee.id }}">Commenter</button>
+                        <button type="submit" class="btn btn-primary btn-flat button-comment-submit" data-idee="{{ idee.id }}">Commenter</button>
                       </span>
                     </div>
                   </div><!-- /.box-footer-->
@@ -97,8 +99,6 @@
 
 {% block base_additional_scripts %}
     <script>
-    $(function() {
-
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -130,8 +130,7 @@
             }
         });
 
-        $(".button-comment-submit").click(function(){
-            var idee =$(this).attr("data-idee");
+        function sendIdeaComment(idee){
             var msg = $("#message-text-"+idee).val().trim();
             if(msg.length > 0)
             {
@@ -157,12 +156,16 @@
                     }
                 });
             }
+        }
+
+        $(".button-comment-submit").click(function(){
+            var idee =$(this).attr("data-idee");
+           sendIdeaComment(idee);
         });
 
         $(function(){
             //$('.direct-chat-messages').slimscroll({start: $(this).find('.direct-chat-msg').last()});
             $('.direct-chat-messages').slimscroll({start: 'bottom'});
         });
-    });
     </script>
 {% endblock %}

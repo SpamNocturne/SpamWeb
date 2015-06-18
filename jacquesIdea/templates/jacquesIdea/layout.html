@@ -1,6 +1,11 @@
 {% extends "LTE/starter.html" %}
 {% load staticfiles %}
 
+<!-- here add you own stylesheet -->
+{% block base_additional_stylesheet %}
+        <link href="{% static 'jacquesIdea/css/jacquesIdea.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
 <!-- page head title -->
 {% block base_title %}Idées | SpamWeb{% endblock %}
 

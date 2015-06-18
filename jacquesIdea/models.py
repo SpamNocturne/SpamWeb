@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 
 class Idee(models.Model):
-    titre = models.CharField(max_length=50)
+    titre = models.CharField(max_length=150)
     idee_text = models.TextField()
     pub_date = models.DateTimeField()
     auteur = models.ForeignKey(User, related_name='idees')
@@ -21,6 +21,46 @@ class Idee(models.Model):
     est_recent.boolean = True
     est_recent.short_description = 'recent ?'
 
+    def is_upvoted_by(self, user):
+        vote = Vote.objects.filter(auteur=user, idee=self)
+        if vote:
+            #Si il y a un vote, il ne peut y en avoir qu'un ! contrainte UNIQUE
+            if vote[0].valeur > 0:
+                return True
+        return False
+
+    def is_downvoted_by(self, user):
+        vote = Vote.objects.filter(auteur=user, idee=self)
+        if vote:
+            #Si il y a un vote, il ne peut y en avoir qu'un ! contrainte UNIQUE
+            if vote[0].valeur < 0:
+                return True
+        return False
+
+    #retourne le calcul des upvote/downvote sur une idée
+    @property
+    def get_note(self):
+        somme = 0
+        for vote in self.vote_set.all():
+            somme += vote.valeur
+        return somme
+
+    @property
+    def get_upvotes(self):
+        upvotes = []
+        for vote in self.vote_set.all():
+            if vote.valeur > 0:
+                upvotes.append(vote)
+        return upvotes
+
+    @property
+    def get_downvotes(self):
+        downvote = []
+        for vote in self.vote_set.all():
+            if vote.valeur < 0:
+                downvote.append(vote)
+        return downvote
+
 
 class Commentaire(models.Model):
     idee = models.ForeignKey(Idee)
@@ -34,6 +74,7 @@ class Commentaire(models.Model):
 
 #un vote est lie a un user et une idee
 class Vote(models.Model):
+    # ici meta sert a avoir une clé primaire sur deux champs
     class Meta:
           unique_together = ('auteur', 'idee')
     auteur = models.ForeignKey(User)
