@@ -61,7 +61,7 @@
                               <span class='direct-chat-timestamp pull-left'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
                             <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
-                            <div class="direct-chat-text">
+                            <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
                               {{ commentaire.commentaire_text }}
                             </div><!-- /.direct-chat-text -->
                           </div><!-- /.direct-chat-msg -->
@@ -73,7 +73,7 @@
                               <span class='direct-chat-timestamp pull-right'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
                             <img class="direct-chat-img" src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
-                            <div class="direct-chat-text">
+                            <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
                               {{ commentaire.commentaire_text }}
                             </div><!-- /.direct-chat-text -->
                           </div><!-- /.direct-chat-msg -->
@@ -100,6 +100,11 @@
 {% block base_additional_scripts %}
     <script>
         var USER_ID = {{ user.id }};
+        //ajout d'un fonction custom dans jQuery
+        $.fn.scrollBottom = function() {
+          return $(document).height() - this.scrollTop() - this.height();
+        };
+
 
         function getCookie(name) {
             var cookieValue = null;
@@ -149,8 +154,10 @@
                     dataType : 'html',
                     cache: false,
                     success: function(html, statut){
+                        var scrollToId = $(html).find('.direct-chat-txt').attr("id");
                         $(html).appendTo('#messages-container-'+idee);
-                        //$('#messages-container-'+idee).slimscroll({start: 'bottom'});
+                        //$('#messages-container-'+idee).scrollBottom();//TODO CA MARCHE PAAAAAAAAAAAAAS :'(
+                        $('#messages-container-'+idee).animate({ scrollTop: 1000000 }, 1000);   //C'est MOCHE mais ça passe finalement ...
                         $("#message-text-"+idee).val("");
                     },
                     error : function(resultat, statut, erreur){
