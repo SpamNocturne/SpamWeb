@@ -15,8 +15,8 @@
                   <div class="box-header with-border idee-header">
                     <h3 class="box-title">{{ idee.titre }}</h3>
                     <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool {% if idee|is_upvoted_by:user %}bg-green{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active">{{ idee.get_upvotes|length }}</span></button>
-                        <button class="btn btn-box-tool {% if idee|is_downvoted_by:user %}bg-red{% endif %}" data-toggle="tooltip" title="Pas&nbsp;Pouce"><i class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active">{{ idee.get_downvotes|length }}</span></button>
+                        <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}" class="btn btn-box-tool vote-up {% if idee|is_upvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active" id="cpt-up-{{ idee.id }}">{{ idee.get_upvotes|length }}</span></button>
+                        <button data-idee="{{ idee.id }}" id="vote-down-{{ idee.id }}" class="btn btn-box-tool vote-down {% if idee|is_downvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pas&nbsp;Pouce"><i class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active" id="cpt-down-{{ idee.id }}">{{ idee.get_downvotes|length }}</span></button>
                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                     </div>
                   </div><!-- /.box-header -->
@@ -99,6 +99,8 @@
 
 {% block base_additional_scripts %}
     <script>
+        var USER_ID = {{ user.id }};
+
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -161,6 +163,77 @@
         $(".button-comment-submit").click(function(){
             var idee =$(this).attr("data-idee");
            sendIdeaComment(idee);
+        });
+
+        //detecion du vote
+        $(".vote-up, .vote-down").click(function(){
+            $this = $(this);
+            //si le choix cliqué a déjà été voté, on quitte
+            if($this.hasClass('voted'))
+            {
+                return false;
+            }
+
+            //determination de l'action up/down
+            var action = "";
+            var url = '';
+            if($this.hasClass("vote-up"))
+            {
+                action = "up";
+                url = "{% url 'ajax:jacquesIdeaUpvote' %}";
+            }
+            else if($this.hasClass("vote-down"))
+            {
+                action = "down";
+                url = "{% url 'ajax:jacquesIdeaDownvote' %}";
+            }
+            else
+            {
+                return false;
+            }
+
+            //Création des parametres pour l'ajax
+            var idee = $this.attr("data-idee");
+            var params = {
+                idee_id: idee,
+            };
+            var paramsEncoded = $.param(params);
+
+
+
+            //envoie de la requete ajax
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: paramsEncoded,
+                success: function(){
+                    $votedCpt = $("#cpt-"+action+"-"+idee);
+                    //si ce n'est pas le premier vote
+                    if($("#vote-up-"+idee+".voted, #vote-down-"+idee+".voted").length)
+                    {
+                        //changement de la valeur du compteur
+                        $("#cpt-up-"+idee+", #cpt-down-"+idee).each(function(){
+                            //pour les deux on fait -1 (pour eviter de devoir faire un IF(action)
+                            $(this).text(parseInt($(this).text())-1);
+                        });
+                        //pour le selectionné on fait + 2
+                        $votedCpt.text(parseInt($votedCpt.text())+2);
+                    }
+                    else
+                    {
+                        //pour le selectionné on fait + 1
+                        $votedCpt.text(parseInt($votedCpt.text())+1);
+                    }
+
+                    //changements css du vote
+                    $("#vote-up-"+idee+", #vote-down-"+idee).removeClass("voted");
+                    $("#vote-"+action+"-"+idee).addClass("voted");
+                },
+                error : function(){
+                    alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
+                }
+            });
         });
 
         $(function(){

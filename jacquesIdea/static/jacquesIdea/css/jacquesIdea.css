@@ -3,3 +3,13 @@
     max-width: 80%;
     text-align: justify;
 }
+
+.vote-up.voted
+{
+    background-color: #00a65a !important;
+}
+
+.vote-down.voted
+{
+    background-color: #dd4b39 !important;
+}

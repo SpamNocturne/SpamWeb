@@ -37,6 +37,17 @@ class Idee(models.Model):
                 return True
         return False
 
+    #Renvoie le vote de l'utilisateur pour cette idee (le cree si inexistant)
+    def get_vote_from(self, user):
+        vote = Vote.objects.filter(auteur=user, idee=self)
+        #s'il y a un vote on le retourne
+        if vote:
+            return vote[0]
+        #s'il n'y a pas de vote on le crée
+        else:
+            vote = Vote.objects.create(auteur=user, idee=self)
+            return vote
+
     #retourne le calcul des upvote/downvote sur une idée
     @property
     def get_note(self):
