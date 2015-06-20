@@ -33,7 +33,7 @@ Avec l'utilisation de [Bootstrap](http://getbootstrap.com/), [JQuery](https://jq
 ## Lancer le site en local
 A la racine du projet :
 * Lancer le serveur : `python manage.py runserver PORC`   
-  où _PORC_ est le port (_ex:8081_) de connection au site.
+  où _PORC_ est le port (_ex:8081_) de connection au site. Par défaut 8000 si non renseigné.
 
 
 ## Installation (testé sur windows7)
@@ -43,7 +43,7 @@ A la racine du projet :
 * Executer `easy_install pip` : pip étant le gestionnaire de packages, à utiliser pour les téléchargements de packages
 * Obtenir Django avec : `pip install django`   
 * Telecharger le client mysql, qui fournira la DB API driver : `pip install mysqlclient`   
-* Sous Windaub : suivre le tuto [ici](http://stackoverflow.com/questions/28251314/error-microsoft-visual-c-10-0-is-required-unable-to-find-vcvarsall-bat)
+* Si vous avez des problèmes sous Windaub et mysql : suivre le tuto [ici](http://stackoverflow.com/questions/28251314/error-microsoft-visual-c-10-0-is-required-unable-to-find-vcvarsall-bat)
 pour pouvoir installer mysql python
 
 
