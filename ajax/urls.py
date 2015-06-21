@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^jiec/', views.jacquesIdeaEnregistrerCommentaire, name='jacquesIdeaEnregistrerCommentaire'),
     url(r'^jidv/', views.jacquesIdeaDownvote, name='jacquesIdeaDownvote'),
     url(r'^jiuv/', views.jacquesIdeaUpvote, name='jacquesIdeaUpvote'),
+    url(r'^jisi/', views.jacquesIdeaSupprimerIdee, name='jacquesIdeaSupprimerIdee'),
 ]
