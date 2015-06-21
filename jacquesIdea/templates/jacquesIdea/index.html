@@ -161,8 +161,8 @@
                     success: function(html, statut){
                         var scrollToId = $(html).find('.direct-chat-txt').attr("id");
                         $(html).appendTo('#messages-container-'+idee);
-                        //$('#messages-container-'+idee).scrollBottom();//TODO CA MARCHE PAAAAAAAAAAAAAS :'(
-                        $('#messages-container-'+idee).animate({ scrollTop: 1000000 }, 1000);   //C'est MOCHE mais ça passe finalement ...
+                        var objDiv = document.getElementById('messages-container-'+idee);
+                        objDiv.scrollTop = objDiv.scrollHeight;
                         $("#message-text-"+idee).val("");
                     },
                     error : function(resultat, statut, erreur){
