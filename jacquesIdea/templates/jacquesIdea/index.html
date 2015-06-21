@@ -3,26 +3,58 @@
 {% load jacquesIdea_extras %}
 
 {% block body %}
+
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-12">
-            <a href="#" class=" btn btn-block btn-success margin-bottom"><span class="glyphicon glyphicon-plus"></span> J'ai une nouvelle idée !</a>
+            <a href="{% url 'jacquesIdea:createIdea' %}" class=" btn btn-block btn-success margin-bottom"><span class="glyphicon glyphicon-plus"></span> J'ai une nouvelle idée !</a>
         </div>
     </div>
     <div class="row">
+
     {%  for idee in idee_list %}
         {% if forloop.counter0|divisibleby:3 %}
         {% endif %}
-            <div class="col-lg-4 col-md-6 col-sm-12">
+        {% ifequal user idee.auteur %}
+        <!-- modal de suppression -->
+        <div id="modal-delete-{{ idee.id }}"  class="modal fade modal-warning" role="dialog" tabindex="-1">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Attention !</h4>
+                  </div>
+                  <div class="modal-body">
+                      <p>L'idée suivante va être supprimée :</p>
+                      <h4 class="text-center"><strong>{{ idee.titre }}</strong></h4>
+                      {% if idee.commentaire_set.all|length == 1 %}
+                      <p>Ainsi que son <strong>seul</strong> commentaire.</p>
+                      {% elif idee.commentaire_set.all|length > 1 %}
+                      <p>Ainsi que ses <strong>{{ idee.commentaire_set.all|length }}</strong> commentaires.</p>
+                      {% endif %}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-danger btn-delete-idee" data-idee="{{ idee.id }}">Supprimer l'idée</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div>
+        {% endifequal %}
+        <!-- idée -->
+            <div class="col-lg-4 col-md-6 col-sm-12" id="block-idee-{{ idee.id }}">
                 <!-- Construct the box with style you want. Here we are using box-danger -->
                 <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                 <!-- The contextual class should match the box, so we are using direct-chat-danger -->
-                <div class="box box-solid box-info direct-chat direct-chat-info ">
+                <div class="box box-solid box-info direct-chat direct-chat-info collapsed-box">
                   <div class="box-header with-border idee-header">
                     <h3 class="box-title">{{ idee.titre }}</h3>
                     <div class="box-tools pull-right">
                         <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}" class="btn btn-box-tool vote-up {% if idee|is_upvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active" id="cpt-up-{{ idee.id }}">{{ idee.get_upvotes|length }}</span></button>
                         <button data-idee="{{ idee.id }}" id="vote-down-{{ idee.id }}" class="btn btn-box-tool vote-down {% if idee|is_downvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pas&nbsp;Pouce"><i class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active" id="cpt-down-{{ idee.id }}">{{ idee.get_downvotes|length }}</span></button>
                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                        {% ifequal user idee.auteur %}
+                            <button class="btn btn-box-tool" data-toggle="modal" data-target="#modal-delete-{{ idee.id }}"><i class="fa fa-times"></i></button>
+                        {% endifequal %}
                     </div>
                   </div><!-- /.box-header -->
                   <div class="box-body">
@@ -211,10 +243,7 @@
             };
             var paramsEncoded = $.param(params);
 
-
-
             //envoie de la requete ajax
-
             $.ajax({
                 method: "POST",
                 url: url,
@@ -241,6 +270,36 @@
                     //changements css du vote
                     $("#vote-up-"+idee+", #vote-down-"+idee).removeClass("voted");
                     $("#vote-"+action+"-"+idee).addClass("voted");
+                },
+                error : function(){
+                    alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
+                }
+            });
+
+        });
+
+        //Suppression d'une idée
+        $(".btn-delete-idee").click(function(){
+            $this = $(this);
+
+            //Création des parametres pour l'ajax
+            var idee = $this.attr("data-idee");
+            var params = {
+                idee_id: idee,
+            };
+            var paramsEncoded = $.param(params);
+
+            //envoie de la requete ajax
+            $.ajax({
+                method: "POST",
+                url: "{%  url 'ajax:jacquesIdeaSupprimerIdee' %}",
+                data: paramsEncoded,
+                success: function(){
+                    $("#modal-delete-"+idee).modal('hide');
+                    $("#modal-delete-"+idee).on('hidden.bs.modal', function () {
+                        $("#block-idee-"+idee).remove();
+                        $("#modal-delete-"+idee).remove();
+                    })
                 },
                 error : function(){
                     alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");

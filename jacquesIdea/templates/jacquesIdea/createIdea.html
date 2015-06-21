@@ -1,0 +1,55 @@
+{% extends "jacquesIdea/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}Nouvelle Idée | SpamWeb{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}Nouvelle Idée | <b>Spam</b>Web{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}Partages ton avis !{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+{% block base_content_header_breadcrumb %}
+    <li><a href="#"><i class="fa fa-dashboard"></i> <b>Spam</b>Web</a></li>
+    <li><a href="{% url 'jacquesIdea:index' %}">Idées</a></li>
+    <li class="active">Création</li>
+{% endblock %}
+
+{% block body %}
+
+    <div class="box box-warning">
+        <div class="box-header with-border">
+          <h3 class="box-title">Création d'une nouvelle idée</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <form action="{% url 'jacquesIdea:createIdea' %}" method="post">
+            <!-- text input -->
+
+            <div class="form-group {% if form.titre.errors %}has-error{% endif %}">
+                {{ form.titre.label_tag }} {{ form.titre }}
+                {% for error in form.titre.errors %}
+                <p class="text-red">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group  {% if form.idee_text.errors %}has-error{% endif %}">
+                {{ form.idee_text.label_tag }} {{ form.idee_text }}
+                {% for error in form.idee_text.errors %}
+                <p class="text-red">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Poster mon idée !</button>
+            </div><!-- /.col -->
+            {% csrf_token %}
+
+          </form>
+        </div><!-- /.box-body -->
+    </div>
+{% endblock %}
+
+{% block base_additional_scripts %}
+
+{% endblock %}
