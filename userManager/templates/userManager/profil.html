@@ -1,0 +1,39 @@
+{% extends "userManager/layout.html" %}
+
+{% block body %}
+    <div class="box box-sucess">
+        <div class="box-header with-border">
+          <h3 class="box-title">Edition de ton profil</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <form action="{% url 'userManager:profile_edit' %}" method="post" enctype="multipart/form-data">
+            <!-- text input -->
+            <div class="form-group {% if form.telephone.errors %}has-error{% endif %}">
+                {{ form.telephone.label_tag }} {{ form.telephone }}
+                {% for error in form.telephone.errors %}
+                <p class="text-red">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group  {% if form.date_de_naissance.errors %}has-error{% endif %}">
+                {{ form.date_de_naissance.label_tag }} {{ form.date_de_naissance }}
+                {% for error in form.date_de_naissance.errors %}
+                <p class="text-red">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group  {% if form.avatar.errors %}has-error{% endif %}">
+                {{ form.avatar.label_tag }} {{ form.avatar }}
+                {% for error in form.avatar.errors %}
+                <p class="text-red">{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Poster mon idée !</button>
+            </div><!-- /.col -->
+            {% csrf_token %}
+
+          </form>
+        </div><!-- /.box-body -->
+    </div>
+{% endblock %}

@@ -10,14 +10,15 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
-from .forms import ConnexionForm, ChangeMdpForm, InscriptionForm
+from .forms import ConnexionForm, ChangeMdpForm, InscriptionForm, ProfilForm
+from .models import UserProfile
 
 # Create your views here.
 def inscription(request):
     if request.user.is_authenticated():
         return redirect(reverse('home:index'))
     error = False
-    if(request.method == "POST"):
+    if request.method == "POST":
         form = InscriptionForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data["username"]
@@ -49,7 +50,7 @@ def connexion(request):
     if request.user.is_authenticated():
         return redirect(reverse('home:index'))
     error = False
-    if(request.method == "POST"):
+    if request.method == "POST":
         form = ConnexionForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data["username"]
@@ -109,3 +110,24 @@ def password_change_done(request):
         'title': 'Changement de mot de passe effectif.',
     }
     return TemplateResponse(request, template_name, context)
+
+@login_required
+def profile_edit(request):
+    error = False
+    user = request.user
+    profil = UserProfile.objects.get(pk=user.userprofile.id)
+    if request.method == "POST":
+        form = ProfilForm(request.POST, request.FILES, instance=profil)
+        if form.is_valid():
+            profil = form.save(commit=False)
+            profil.save()
+            return redirect(reverse('userManager:profile_edit'))
+        else:
+            error = True
+    else:
+        form = ProfilForm(instance=profil)
+    context = {
+        'form': form,
+        'error': error,
+    }
+    return render(request, 'userManager/profil.html', context)

@@ -3,6 +3,7 @@ from django import forms
 
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
+from .models import UserProfile
 
 
 class ConnexionForm(forms.Form):
@@ -118,5 +119,32 @@ class ChangeMdpForm(PasswordChangeForm):
         self.fields['new_password2'].widget.attrs\
             .update({
                 'placeholder': "Repetition",
+                'class': 'form-control'
+            })
+
+class ProfilForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ["telephone", "date_de_naissance", "avatar"]
+        labels = {
+            'telephone': "Téléphone",
+            'date_de_naissance': "Date de naissance",
+            'avatar': "Avatar",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ProfilForm, self).__init__(*args, **kwargs)
+        self.fields['telephone'].widget.attrs\
+            .update({
+                'placeholder': "06XXXXXXXX",
+                'class': 'form-control'
+            })
+        self.fields['date_de_naissance'].widget.attrs\
+            .update({
+                'placeholder': "dd/mm/yyyy",
+                'class': 'form-control'
+            })
+        self.fields['avatar'].widget.attrs\
+            .update({
                 'class': 'form-control'
             })
