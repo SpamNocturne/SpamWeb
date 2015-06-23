@@ -1,4 +1,4 @@
-# _*SpamWeb*_
+# _*SpamWeb*_ [![Build Status](https://travis-ci.org/SpamNocturne/SpamWeb.svg?branch=master)](https://travis-ci.org/SpamNocturne/SpamWeb)
 ### LE site web du *Spam Nocturne* !   
 ![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
 ![Engagement Qualité !](http://verandas-tahon.fr/wp-content/uploads/2013/02/Fotolia_38099128_XS-e1362571952133.jpg)
