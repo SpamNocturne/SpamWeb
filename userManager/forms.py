@@ -146,5 +146,5 @@ class ProfilForm(forms.ModelForm):
             })
         self.fields['avatar'].widget.attrs\
             .update({
-                'class': 'form-control'
+                # 'class': 'form-control'
             })
