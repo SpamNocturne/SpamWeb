@@ -9,6 +9,9 @@ SpamWeb est un projet communautaire dont les objectifs principaux sont :
 * Gestion des SpamMembres (membres du Spam).
 * Planification des SpamEvents (évènements organisés par et pour le spam).
 * Jauge de pinte de chouffe à boire chaque semaine.
+* Quantité de tacos ingurgités
+* Système de régulation de comptes entre membres (en UDI)
+* Partage d'idées avec votes et commentaires
 * ...
 * Tout ce dont le spam a besoin pour manquer de sérieux en amphi ! 
 
