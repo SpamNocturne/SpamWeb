@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>{% block base_title %}AdminLTE 2 | Dashboard{% endblock %}</title>
+    <title>{% block base_title %}SpamWeb{% endblock %}</title>
 
     <link rel="icon" type="image/png" href="{% static 'LTE/img/icon.png' %}" />
     <!-- Tell the browser to be responsive to screen width -->
@@ -60,11 +60,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <header class="main-header">
 
         <!-- Logo -->
-        <a href="{% block base_index_url %}#{% endblock %}" class="logo">
+        <a href="{% block base_index_url %}{% url 'home:index' %}{% endblock %}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini">{% block base_mini_logo %}<b>A</b>LT{% endblock %}</span>
+          <span class="logo-mini">{% block base_mini_logo %}<b>S</b>W{% endblock %}</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">{% block base_logo %}<b>Admin</b>LTE{% endblock %}</span>
+          <span class="logo-lg">{% block base_logo %}<b>Spam</b>Web{% endblock %}</span>
         </a>
 
         <!-- Header Navbar -->
@@ -77,6 +77,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 {% block base_top_navbar %}
+                    {% comment %}
               <!-- Messages: style can be found in dropdown.less-->
               <li class="dropdown messages-menu">
                 <!-- Menu toggle button -->
@@ -167,6 +168,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                 </ul>
               </li>
+              {% endcomment %}
               {% endblock %}
               {% block base_top_navbar_user %}
               <!-- User Account Menu -->
@@ -176,36 +178,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- The user image in the navbar-->
                   <img src="{% static 'LTE/dist/img/user2-160x160.jpg' %}" class="user-image" alt="User Image"/>
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
                   <li class="user-header">
                     <img src="{% static 'LTE/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image" />
                     <p>
-                      Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
+                      {{ user.first_name|capfirst }} {{ user.last_name|capfirst }} - {{ user.username }}
+                      <small>SpamMembre depuis le {{ user.date_joined|date:"d F Y" }}</small>
                     </p>
-                  </li>
-                  <!-- Menu Body -->
-                  <li class="user-body">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
+                      <a href="{% url 'userManager:profile_edit' %}" class="btn btn-default btn-flat">Profil</a>
                     </div>
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="{% url 'userManager:deconnexion' %}" class="btn btn-default btn-flat">Se déconnecter</a>
                     </div>
                   </li>
                 </ul>
@@ -228,18 +218,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <section class="sidebar">
          {% block base_left_sidebar_user_panel %}
           <!-- Sidebar user panel (optional) -->
-          <div class="user-panel">
-            <div class="pull-left image">
-              <img src="{% static 'LTE/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image" />
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="{% static 'LTE/dist/img/user2-160x160.jpg' %}" class="img-circle" alt="User Image" />
+                </div>
+                <div class="pull-left info">
+                    <p>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</p>
+                    <!-- Status -->
+                    <a href="#"><i class="fa fa-circle text-success"></i> En Ligne</a>
+                </div>
             </div>
-            <div class="pull-left info">
-              <p>Alexander Pierce</p>
-              <!-- Status -->
-              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
-          </div>
         {% endblock %}
         {% block base_left_sidebar_search_form %}
+            {% comment %}
           <!-- search form (Optional) -->
           <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
@@ -250,22 +241,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
           </form>
           <!-- /.search form -->
+          {% endcomment %}
         {% endblock %}
         {% block base_left_sidebar_menu %}
-          <!-- Sidebar Menu -->
-          <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
-            <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class='fa fa-link'></i> <span>Link</span></a></li>
-            <li><a href="#"><i class='fa fa-link'></i> <span>Another Link</span></a></li>
-            <li class="treeview">
-              <a href="#"><i class='fa fa-link'></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
-              <ul class="treeview-menu">
-                <li><a href="#">Link in level 2</a></li>
-                <li><a href="#">Link in level 2</a></li>
-              </ul>
-            </li>
-          </ul><!-- /.sidebar-menu -->
+            {% include "LTE/menu.html" with active="" only %}
         {% endblock %}
         </section>
         <!-- /.sidebar -->
@@ -276,13 +255,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            {% block base_content_header_title %}Page Header{% endblock %}
-            <small>{% block base_content_header_title_description %}Optional description{% endblock %}</small>
+            {% block base_content_header_title %}<b>Spam</b>Web{% endblock %}
+            <small>{% block base_content_header_title_description %}Y'a plein de choses ici !{% endblock %}</small>
           </h1>
           <ol class="breadcrumb">
             {% block base_content_header_breadcrumb %}
-            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-            <li class="active">Here</li>
+                {% include 'LTE/breadcrumb.html' with current='Home' only %}
             {% endblock %}
           </ol>
         </section>
@@ -303,10 +281,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         {% block base_footer %}
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-          Anything you want
+          Pouce !
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2015 <a href="#"><b>Spam</b>Web</a>.</strong> Tous droits r&eacute;serv&eacute;s.
         {% endblock %}
       </footer>
       
@@ -322,54 +300,73 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Tab panes -->
         <div class="tab-content">
           {% block base_right_sidebar_contents %}
-          <!-- Home tab content -->
-          <div class="tab-pane active" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">Recent Activity</h3>
+            {# FAIRE RENDER CETTE PARTIE PAR UN CONTROLLER TIERS APPELE DEPUIS LE TEMPLATE (comment ??) #}
+           <!-- Home tab content -->
+            <div class="tab-pane active" id="control-sidebar-home-tab">
+            <h3 class="control-sidebar-heading">&#199;a arrive bient&ocirc;t !</h3>
             <ul class='control-sidebar-menu'>
               <li>
+                 <a href='javascript::;'>
+                  <i class="menu-icon fa fa-sun-o bg-orange"></i>
+                  <div class="menu-info">
+                    <h4 class="control-sidebar-subheading">K-Fet : Post partiels</h4>
+                    <p>Le 20 Juin</p>
+                  </div>
+                </a>
                 <a href='javascript::;'>
                   <i class="menu-icon fa fa-birthday-cake bg-red"></i>
                   <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-                    <p>Will be 23 on April 24th</p>
+                    <h4 class="control-sidebar-subheading">Anniversaire : Alexis Andra</h4>
+                    <p>Le 22 Juin</p>
                   </div>
                 </a>
-              </li>              
+              </li>
             </ul><!-- /.control-sidebar-menu -->
 
-            <h3 class="control-sidebar-heading">Tasks Progress</h3> 
+            <h3 class="control-sidebar-heading">Avancement des projets</h3>
             <ul class='control-sidebar-menu'>
               <li>
-                <a href='javascript::;'>               
+                <a href='javascript::;'>
                   <h4 class="control-sidebar-subheading">
-                    Custom Template Design
-                    <span class="label label-danger pull-right">70%</span>
+                    TP DASI
+                    <span class="label label-success pull-right">100%</span>
                   </h4>
                   <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                  </div>                                    
+                    <div class="progress-bar progress-bar-success" style="width: 100%"></div>
+                  </div>
                 </a>
-              </li>                         
-            </ul><!-- /.control-sidebar-menu -->         
+              </li>
+              <li>
+                <a href='javascript::;'>
+                  <h4 class="control-sidebar-subheading">
+                    Site SpamWeb
+                    <span class="label label-warning pull-right">20%</span>
+                  </h4>
+                  <div class="progress progress-xxs">
+                    <div class="progress-bar progress-bar-aqua" style="width: 20%"></div>
+                  </div>
+                </a>
+              </li>
+            </ul><!-- /.control-sidebar-menu -->
 
-          </div><!-- /.tab-pane -->
-          <!-- Stats tab content -->
-          <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
-          <!-- Settings tab content -->
-          <div class="tab-pane" id="control-sidebar-settings-tab">            
+            </div><!-- /.tab-pane -->
+            <!-- Stats tab content -->
+            <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
+            <!-- Settings tab content -->
+            <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
-              <h3 class="control-sidebar-heading">General Settings</h3>
+              <h3 class="control-sidebar-heading">Réglages Généraux</h3>
               <div class="form-group">
                 <label class="control-sidebar-subheading">
-                  Report panel usage
+                  Activer les notifications
                   <input type="checkbox" class="pull-right" checked />
                 </label>
                 <p>
-                  Some information about this general settings option
+                  Pour recevoir des notifications et rappels par mail sur les évènements et activités du <b>Spam</b>
                 </p>
               </div><!-- /.form-group -->
             </form>
-          </div><!-- /.tab-pane -->
+            </div><!-- /.tab-pane -->
           {% endblock %}
         </div>
       </aside><!-- /.control-sidebar -->

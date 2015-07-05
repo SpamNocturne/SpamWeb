@@ -1,0 +1,18 @@
+{# Variable a fournir : [prev1Name prev1Url [prev2Name prev2Url [...]]] current #}
+{# On ne peut creer de liste ou de dictionnaire dans le template, on utilise donc des variables non obligatoire #}
+<li><a href="{% url 'home:index' %}"><i class="fa fa-dashboard"></i> <b>Spam</b>Web</a></li>
+
+{% if prev1Name and prev1Url%}
+    <li><a href="{% url prev1Url %} ">{{ prev1Name }}</a></li>
+    {% if prev2Name and prev2Url%}
+        <li><a href="{% url prev2Url %}">{{ prev2Name }}</a></li>
+        {% if prev3Name and prev3Url%}
+            <li><a href="{% url prev3Url %}">{{ prev3Name }}</a></li>
+            {% if prev4Name and prev4Url%}
+                <li><a href="{% url prev4Url %}">{{ prev4Name }}</a></li>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+<li class="active">{{ current }}</li>
