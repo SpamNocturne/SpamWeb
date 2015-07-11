@@ -47,14 +47,14 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
                                    CLIENT_SECRETS_FILE))
 # This OAuth 2.0 access scope allows for read-only access to the authenticated
 # user's account, but not other types of account access.
-YOUTUBE_ALL_SCOPE = "https://www.googleapis.com/auth/"
+YOUTUBE_ALL_SCOPE = "https://www.googleapis.com/auth/youtube"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
-
 FLOW = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
     message=MISSING_CLIENT_SECRETS_MESSAGE,
     scope=YOUTUBE_ALL_SCOPE,
-    redirect_uri=reverse('spamusic:OAuthReturn'))
+    redirect_uri='http://127.0.0.1:8000/spamusic/OAuthReturn/')
+#TODO REDIRECT URI PAS PROPRE
 
 @login_required()
 def OAuthAuthentification(request):
