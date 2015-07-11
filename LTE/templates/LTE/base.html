@@ -24,8 +24,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect.
     -->
-    <link href="{% static 'LTE/dist/css/skins/skin-blue.min.css' %}" rel="stylesheet" type="text/css" />
-    {% block base_additional_stylesheet %}{% endblock %}
+    <link href="{% static 'LTE/dist/css/skins/_all-skins.min.css' %}" rel="stylesheet" type="text/css" />
+    {% block base_header_addons %}{% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -53,7 +53,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   |               | sidebar-mini                            |
   |---------------------------------------------------------|
   -->
-  <body class="skin-blue sidebar-mini">
+  <body class="{% block body_skin_class %}skin-blue-light{% endblock %} sidebar-mini">
     <div class="wrapper">
 
       <!-- Main Header -->
@@ -388,7 +388,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
     <!-- here add you own scripts -->
-    {% block base_additional_scripts %}{% endblock %}
+    {% block base_footer_addons %}{% endblock %}
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
           Both of these plugins are recommended to enhance the
           user experience. Slimscroll is required when using the

@@ -2,8 +2,22 @@
 {% load staticfiles %}
 
 {# CE TEMPLATE SERT DE MODELE POUR ECRIRE UN LAYOUT DANS VOTRE APP #}
-{# IL PRESENTE TOUS LES BLOCKS QUE L'ONT PEU (RE-)DEFINIR EN HERITANT DE BASE.HTML #}
+{# IL PRESENTE TOUS LES BLOCKS QUE L'ON PEUT (RE-)DEFINIR EN HERITANT DE BASE.HTML #}
 {# LES BLOCKS COMMENTES SONT PRESENTS DANS BASE.HTML MAIS N'ONT NORMALEMENT PAS BESOIN D'ETRE MODIFIES #}
+
+<!-- modifie la couleur du site. les classes disponibles sont :
+  |---------------------------------------------------------|
+  | SKINS         | skin-blue                               |
+  |               | skin-black                              |
+  |               | skin-purple                             |
+  |               | skin-yellow                             |
+  |               | skin-red                                |
+  |               | skin-green                              |
+  |---------------------------------------------------------|
+  NB : Elles existent toutes en version "light", exemple : "skin-blue-light"
+   La version light change le menu de gauche en blanc -->
+{% block body_skin_class %}{{ block.super }}{%  endblock %}
+<!-- changez block-super en la couleur de votre app -->
 
 <!--
 ----    HEAD
@@ -11,11 +25,19 @@
 <!-- page head title -->
 {% block base_title %}Mon App | {{ block.super }}{% endblock %}
 
-<!-- here add you own stylesheet -->
-{% block base_additional_stylesheet %}{% endblock %}
+<!-- here add you own stylesheet and scripts in header -->
+{% block base_header_addons %}
+    <!-- Here : addons for the layout, in the whole App -->
+    {% block page_header_addons %}
+    {% endblock %}
+{% endblock %}
 
-<!-- here add you own scripts -->
-{% block base_additional_scripts %}{% endblock %}
+<!-- here add you own stylesheet and scripts in footer-->
+{% block base_footer_addons %}
+    <!-- Here : addons for the layout, in the whole App-->
+    {% block page_footer_addons %}
+    {% endblock %}
+{% endblock %}
 
 
 <!--
