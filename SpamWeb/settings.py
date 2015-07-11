@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'jacquesIdea',
     'userManager',
     'LTE',
+    'spamusic'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -102,6 +103,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 # UserManager
 LOGIN_URL = '/user/login/'
