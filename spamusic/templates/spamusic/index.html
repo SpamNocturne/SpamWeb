@@ -1,13 +1,6 @@
-<html>
-  <head>
-    <title>Your Google+ Activity</title>
-    <style type=text/css>
-      td  { vertical-align: top; padding: 0.5em }
-      img { border:0 }
-    </style>
-  </head>
-  <body>
-   {{ message }}
-  YO
-  </body>
-</html>
+{% extends 'spamusic/layout.html' %}
+
+{% block body %}
+    <p class="jumbotron">{{ message }}</p>
+    <p>YO</p>
+{% endblock %}
