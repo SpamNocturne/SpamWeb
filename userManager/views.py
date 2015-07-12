@@ -56,7 +56,7 @@ def connexion(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             user = authenticate(username=username, password=password)
-            if user: #!= None
+            if user:    # != None
                 login(request, user)
                 return redirect(reverse('home:index'))
             else:
