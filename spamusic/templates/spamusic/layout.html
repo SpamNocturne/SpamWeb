@@ -25,11 +25,19 @@
 <!-- page head title -->
 {% block base_title %}Spamusic | {{ block.super }}{% endblock %}
 
-<!-- here add you own stylesheet -->
-{% block base_additional_stylesheet %}{% endblock %}
+<!-- here add you own stylesheet and scripts in header -->
+{% block base_header_addons %}
+    <!-- Here : addons for the layout, in the whole App -->
+    {% block page_header_addons %}
+    {% endblock %}
+{% endblock %}
 
-<!-- here add you own scripts -->
-{% block base_additional_scripts %}{% endblock %}
+<!-- here add you own stylesheet and scripts in footer-->
+{% block base_footer_addons %}
+    <!-- Here : addons for the layout, in the whole App-->
+    {% block page_footer_addons %}
+    {% endblock %}
+{% endblock %}
 
 
 <!--
