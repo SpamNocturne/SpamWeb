@@ -88,9 +88,12 @@ Pour vous aider a créer un nouvelle application (*monApp*) sur le site voici qu
   
 * *Pour les* **templates** *:*  
   * Copier le fichier **LTE/templates/LTE/starter.html**, et le renommer en **layout.html** dans **monApp/templates/monApp/**  
-  * Faire hériter le **layout.html** du **starter.html** en changeant la première ligne : `{% extends "LTE/starter.html" %}`  
   * Adapter et redéfinir tout les blocks du **layout.html** pour *monApp*  
-  * Faire hériter hériter les nouveaux templates de *monApp* de **monApp/templates/monApp/layout.html**   
+  * Ce fichier **layout.html** sera la base de votre application, toute vos pages seront basées dessus  
+  * Creer maintenant un *nouveau* template basé sur le fichier **LTE/templates/LTE/page.html**   
+  * Faire donc hériter le nouveau template de **monApp/templates/monApp/layout.html**   
+  * Modifier le contenu de ce fichier pour qu'il corresponde à votre page   
+  * *C'est bon !* Le templating en 3 couches (Base / Layout / Page) est terminé ! 
   * Si vous utilisez de l'**AJAX** passez par l'app ajax qui centralise ces requetes. Un **jeton csrf** est obligatoire même en ajax ! Infos [ici](https://docs.djangoproject.com/fr/1.7/ref/contrib/csrf/#csrf-ajax).   
 
 ### Bonne chance ! :)
