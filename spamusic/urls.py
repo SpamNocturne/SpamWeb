@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     # ex: /spamusic/OAuthAuthentification
-    url(r'^OAuthAuthentification', views.OAuthAuthentification, name='OAuthAuthentification'),
+    # url(r'^OAuthAuthentification', views.OAuthAuthentification, name='OAuthAuthentification'),
     # ex: /spamusic/OAuthReturn
     url(r'^OAuthReturn', views.OAuthReturn, name='OAuthReturn'),
     # ex: /spamusic/
