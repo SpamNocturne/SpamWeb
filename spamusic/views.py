@@ -8,7 +8,7 @@ from SpamWeb import settings
 
 from django.shortcuts import render_to_response, redirect, render
 
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseBadRequest
@@ -82,7 +82,7 @@ def index(request):
     check = check_youtube_master(request=request, master=master)
     if check['status'] is False:
         return check['value']
-    check = check_api_token(request=request)
+    check = check_api_token(request=request, master=master)
     if check['status'] is False:
         return check['value']
     else:
@@ -93,11 +93,13 @@ def index(request):
     else:
         message = "Vous n'etes pas un admin !"
     title = "Compte SpamWeb Connecté !"
-    '''
+
     http = httplib2.Http()
     http = credential.authorize(http)
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, http=http)
+
     # This code creates a new, private playlist in the authorized user's channel.
+    '''
     playlists_insert_response = youtube.playlists().insert(
       part="snippet,status",
       body=dict(
@@ -111,10 +113,10 @@ def index(request):
       )
     ).execute()
 
-    context = {"message": "New playlist id: %s" % playlists_insert_response["id"]}
+    yt_message = {"message": "New playlist id: %s" % playlists_insert_response["id"]}
     '''
-
-    context = {'title': title, 'message': message}
+    yt_message = ""
+    context = {'title': title, 'message': message, 'yt_message': yt_message}
     return render(request, 'spamusic/index.html', context)
 
 
@@ -161,11 +163,7 @@ def check_youtube_master(request, master):
 #   - 'status' Booleen (code retour)
 #   - 'value' la valeur retournée (potentiellement une response, ou un objet attendu)
 @login_required()
-def check_api_token(request):
-    # on récupère le master propriétaire
-    master = get_youtube_master(request=request)
-    # on le vérifie
-    check_youtube_master(request=request, master=master)
+def check_api_token(request, master):
 
     storage = Storage(CredentialsYoutubeModel, 'id', master, 'credential')
     credential = storage.get()
