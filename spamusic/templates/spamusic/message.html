@@ -1,0 +1,24 @@
+{% extends 'spamusic/layout.html' %}
+
+<!-- page head title -->
+{% block base_title %}Message | {{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}{% if title %}{{ title }}{% else %}Message{% endif %}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}Il s'est passé quelque chose !{% endblock %}
+
+
+{% block body %}
+    <div class="jumbotron">
+  <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
+    {%  if url_for_admin %}
+  <p><a class="btn btn-primary btn-lg" href="{{ url_for_admin }}" role="button">C'est par ici la suite !</a></p>
+    {% endif %}
+    {% if url_for_user %}
+  <p><a class="btn btn-primary btn-lg" href="{{ url_for_user }}" role="button">C'est fait ! Allez retour case départ</a></p>
+    {% endif %}
+</div>
+{% endblock %}

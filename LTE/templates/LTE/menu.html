@@ -14,4 +14,5 @@
       </ul>
     </li>
     <li {% ifequal active "repertoire" %}class="active" {% endifequal %}><a href="#"><i class='fa fa-book'></i> <span>Répertoire</span></a></li>
+    <li {% ifequal active "spamusic" %}class="active" {% endifequal %}><a href="{% url 'spamusic:index' %}"><i class='fa fa-youtube'></i> <span>Spamusic</span></a></li>
   </ul><!-- /.sidebar-menu -->
