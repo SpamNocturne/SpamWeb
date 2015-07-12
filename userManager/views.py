@@ -33,6 +33,10 @@ def inscription(request):
 
             user.save()
 
+            profile = UserProfile()
+            profile.user = user
+            profile.save()
+
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect(reverse('home:index'))
