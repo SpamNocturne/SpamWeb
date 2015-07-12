@@ -5,18 +5,6 @@
 <!-- page head title -->
 {% block base_title %}Idées | {{ block.super }}{% endblock %}
 
-<!-- here add you own stylesheet -->
-{% block base_additional_stylesheet %}
-        <link href="{% static 'jacquesIdea/css/jacquesIdea.css' %}" rel="stylesheet" type="text/css" />
-{% endblock %}
-
-<!-- top right in navbar toggle to display controls & settings -->
-{% block base_top_navbar_control_button %}
-    <!-- Control Sidebar Toggle Button -->
-    <li>
-        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-    </li>
-{% endblock %}
 
 <!--
 ----    LEFT SIDEBAR
@@ -31,6 +19,7 @@
 <!-- here add you own stylesheet and scripts in header -->
 {% block base_header_addons %}
     <!-- Here : addons for the layout, in the whole App -->
+    <link href="{% static 'jacquesIdea/css/jacquesIdea.css' %}" rel="stylesheet" type="text/css" />
     {% block page_header_addons %}
     {% endblock %}
 {% endblock %}
