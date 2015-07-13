@@ -165,3 +165,12 @@ def playlist_list(youtube):
         'fields': 'items(contentDetails,id,snippet)',
     }
     return youtube.playlists().list(**kwargs).execute()
+
+
+def playlist_details(youtube, playlist_id):
+    kwargs = {
+        'part': 'contentDetails,id,player,snippet',
+        'id': playlist_id,
+        'fields': 'items(contentDetails,id,player,snippet)',
+    }
+    return youtube.playlists().list(**kwargs).execute()

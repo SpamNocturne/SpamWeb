@@ -26,6 +26,7 @@
     //URLS parametre globaux pour l'ajax du script
         URLS = {
             spamusicAjouterPlaylist: "{% url 'ajax:spamusicAjouterPlaylist' %}",
+            spamusicDetailsPlaylist: "{% url 'ajax:spamusicDetailsPlaylist' %}",
         };
     </script>
     <script src="{% static 'spamusic/js/spamusic-index.js' %}" type="text/javascript"></script>
@@ -43,28 +44,18 @@
     </div>
     <ul class="control-sidebar-menu" id="control-playlist-list">
         {% for playlist in playlist_list.items %}
-        <li class=""  >
-            <a href="#" class="playlist-play-link" data-playlistID="{{ playlist.id }}">
-                <div class="control-sidebar-playlist" style="background-image: url('{{ playlist.snippet.thumbnails.medium.url }}')">
-                    <div class="overlay">
-                        <i class="fa fa-play"></i>
-                    </div>
-                    <div class="menu-info no-margin playlist-info">
-                        <h4 class="control-sidebar-subheading">{{ playlist.snippet.title }}</h4>
-                        <p>{{ playlist.contentDetails.itemCount }} Vidéo(s)</p>
-                    </div>
-                </div>
-            </a>
-        </li>
+            {% include 'spamusic/control-sidebar-playlist.html' with playlist=playlist %}
         {% endfor %}
     </ul>
 {% endblock %}
 
 {% block body %}
-    <div class="jumbotron">
-        <h1>{{ title }}</h1>
-        <p class="voted vote-up">{{ message }}</p>
-        <p>{{ yt_message }}</p>
-        <button class="btn btn-default" data-toggle="control-sidebar" onclick="$('a[href=\'#control-sidebar-playlist-tab\']').click();">Voir les playlist</button>
+    <div class="row" id="main-content">
+        <div class="jumbotron">
+            <h1>{{ title }}</h1>
+            <p class="voted vote-up">{{ message }}</p>
+            <p>{{ yt_message }}</p>
+            <button class="btn btn-default" data-toggle="control-sidebar" onclick="$('a[href=\'#control-sidebar-playlist-tab\']').click();">Voir les playlist</button>
+        </div>
     </div>
 {% endblock %}

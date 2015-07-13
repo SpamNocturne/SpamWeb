@@ -76,6 +76,7 @@ def jacquesIdeaSupprimerIdee(request):
 '''
     AJAX SPAMUSIC
 '''
+# Va chercher toutes les playlistes du master et les rend en template
 @login_required()
 def spamusicAjouterPlaylist(request):
     name = request.POST['name']
@@ -93,4 +94,25 @@ def spamusicAjouterPlaylist(request):
     youtube = f.build_youtube(credential)
     playlist = f.playlist_create(youtube=youtube, name=name)
     context = {'playlist': playlist}
-    return render(request, 'ajax/spamusic/control-sidebar-playlist.html', context)
+    return render(request, 'spamusic/control-sidebar-playlist.html', context)
+
+
+# Va chercher les details d'une playlist et le rend via un template
+@login_required()
+def spamusicDetailsPlaylist(request):
+    playlist_id = request.POST['playlist_id']
+
+    master = f.get_youtube_master()
+    check = f.check_youtube_master(request=request, master=master)
+    if check['status'] is False:
+        return HttpResponseForbidden()
+    check = f.check_api_token(request=request, master=master)
+    if check['status'] is False:
+        return HttpResponseForbidden()
+    else:
+        credential = check['value']
+
+    youtube = f.build_youtube(credential)
+    playlist = f.playlist_details(youtube=youtube, playlist_id=playlist_id)
+    context = {'playlist': playlist["items"][0]}
+    return render(request, 'spamusic/main-content.html', context)
