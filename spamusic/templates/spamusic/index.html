@@ -21,10 +21,20 @@
 {% endblock %}
 
 {% block page_footer_addons %}
+    <!-- AdminLTE App -->
+    <script src="{% static 'spamusic/js/spamusic-index.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 
 {% block page_right_sidebar_contents %}
+    <div action="#" method="get" class="sidebar-form" id="add-playlist-form">
+        <div class="input-group">
+            <input name="name" class="form-control" placeholder="Nouvelle playlist" type="text" onKeyPress="if(event.keyCode == 13){$('#add-playlist-btn').click()}">
+            <span class="input-group-btn">
+                <button type="button" name="add-playlist" id="add-playlist-btn" class="btn btn-flat"><i class="fa fa-plus"></i></button>
+            </span>
+        </div>
+    </div>
     <ul class="control-sidebar-menu">
         {% for playlist in playlist_list.items %}
         <li class=""  >
@@ -49,6 +59,6 @@
         <h1>{{ title }}</h1>
         <p class="voted vote-up">{{ message }}</p>
         <p>{{ yt_message }}</p>
-        <button class="btn btn-default" data-toggle="control-sidebar" onclick="$('#control-sidebar-playlist-tab').click();console.log('click');">Voir les playlist</button>
+        <button class="btn btn-default" data-toggle="control-sidebar" onclick="$('a[href=\'#control-sidebar-playlist-tab\']').click();">Voir les playlist</button>
     </div>
 {% endblock %}

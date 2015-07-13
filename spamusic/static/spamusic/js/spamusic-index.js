@@ -32,11 +32,19 @@ $(function(){
     });
 
     //ajout d'une playlist
-    $("form#add-playlist-form").submit(function(){
+    $("#add-playlist-btn").click(function(event){
         event.preventDefault();
-        $this = $(this);
-        alert($this.val());
+        var $this = $(this);
+        var $input = $("#add-playlist-form").find("input[name='name']");
+        var name = $input.val().trim();
+        if(name.length>0)
+        {
+            $this.attr('disabled','disabled').find("i").removeClass("fa-plus").addClass("fa-refresh fa-spin");
 
-        return false;
+            setTimeout(function(){
+                $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
+                $input.val("");
+            },2000);
+        }
     });
 });

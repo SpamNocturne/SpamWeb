@@ -1,12 +1,17 @@
 .control-sidebar-playlist{
     height: 130px;
     background: no-repeat center center;
+    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+    background-size: cover; /* version standardisée */
     position: relative;
 }
 
 .playlist-info{
     padding : 5px;
     background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 
 .playlist-play-link .overlay{
