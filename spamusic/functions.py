@@ -140,9 +140,10 @@ def check_api_token(request, master):
     return {'status': True, 'value': credential}
 
 
+# API SHORTCUTS
 def playlist_create(youtube, name):
     kwargs = {
-        'part': 'snippet,status',
+        'part': 'id,snippet,contentDetails,status',
         'body': {
             'snippet': {
                 'title': name,
@@ -151,6 +152,7 @@ def playlist_create(youtube, name):
                 'privacyStatus': 'public',
             },
         },
+        'fields': 'contentDetails,id,snippet',
     }
     return youtube.playlists().insert(**kwargs).execute()
 
@@ -160,6 +162,6 @@ def playlist_list(youtube):
         'part': 'id,contentDetails,snippet',
         'maxResults': 50,
         'mine': True,
-        'fields': 'items(contentDetails,id,snippet)'
+        'fields': 'items(contentDetails,id,snippet)',
     }
     return youtube.playlists().list(**kwargs).execute()

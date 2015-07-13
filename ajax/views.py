@@ -3,10 +3,13 @@ from django.http import HttpResponse, HttpResponseForbidden
 
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-
-# Create your views here.
 from jacquesIdea.models import Idee, Commentaire
+from spamusic import functions as f
 
+
+'''
+    AJAX JACQUESIDEA
+'''
 @login_required
 def jacquesIdeaEnregistrerCommentaire(request):
     # recuperation des parametres
@@ -26,6 +29,7 @@ def jacquesIdeaEnregistrerCommentaire(request):
     context = {'commentaire': com}
     return render(request, 'ajax/rightComment.html', context)
 
+
 @login_required
 def jacquesIdeaDownvote(request):
     # recupération des parametres
@@ -38,6 +42,7 @@ def jacquesIdeaDownvote(request):
     vote.save()
     return HttpResponse()
 
+
 @login_required
 def jacquesIdeaUpvote(request):
     # recupération des parametres
@@ -49,6 +54,7 @@ def jacquesIdeaUpvote(request):
     vote.upvote()
     vote.save()
     return HttpResponse()
+
 
 @login_required
 def jacquesIdeaSupprimerIdee(request):
@@ -65,3 +71,26 @@ def jacquesIdeaSupprimerIdee(request):
     # On supprime l'idée
     idee.delete()
     return HttpResponse()
+
+
+'''
+    AJAX SPAMUSIC
+'''
+@login_required()
+def spamusicAjouterPlaylist(request):
+    name = request.POST['name']
+
+    master = f.get_youtube_master()
+    check = f.check_youtube_master(request=request, master=master)
+    if check['status'] is False:
+        return HttpResponseForbidden()
+    check = f.check_api_token(request=request, master=master)
+    if check['status'] is False:
+        return HttpResponseForbidden()
+    else:
+        credential = check['value']
+
+    youtube = f.build_youtube(credential)
+    playlist = f.playlist_create(youtube=youtube, name=name)
+    context = {'playlist': playlist}
+    return render(request, 'ajax/spamusic/control-sidebar-playlist.html', context)
