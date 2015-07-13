@@ -1,9 +1,54 @@
 {% extends 'spamusic/layout.html' %}
 
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}Playlist | {{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}Les playlists | {{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='spamusic' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+
+{% block page_right_sidebar_contents %}
+    <ul class="control-sidebar-menu">
+        {% for playlist in playlist_list.items %}
+        <li class=""  >
+            <a href="#" class="playlist-play-link" data-playlistID="{{ playlist.id }}">
+                <div class="control-sidebar-playlist" style="background-image: url('{{ playlist.snippet.thumbnails.medium.url }}')">
+                    <div class="overlay">
+                        <i class="fa fa-play"></i>
+                    </div>
+                    <div class="menu-info no-margin playlist-info">
+                        <h4 class="control-sidebar-subheading">{{ playlist.snippet.title }}</h4>
+                        <p>{{ playlist.contentDetails.itemCount }} Vidéo(s)</p>
+                    </div>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
 {% block body %}
     <div class="jumbotron">
         <h1>{{ title }}</h1>
-        <p>{{ message }}</p>
+        <p class="voted vote-up">{{ message }}</p>
         <p>{{ yt_message }}</p>
+        <button class="btn btn-default" data-toggle="control-sidebar" onclick="$('#control-sidebar-playlist-tab').click();console.log('click');">Voir les playlist</button>
     </div>
 {% endblock %}

@@ -28,6 +28,7 @@
 <!-- here add you own stylesheet and scripts in header -->
 {% block base_header_addons %}
     <!-- Here : addons for the layout, in the whole App -->
+    <link href="{% static 'spamusic/css/spamusic.css' %}" rel="stylesheet" type="text/css" />
     {% block page_header_addons %}
     {% endblock %}
 {% endblock %}
@@ -97,10 +98,19 @@
 ---->
 <!-- Right Sidebar List of tabs -->
 {# block base_right_sidebar_tabs #}
+{% block base_right_sidebar_tabs %}
+    <li><a href="#control-sidebar-playlist-tab" data-toggle="tab"><i class="fa fa-youtube"></i></a></li>
+{% endblock %}
 
 <!-- Right sidebar Contents of tabs -->
 {# block base_right_sidebar_contents #}
-
+{% block base_right_sidebar_contents %}
+    <div class="tab-pane" id="control-sidebar-playlist-tab">
+        <h3 class="control-sidebar-heading">Playlists du <b>Spam</b>Web</h3>
+        {% block page_right_sidebar_contents %}
+        {% endblock %}
+    </div>
+{% endblock %}
 
 <!--
 ----    FOOTER

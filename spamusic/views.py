@@ -5,6 +5,7 @@ import httplib2
 from .models import CredentialsYoutubeModel
 from django.contrib.auth.models import User
 from SpamWeb import settings
+from . import functions as f
 
 from django.shortcuts import render_to_response, redirect, render
 
@@ -64,6 +65,7 @@ FLOW = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
 YOUTUBE_MASTER_USERNAME = "spamadmin"
 
 
+
 @login_required
 def OAuthReturn(request):
     master = get_youtube_master(request=request)
@@ -98,25 +100,15 @@ def index(request):
     http = credential.authorize(http)
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, http=http)
 
-    # This code creates a new, private playlist in the authorized user's channel.
-    '''
-    playlists_insert_response = youtube.playlists().insert(
-      part="snippet,status",
-      body=dict(
-        snippet=dict(
-          title="Test Playlist",
-          description="A private playlist created with the YouTube API v3"
-        ),
-        status=dict(
-          privacyStatus="private"
-        )
-      )
-    ).execute()
+    playlist_list = f.playlist_list(youtube)
 
-    yt_message = {"message": "New playlist id: %s" % playlists_insert_response["id"]}
-    '''
     yt_message = ""
-    context = {'title': title, 'message': message, 'yt_message': yt_message}
+    context = {
+        'title': title,
+        'message': message,
+        'yt_message': yt_message,
+        'playlist_list': playlist_list,
+    }
     return render(request, 'spamusic/index.html', context)
 
 
