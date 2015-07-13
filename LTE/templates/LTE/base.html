@@ -292,28 +292,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <aside class="control-sidebar control-sidebar-dark">
         <!-- Create the tabs -->
         <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-          {% block base_right_sidebar_tabs %}
           <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
           <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-         {% endblock %}
+          {% block base_right_sidebar_tabs %}
+          {% endblock %}
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
-          {% block base_right_sidebar_contents %}
-            {# FAIRE RENDER CETTE PARTIE PAR UN CONTROLLER TIERS APPELE DEPUIS LE TEMPLATE (comment ??) #}
+            {# TODO  FAIRE RENDER CETTE PARTIE PAR UN CONTROLLER TIERS APPELE DEPUIS LE TEMPLATE (comment ??) #}
            <!-- Home tab content -->
             <div class="tab-pane active" id="control-sidebar-home-tab">
             <h3 class="control-sidebar-heading">&#199;a arrive bient&ocirc;t !</h3>
             <ul class='control-sidebar-menu'>
               <li>
-                 <a href='javascript::;'>
+                 <a href='#'>
                   <i class="menu-icon fa fa-sun-o bg-orange"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">K-Fet : Post partiels</h4>
                     <p>Le 20 Juin</p>
                   </div>
                 </a>
-                <a href='javascript::;'>
+                <a href=''>
                   <i class="menu-icon fa fa-birthday-cake bg-red"></i>
                   <div class="menu-info">
                     <h4 class="control-sidebar-subheading">Anniversaire : Alexis Andra</h4>
@@ -326,7 +325,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <h3 class="control-sidebar-heading">Avancement des projets</h3>
             <ul class='control-sidebar-menu'>
               <li>
-                <a href='javascript::;'>
+                <a href='#'>
                   <h4 class="control-sidebar-subheading">
                     TP DASI
                     <span class="label label-success pull-right">100%</span>
@@ -337,7 +336,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
               </li>
               <li>
-                <a href='javascript::;'>
+                <a href='#'>
                   <h4 class="control-sidebar-subheading">
                     Site SpamWeb
                     <span class="label label-warning pull-right">20%</span>
@@ -350,8 +349,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul><!-- /.control-sidebar-menu -->
 
             </div><!-- /.tab-pane -->
-            <!-- Stats tab content -->
-            <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
             <!-- Settings tab content -->
             <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
@@ -367,6 +364,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div><!-- /.form-group -->
             </form>
             </div><!-- /.tab-pane -->
+          {% block base_right_sidebar_contents %}
           {% endblock %}
         </div>
       </aside><!-- /.control-sidebar -->
