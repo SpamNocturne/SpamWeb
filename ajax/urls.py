@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^jidv/', views.jacquesIdeaDownvote, name='jacquesIdeaDownvote'),
     url(r'^jiuv/', views.jacquesIdeaUpvote, name='jacquesIdeaUpvote'),
     url(r'^jisi/', views.jacquesIdeaSupprimerIdee, name='jacquesIdeaSupprimerIdee'),
+
+    url(r'^smap/', views.spamusicAjouterPlaylist, name='spamusicAjouterPlaylist'),
 ]

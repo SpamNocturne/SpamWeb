@@ -1,0 +1,13 @@
+<li class=""  >
+    <a href="#" class="playlist-play-link" data-playlistID="{{ playlist.id }}">
+        <div class="control-sidebar-playlist" style="background-image: url('{{ playlist.snippet.thumbnails.medium.url }}')">
+            <div class="overlay">
+                <i class="fa fa-play"></i>
+            </div>
+            <div class="menu-info no-margin playlist-info">
+                <h4 class="control-sidebar-subheading">{{ playlist.snippet.title }}</h4>
+                <p>{{ playlist.contentDetails.itemCount }} Vidéo(s)</p>
+            </div>
+        </div>
+    </a>
+</li>

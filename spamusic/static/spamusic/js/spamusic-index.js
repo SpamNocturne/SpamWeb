@@ -41,10 +41,29 @@ $(function(){
         {
             $this.attr('disabled','disabled').find("i").removeClass("fa-plus").addClass("fa-refresh fa-spin");
 
-            setTimeout(function(){
-                $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
-                $input.val("");
-            },2000);
+            var params = {
+                name: name
+            };
+            console.log("GO AJAX GO");
+            var paramsEncoded = $.param(params);
+            $.ajax({
+                method: "POST",
+                url: URLS.spamusicAjouterPlaylist,
+                data: paramsEncoded,
+                dataType : 'html',
+                cache: false,
+                success: function(html){
+                    console.log("AJAX OK");
+                    console.log(html);
+                    $(html).prependTo('#control-playlist-list');
+                    $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
+                    $input.val("");
+                },
+                error : function(resultat, statut, erreur){
+                    console.log("AJAX NOK");
+                    alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
+                }
+            });
         }
     });
 });
