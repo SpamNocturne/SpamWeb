@@ -1,0 +1,4 @@
+{% for playlist_item in playlist_items.items %}
+    <p>Titre : {{ playlist_item.snippet.title }}</p>
+    <p>id : {{ playlist_item.snippet.resourceId.videoId }}</p>
+{% endfor %}

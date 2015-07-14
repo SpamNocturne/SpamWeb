@@ -32,7 +32,13 @@ $(function(){
     });
 
     //loader, to append in a relative div
-    var loaderTemplate = '<div class="my-overlay"><i class="fa fa-refresh fa-spin"></i></div>';
+    var loaderTemplate = '<div class="my-overlay row"><i class="fa fa-refresh fa-spin"></i></div>';
+
+    var toggle_playlist = function(event){
+        event.preventDefault()
+        $(".main-header a[data-toggle='control-sidebar']").click();
+        $("a[href='#control-sidebar-playlist-tab']").click();
+    };
 
     //ajout d'une playlist
     $("#add-playlist-btn").click(function(event){
@@ -96,7 +102,39 @@ $(function(){
                 success: function(html){
                     console.log("AJAX OK");
                     console.log(html);
-                    $("#main-content").html($(html));
+                    var $html = $(html);
+                    //binds
+                    $html.find("[data-toggle='control-sidebar-playlist']").click(toggle_playlist);
+
+                    //insertion
+                    $("#main-content").html($html);
+
+                    //recherche des vidéos de la playlist
+                    var $loaderVideo = $(loaderTemplate).appendTo("#yt-tab-videos");
+                    $.ajax({
+                        method: "POST",
+                        url: URLS.spamusicPlaylistItems,
+                        data: paramsEncoded,
+                        dataType : 'html',
+                        cache: false,
+                        success: function(html){
+                            console.log("AJAX OK");
+                            console.log(html);
+                            var $html = $(html);
+                            //binds
+
+                            //insertion
+                            $html.appendTo($("#yt-tab-videos"));
+                        },
+                        error: function(resultat, statut, erreur){
+                            console.log("AJAX NOK");
+                            alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+                        },
+                        complete: function(){
+                            console.log("AJAX DONE");
+                            $loaderVideo.remove();
+                        }
+                    });
                 },
                 error: function(resultat, statut, erreur){
                     console.log("AJAX NOK");
