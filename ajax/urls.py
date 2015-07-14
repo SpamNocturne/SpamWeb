@@ -12,4 +12,5 @@ urlpatterns = [
 
     url(r'^sm_ap/', views.spamusicAjouterPlaylist, name='spamusicAjouterPlaylist'),
     url(r'^sm_dp/', views.spamusicDetailsPlaylist, name='spamusicDetailsPlaylist'),
+    url(r'^sm_pi/', views.spamusicPlaylistItems, name='spamusicPlaylistItems'),
 ]

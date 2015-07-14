@@ -1,3 +1,51 @@
-{% autoescape off %}
-    {{ playlist.player.embedHtml }}
-{% endautoescape %}
+<div class="row">
+    <div class="col-xs-12" id="yt-playlist-header">
+        <h2>
+            <button class="btn btn-default pull-right" data-toggle="control-sidebar-playlist">Voir les playlist</button>
+            Playlist : {{ playlist.snippet.title }}
+        </h2>
+    </div>
+    <div class="bg-black-gradient col-xs-12 no-padding">
+        <div class="video-wrapper">
+            <div class="video-container">
+                {% autoescape off %}
+                    {{ playlist.player.embedHtml }}
+                {% endautoescape %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a aria-expanded="true" href="#yt-tab-infos" data-toggle="tab">Informations</a></li>
+        <li><a href="#yt-tab-videos" data-toggle="tab">Vidéos</a></li>
+        <li><a href="#yt-tab-search" data-toggle="tab">Rechercher</a></li>
+    </ul>
+    <div class="col-xs-12">
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+            <!-- Infos tab content -->
+            <div class="tab-pane active" id="yt-tab-infos">
+                <h2>Informations</h2>
+                <p>Nom de la playlist : {{ playlist.snippet.title }}</p>
+                <p>Description : {{ playlist.snippet.description }}</p>
+                <p>Nombre de vidéos : {{ playlist.contentDetails.itemCount }}</p>
+                <p>Créée le : {{ playlist.snippet.publishedAt|date:"d F Y" }}</p>
+                <p>Propriétaire : {{ playlist.snippet.channelTitle }}</p>
+            </div>
+            <!-- /.tab-pane -->
+            <!-- Videos tab content -->
+            <div class="tab-pane" id="yt-tab-videos">
+               <h2>Vidéos de {{ playlist.snippet.title }}</h2>
+            </div>
+            <!-- /.tab-pane -->
+            <!-- Search tab content -->
+            <div class="tab-pane" id="yt-tab-search">
+                <h3>Rechercher de nouvelles vidéos</h3>
+            </div>
+            <!-- /.tab-pane -->
+        </div>
+    </div>
+</div>
