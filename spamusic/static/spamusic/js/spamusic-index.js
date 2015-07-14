@@ -35,7 +35,7 @@ $(function(){
     var loaderTemplate = '<div class="my-overlay row"><i class="fa fa-refresh fa-spin"></i></div>';
 
     var toggle_playlist = function(event){
-        event.preventDefault()
+        event.preventDefault();
         $(".main-header a[data-toggle='control-sidebar']").click();
         $("a[href='#control-sidebar-playlist-tab']").click();
     };

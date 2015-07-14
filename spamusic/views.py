@@ -46,7 +46,6 @@ def index(request):
     else:
         admin = "Vous n'etes pas un admin !"
 
-
     youtube = f.build_youtube(credential)
 
     playlist_list = f.playlist_list(youtube)

@@ -10,6 +10,7 @@ from spamusic import functions as f
 '''
     AJAX JACQUESIDEA
 '''
+ONLINE = False
 
 
 @login_required
@@ -290,10 +291,8 @@ def spamusicPlaylistItems(request):
         ]
     }
     '''
-    '''
-    playlist = playlist_response["items"][0]
-    playlist["snippet"]["publishedAt"] = datetime.strptime(playlist["snippet"]["publishedAt"], '%Y-%m-%dT%H:%M:%S.000Z')
-    '''
+    for item in playlist_items["items"]:
+        item["snippet"]["publishedAt"] = datetime.strptime(item["snippet"]["publishedAt"], '%Y-%m-%dT%H:%M:%S.000Z')
 
     context = {
         'playlist_items': playlist_items,
