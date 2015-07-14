@@ -165,3 +165,36 @@ def playlist_list(youtube):
         'fields': 'items(contentDetails,id,snippet)',
     }
     return youtube.playlists().list(**kwargs).execute()
+
+
+def playlist_details(youtube, playlist_id):
+    kwargs = {
+        'part': 'contentDetails,id,player,snippet',
+        'id': playlist_id,
+        'fields': 'items(contentDetails,id,player,snippet)',
+    }
+    return youtube.playlists().list(**kwargs).execute()
+
+def playlist_items_list_all(youtube, playlist_id):
+    kwargs = {
+        'part': 'snippet,id',
+        'maxResults': 50,
+        'playlistId': playlist_id,
+        'fields': 'items(id,snippet)',
+    }
+    playlistitems_list_request = youtube.playlistItems().list(**kwargs)
+
+    playlistitems_list_response = playlistitems_list_request.execute()
+    playlistitems_list_request = youtube.playlistItems().list_next(
+        playlistitems_list_request,
+        playlistitems_list_response
+    )
+
+    # on récupère aussi les pages suivantes
+    while playlistitems_list_request:
+        playlistitems_list_response_add = playlistitems_list_request.execute()
+        # concatenation des resultats
+        playlistitems_list_response["items"] += playlistitems_list_response_add["items"]
+        # playlistitems_list_response["items"].extends(playlistitems_list_response_add["items"])
+
+    return playlistitems_list_response

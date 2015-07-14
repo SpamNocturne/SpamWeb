@@ -31,6 +31,15 @@ $(function(){
         }
     });
 
+    //loader, to append in a relative div
+    var loaderTemplate = '<div class="my-overlay row"><i class="fa fa-refresh fa-spin"></i></div>';
+
+    var toggle_playlist = function(event){
+        event.preventDefault();
+        $(".main-header a[data-toggle='control-sidebar']").click();
+        $("a[href='#control-sidebar-playlist-tab']").click();
+    };
+
     //ajout d'une playlist
     $("#add-playlist-btn").click(function(event){
         event.preventDefault();
@@ -40,7 +49,7 @@ $(function(){
         if(name.length>0)
         {
             $this.attr('disabled','disabled').find("i").removeClass("fa-plus").addClass("fa-refresh fa-spin");
-
+            $input.attr('disabled','disabled');
             var params = {
                 name: name
             };
@@ -55,15 +64,91 @@ $(function(){
                 success: function(html){
                     console.log("AJAX OK");
                     console.log(html);
-                    $(html).prependTo('#control-playlist-list');
-                    $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
+                    $(html).prependTo('#control-playlist-list').find(".playlist-play-link").click(clik_playlist);
                     $input.val("");
                 },
-                error : function(resultat, statut, erreur){
+                error: function(resultat, statut, erreur){
                     console.log("AJAX NOK");
-                    alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
+                    alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+                },
+                complete: function(){
+                    console.log("AJAX DONE");
+                    $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
+                    $input.removeAttr('disabled');
                 }
             });
         }
     });
+
+    //Obtention des details d'une playlist et placement dans les details
+    var clik_playlist = function(event){
+        var $this = $(this);
+        event.preventDefault();
+        var playlist_id = $this.attr("data-playlistid");
+        if(playlist_id.length>0)
+        {
+            var $loader = $(loaderTemplate).appendTo("#main-content");
+            var params = {
+                playlist_id: playlist_id
+            };
+            console.log("GO AJAX GO");
+            var paramsEncoded = $.param(params);
+            $.ajax({
+                method: "POST",
+                url: URLS.spamusicDetailsPlaylist,
+                data: paramsEncoded,
+                dataType : 'html',
+                cache: false,
+                success: function(html){
+                    console.log("AJAX OK");
+                    console.log(html);
+                    var $html = $(html);
+                    //binds
+                    $html.find("[data-toggle='control-sidebar-playlist']").click(toggle_playlist);
+
+                    //insertion
+                    $("#main-content").html($html);
+
+                    //recherche des vidéos de la playlist
+                    var $loaderVideo = $(loaderTemplate).appendTo("#yt-tab-videos");
+                    $.ajax({
+                        method: "POST",
+                        url: URLS.spamusicPlaylistItems,
+                        data: paramsEncoded,
+                        dataType : 'html',
+                        cache: false,
+                        success: function(html){
+                            console.log("AJAX OK");
+                            console.log(html);
+                            var $html = $(html);
+                            //binds
+
+                            //insertion
+                            $html.appendTo($("#yt-tab-videos"));
+                        },
+                        error: function(resultat, statut, erreur){
+                            console.log("AJAX NOK");
+                            alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+                        },
+                        complete: function(){
+                            console.log("AJAX DONE");
+                            $loaderVideo.remove();
+                        }
+                    });
+                },
+                error: function(resultat, statut, erreur){
+                    console.log("AJAX NOK");
+                    alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+                },
+                complete: function(){
+                    console.log("AJAX DONE");
+                    $loader.remove();
+                }
+            });
+        }
+    };
+
+    var test = function(){alert("click");};
+    //Binds
+    $(".playlist-play-link").click(clik_playlist);
 });
