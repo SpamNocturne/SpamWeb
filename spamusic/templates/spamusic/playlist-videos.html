@@ -1,4 +1,18 @@
-{% for playlist_item in playlist_items.items %}
-    <p>Titre : {{ playlist_item.snippet.title }}</p>
-    <p>id : {{ playlist_item.snippet.resourceId.videoId }}</p>
-{% endfor %}
+<ul id="playlistItem-list" class="media-list">
+    {% for playlist_item in playlist_items.items %}
+        <li class="row media">
+            <div class="col-xs-12 col-lg-10 col-lg-offset-1">
+                  <div class="media-left media-middle">
+                    <a href="#" data-playlistItemId="{{ playlist_item.id }}" data-playlistId="{{ playlist_item.snippet.playlistId }}" data-videoId="{{ playlist_item.snippet.resourceId.videoId }}">
+                      <img class="media-object visible-xs visible-sm" src="{{ playlist_item.snippet.thumbnails.default.url }}" alt="Thumbnail-default">
+                      <img class="media-object visible-md visible-lg" src="{{ playlist_item.snippet.thumbnails.medium.url }}" alt="Thumbnail-medium">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">{{ playlist_item.snippet.title }}</h4>
+                        <p>Ajoutée le : {{ playlist_item.snippet.publishedAt|date:"d F Y" }}</p>
+                  </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
