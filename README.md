@@ -40,7 +40,12 @@ A la racine du projet :
 
 
 ## Installation (testé sur windows7)
-* Installer [Python3](https://www.python.org/)   
+###Python et Django
+* installer python anaconda (python + pas mal de package dont django sont installés [anaconda](http://continuum.io/downloads#py34)
+
+ou bien 
+
+* Installer [Python3](https://www.python.org/)
   *NB:* Pensez a mettre a jour la variable **PATH** pour lui ajouter les chemins `C:\Python34\Scripts` et `C:\Python34`.   
 * Executer [ez_setup.py](https://pypi.python.org/pypi/ez_setup)   
 * Executer `easy_install pip` : pip étant le gestionnaire de packages, à utiliser pour les téléchargements de packages
@@ -49,6 +54,11 @@ A la racine du projet :
 * Si vous avez des problèmes sous Windaub et mysql : suivre le tuto [ici](http://stackoverflow.com/questions/28251314/error-microsoft-visual-c-10-0-is-required-unable-to-find-vcvarsall-bat)
 pour pouvoir installer mysql python
 
+###Base de données
+Vous avez le choix : 
+* pour MySQL, il suffit d'aller ici : [MySQL](https://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-web-community-5.6.25.0.msi)
+* Suivre les instructions
+* Créer une base de données (schema en mysql)
 
 ## Configuration 
 ### Base de donnée
@@ -58,10 +68,17 @@ de données en vous inspirant du fichier `databases-example.py`.
 
 Il faut ensuite executer une la commande `python manage.py migrate` une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
 
+### librairies
+* Utiliser Pip pour installer oauth : ``pip install --upgrade oauth2client`` [oauth2](https://github.com/google/oauth2client)
+* Ensuite installer  Google APIs Client Library for Python : ``pip install --upgrade google-api-python-client`` [lien](https://developers.google.com/api-client-library/python/start/installation?hl=fr)
 
 ### Super utilisateur
 Pour acceder à l'interface d'administration et se connecter sur le site avec un premier utilisateur, il faut créer un super administrateur :
 Grâce à la commande : `python manage.py createsuperuser`
+
+* super-user spamadmin pour accéder au spammusic :)
+
+--------------------------------------------------------------------
 
 ## Fonctionnement et commandes de Django :
 ### *Pour modifier le modèle et la base de donnée :*   
