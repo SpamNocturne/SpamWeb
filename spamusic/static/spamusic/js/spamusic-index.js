@@ -40,6 +40,43 @@ $(function(){
         $("a[href='#control-sidebar-playlist-tab']").click();
     };
 
+    var search_video_list = function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var $input = $("#search-video-form").find("input[name='q']");
+        var q = $input.val().trim();
+        if(q.length>0)
+        {
+            $this.attr('disabled','disabled').find("i").removeClass("fa-plus").addClass("fa-refresh fa-spin");
+            $input.attr('disabled','disabled');
+            var params = {
+                q: q
+            };
+            console.log("GO AJAX GO");
+            var paramsEncoded = $.param(params);
+            $.ajax({
+                method: "POST",
+                url: URLS.spamusicRechercherVideos,
+                data: paramsEncoded,
+                dataType : 'html',
+                cache: false,
+                success: function(html){
+                    console.log("AJAX OK");
+                    console.log(html);
+                    $("#yt-tab-search-results").html($(html));
+                },
+                error: function(resultat, statut, erreur){
+                    console.log("AJAX NOK");
+                    alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+                },
+                complete: function(){
+                    console.log("AJAX DONE");
+                    $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
+                    $input.removeAttr('disabled');
+                }
+            });
+        }
+    };
     //ajout d'une playlist
     $("#add-playlist-btn").click(function(event){
         event.preventDefault();
@@ -103,8 +140,10 @@ $(function(){
                     console.log("AJAX OK");
                     console.log(html);
                     var $html = $(html);
+
                     //binds
                     $html.find("[data-toggle='control-sidebar-playlist']").click(toggle_playlist);
+                    $html.find('#search-video-btn').click(search_video_list);
 
                     //insertion
                     $("#main-content").html($html);
@@ -147,6 +186,8 @@ $(function(){
             });
         }
     };
+
+
 
     var test = function(){alert("click");};
     //Binds

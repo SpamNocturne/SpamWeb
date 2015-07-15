@@ -1,0 +1,20 @@
+<ul id="search-result-list" class="media-list">
+    {% for video in video_list.items %}
+        <li class="row media">
+            <div class="col-xs-12 col-lg-10 col-lg-offset-1">
+                  <div class="media-left media-middle">
+                    <a href="#" data-channelId="{{ video.snippet.channelId }}" data-videoId="{{ video.id.videoId }}">
+                      <img class="media-object visible-xs visible-sm" src="{{ video.snippet.thumbnails.default.url }}" alt="Thumbnail-default">
+                      <img class="media-object visible-md visible-lg" src="{{ video.snippet.thumbnails.medium.url }}" alt="Thumbnail-medium">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                        <h4 class="media-heading">{{ video.snippet.title }}</h4>
+                        <p>Ajoutée le : {{ video.snippet.publishedAt|date:"d F Y" }}</p>
+                        <p>Chaîne YouTube : {{ video.snippet.channelTitle }}</p>
+                  </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+<a href="#" class="btn" data-q="{{ q }}" data-nextpagetoken="{{ video_list.nextPageToken }}">Page suivante ... </a>
