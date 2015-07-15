@@ -10,6 +10,7 @@
                   </div>
                   <div class="media-body">
                         <h4 class="media-heading">{{ video.snippet.title }}</h4>
+                        <a href="#" class="btn btn-defalut pull-left add-to-playlist-btn" data-videoId="{{ video.id.videoId }}">Ajouter à la playlist</a>
                         <p>Ajoutée le : {{ video.snippet.publishedAt|date:"d F Y" }}</p>
                         <p>Chaîne YouTube : {{ video.snippet.channelTitle }}</p>
                   </div>
