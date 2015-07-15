@@ -25,6 +25,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           apply the skin class to the body tag so the changes take effect.
     -->
     <link href="{% static 'LTE/dist/css/skins/_all-skins.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- css commun a toutes les pages -->
+    <link href="{% static 'common/css/common.css' %}" rel="stylesheet" type="text/css" />
     {% block base_header_addons %}{% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -280,8 +282,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <footer class="main-footer">
         {% block base_footer %}
         <!-- To the right -->
-        <div class="pull-right hidden-xs">
+        <div class="pull-right hidden-xs lepouce-trigger">
           Pouce !
+            <img src="https://fbstatic-a.akamaihd.net/rsrc.php/ya/r/FwHVs2eE5cr.svg" id="lepouce">
         </div>
         <!-- Default to the left -->
         <strong>Copyright &copy; 2015 <a href="#"><b>Spam</b>Web</a>.</strong> Tous droits r&eacute;serv&eacute;s.
@@ -299,7 +302,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
-            {# TODO  FAIRE RENDER CETTE PARTIE PAR UN CONTROLLER TIERS APPELE DEPUIS LE TEMPLATE (comment ??) #}
+            {# TODO  FAIRE RENDER CETTE PARTIE PAR UN CONTROLLER TIERS APPELE DEPUIS LE TEMPLATE (comment ??) include avec variables ? #}
            <!-- Home tab content -->
             <div class="tab-pane active" id="control-sidebar-home-tab">
             <h3 class="control-sidebar-heading">&#199;a arrive bient&ocirc;t !</h3>
