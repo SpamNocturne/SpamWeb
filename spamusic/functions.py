@@ -178,23 +178,53 @@ def playlist_details(youtube, playlist_id):
 def playlist_items_list_all(youtube, playlist_id):
     kwargs = {
         'part': 'snippet,id',
-        'maxResults': 50,
+        'maxResults': 1,
         'playlistId': playlist_id,
-        'fields': 'items(id,snippet)',
+        'fields': 'items(id,snippet),nextPageToken',
     }
     playlistitems_list_request = youtube.playlistItems().list(**kwargs)
 
-    playlistitems_list_response = playlistitems_list_request.execute()
-    playlistitems_list_request = youtube.playlistItems().list_next(
-        playlistitems_list_request,
-        playlistitems_list_response
-    )
+    playlistitems_list_response = {}
 
     # on récupère aussi les pages suivantes
     while playlistitems_list_request:
-        playlistitems_list_response_add = playlistitems_list_request.execute()
-        # concatenation des resultats
-        playlistitems_list_response["items"] += playlistitems_list_response_add["items"]
-        # playlistitems_list_response["items"].extends(playlistitems_list_response_add["items"])
+        playlistitems_list_add = playlistitems_list_request.execute()
+
+        if not len(playlistitems_list_response):
+            playlistitems_list_response = playlistitems_list_add.copy()
+        else:
+            playlistitems_list_response["items"] += playlistitems_list_add["items"]
+
+        playlistitems_list_request = youtube.playlistItems().list_next(
+            playlistitems_list_request,
+            playlistitems_list_add
+        )
 
     return playlistitems_list_response
+
+def search_video_list(youtube, q):
+    kwargs = {
+        'part': 'id,snippet',
+        'maxResults': 50,
+        'q': q,
+        'type': 'video',
+        'videoEmbeddable': 'true',
+        'fields': 'items(id,snippet),nextPageToken',
+    }
+    return youtube.search().list(**kwargs).execute()
+
+
+def add_video_to_playlist(youtube, playlist_id, video_id):
+    kwargs = {
+        'part': 'id,snippet',
+        'body': {
+            "snippet": {
+                "resourceId": {
+                    "videoId": video_id,
+                    "kind": "youtube#video"
+                },
+                "playlistId": playlist_id,
+            },
+        }
+    }
+    return youtube.playlistItems().insert(**kwargs).execute()

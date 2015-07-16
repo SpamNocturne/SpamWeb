@@ -39,7 +39,81 @@ $(function(){
         $(".main-header a[data-toggle='control-sidebar']").click();
         $("a[href='#control-sidebar-playlist-tab']").click();
     };
+    var add_video_to_playlist = function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var video_id = $this.attr("data-videoId");
+        var playlist_id = $("#yt-tab-search-results").attr("data-playlistId");
+        $this.attr('disabled','disabled');
+        var params = {
+            video_id: video_id,
+            playlist_id: playlist_id
+        };
+        console.log("GO AJAX GO");
+        var paramsEncoded = $.param(params);
+        $.ajax({
+            method: "POST",
+            url: URLS.spamusicAddVideoToPlaylist,
+            data: paramsEncoded,
+            dataType : 'html',
+            cache: false,
+            success: function(html){
+                console.log("AJAX OK");
+                console.log(html);
+                $(html).appendTo("#playlistItem-list");
+                $this.replaceWith("<p class='pull-right btn btn-success'>Vidéo ajoutée</p>");
+            },
+            error: function(resultat, statut, erreur){
+                console.log("AJAX NOK");
+                $this.removeAttr('disabled');
+                alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+            },
+            complete: function(){
+                console.log("AJAX DONE");
+            }
+        });
+    };
 
+
+    var search_video_list = function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var $input = $("#search-video-form").find("input[name='q']");
+        var q = $input.val().trim();
+        if(q.length>0)
+        {
+            $this.attr('disabled','disabled').find("i").removeClass("fa-plus").addClass("fa-refresh fa-spin");
+            $input.attr('disabled','disabled');
+            var params = {
+                q: q
+            };
+            console.log("GO AJAX GO");
+            var paramsEncoded = $.param(params);
+            $.ajax({
+                method: "POST",
+                url: URLS.spamusicRechercherVideos,
+                data: paramsEncoded,
+                dataType : 'html',
+                cache: false,
+                success: function(html){
+                    console.log("AJAX OK");
+                    console.log(html);
+                    $html = $(html);
+                    $html.find(".add-to-playlist-btn").click(add_video_to_playlist);
+                    $("#yt-tab-search-results").html($html);
+                },
+                error: function(resultat, statut, erreur){
+                    console.log("AJAX NOK");
+                    alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+                },
+                complete: function(){
+                    console.log("AJAX DONE");
+                    $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
+                    $input.removeAttr('disabled');
+                }
+            });
+        }
+    };
     //ajout d'une playlist
     $("#add-playlist-btn").click(function(event){
         event.preventDefault();
@@ -103,8 +177,10 @@ $(function(){
                     console.log("AJAX OK");
                     console.log(html);
                     var $html = $(html);
+
                     //binds
                     $html.find("[data-toggle='control-sidebar-playlist']").click(toggle_playlist);
+                    $html.find('#search-video-btn').click(search_video_list);
 
                     //insertion
                     $("#main-content").html($html);
@@ -147,6 +223,8 @@ $(function(){
             });
         }
     };
+
+
 
     var test = function(){alert("click");};
     //Binds

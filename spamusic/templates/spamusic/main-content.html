@@ -44,6 +44,17 @@
             <!-- Search tab content -->
             <div class="tab-pane" id="yt-tab-search">
                 <h3>Rechercher de nouvelles vidéos</h3>
+                <div class="sidebar-form form-input-black" id="search-video-form">
+                    <div class="input-group">
+                        <input name="q" class="form-control" placeholder="Rechercher ..." type="text" onKeyPress="if(event.keyCode == 13){$('#search-video-btn').click()}">
+                        <span class="input-group-btn">
+                            <button type="button" name="search-video" id="search-video-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div id="yt-tab-search-results" data-playlistId="{{ playlist.id }}">
+
+                </div>
             </div>
             <!-- /.tab-pane -->
         </div>
