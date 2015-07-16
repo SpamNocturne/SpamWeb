@@ -2,6 +2,7 @@
     <div class="col-xs-12" id="yt-playlist-header">
         <h2>
             <button class="btn btn-default pull-right" data-toggle="control-sidebar-playlist">Voir les playlist</button>
+            <button id="refresh-playlist-btn" class="btn btn-gray bg-gray pull-right" data-iframe="$('#yt-playlist-header iframe')" data-toggle="tooltip" title="Actualiser le lecteur"><i class="fa fa-refresh"></i></button>
             Playlist : {{ playlist.snippet.title }}
         </h2>
     </div>
