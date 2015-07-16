@@ -208,6 +208,7 @@ def search_video_list(youtube, q):
         'maxResults': 50,
         'q': q,
         'type': 'video',
+        'videoCategoryId': '10',
         'videoEmbeddable': 'true',
         'fields': 'items(id,snippet),nextPageToken',
     }
