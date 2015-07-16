@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^sm_dp/', views.spamusicDetailsPlaylist, name='spamusicDetailsPlaylist'),
     url(r'^sm_pi/', views.spamusicPlaylistItems, name='spamusicPlaylistItems'),
     url(r'^sm_rv/', views.spamusicRechercherVideos, name='spamusicRechercherVideos'),
+    url(r'^sm_avtp/', views.spamusicAddVideoToPlaylist, name='spamusicAddVideoToPlaylist'),
 ]

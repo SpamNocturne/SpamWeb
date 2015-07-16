@@ -529,3 +529,70 @@ def spamusicRechercherVideos(request):
         'q': q,
     }
     return render(request, 'spamusic/yt-tab-search-results.html', context)
+
+def spamusicAddVideoToPlaylist(request):
+    playlist_id = request.POST['playlist_id']
+    video_id = request.POST['video_id']
+    master = f.get_youtube_master()
+    check = f.check_youtube_master(request=request, master=master)
+    if check['status'] is False:
+        return HttpResponseForbidden()
+    check = f.check_api_token(request=request, master=master)
+    if check['status'] is False:
+        return HttpResponseForbidden()
+    else:
+        credential = check['value']
+
+    youtube = f.build_youtube(credential)
+    playlist_item = f.add_video_to_playlist(youtube=youtube, playlist_id=playlist_id, video_id=video_id)
+    '''
+    playlist_item = {
+        "kind": "youtube#playlistItem",
+        "etag": "\"iDqJ1j7zKs4x3o3ZsFlBOwgWAHU/vryJ8ygeWBRZUjiy8BfF18P1YtA\"",
+        "id": "PL2qvtSnCzogLZMGwm6eJnnGEPUzm2ky4yVXxf1rDXRqY",
+        "snippet": {
+            "publishedAt": "2015-07-15T18:42:20.000Z",
+            "channelId": "UC8iUi9DiP_Nr6uAuo7W74XQ",
+            "title": "Uppermost - Disco Kids",
+            "description": "Uppermost is back with some Disco! :P\nDownload... http://apple.co/1F8CbgP\n\nUppermost\nhttps://soundcloud.com/uppermost\nhttps://www.youtube.com/user/uppermostmusic\nhttps://twitter.com/uppermostmusic\nhttps://www.facebook.com/uppermost\nhttp://www.uppermostmusic.com/\n\nFacebooobs\nhttps://www.facebook.com/MrSuicideSheep\n\nFollow on Soundcloud\nhttps://soundcloud.com/mrsuicidesheep\n\nFollow on Twitter\nhttps://twitter.com/mrsuicidesheep\n\nSheepy t-shirts!\nhttp://bit.ly/Sheepytees\n\nSubmit tracks\nhttp://mrsuicidesheep.tracksubmit.com/submit/",
+            "thumbnails": {
+                "default": {
+                    "url": "https://i.ytimg.com/vi/_i2EnWgpwjc/default.jpg",
+                    "width": 120,
+                    "height": 90
+                },
+                "medium": {
+                    "url": "https://i.ytimg.com/vi/_i2EnWgpwjc/mqdefault.jpg",
+                    "width": 320,
+                    "height": 180
+                },
+                "high": {
+                    "url": "https://i.ytimg.com/vi/_i2EnWgpwjc/hqdefault.jpg",
+                    "width": 480,
+                    "height": 360
+                },
+                "standard": {
+                    "url": "https://i.ytimg.com/vi/_i2EnWgpwjc/sddefault.jpg",
+                    "width": 640,
+                    "height": 480
+                },
+                "maxres": {
+                    "url": "https://i.ytimg.com/vi/_i2EnWgpwjc/maxresdefault.jpg",
+                    "width": 1280,
+                    "height": 720
+                }
+            },
+            "channelTitle": "SpamWeb",
+            "playlistId": "PLFp2-gAWp2eVjZYkT502Xd0tMHFD0YjP9",
+            "resourceId": {
+                "kind": "youtube#video",
+                "videoId": "_i2EnWgpwjc"
+            }
+        }
+    }
+    '''
+    playlist_item["snippet"]["publishedAt"] = datetime.strptime(playlist_item["snippet"]["publishedAt"], '%Y-%m-%dT%H:%M:%S.000Z')
+    context = {
+        'playlist_item': playlist_item,
+    }
+    return render(request, 'spamusic/new-video.html', context)

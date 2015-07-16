@@ -107,3 +107,7 @@
     background-color: #2b2b2b;
     color: #fff;
 }
+
+#search-video-form{
+    max-width : 600px;
+}
