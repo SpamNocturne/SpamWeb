@@ -34,6 +34,12 @@ $(function(){
     //loader, to append in a relative div
     var loaderTemplate = '<div class="my-overlay row"><i class="fa fa-refresh fa-spin"></i></div>';
 
+    var refresh_iframe = function(event){
+        event.preventDefault();
+        var iframe = $(this).attr("data-iframe");
+        var $iframe=$("#"+iframe);
+        $iframe.attr("src",$iframe.attr("src"));
+    };
     var toggle_playlist = function(event){
         event.preventDefault();
         $(".main-header a[data-toggle='control-sidebar']").click();
@@ -45,6 +51,8 @@ $(function(){
         var video_id = $this.attr("data-videoId");
         var playlist_id = $("#yt-tab-search-results").attr("data-playlistId");
         $this.attr('disabled','disabled');
+        var msg = $this.text();
+        $this.html("<i class='fa fa-spin fa-refresh'><i>");
         var params = {
             video_id: video_id,
             playlist_id: playlist_id
@@ -66,6 +74,7 @@ $(function(){
             error: function(resultat, statut, erreur){
                 console.log("AJAX NOK");
                 $this.removeAttr('disabled');
+                $this.text(msg);
                 alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
             },
             complete: function(){
@@ -108,7 +117,7 @@ $(function(){
                 },
                 complete: function(){
                     console.log("AJAX DONE");
-                    $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-plus");
+                    $this.removeAttr('disabled').find("i").removeClass("fa-refresh fa-spin").addClass("fa-search");
                     $input.removeAttr('disabled');
                 }
             });
@@ -181,6 +190,8 @@ $(function(){
                     //binds
                     $html.find("[data-toggle='control-sidebar-playlist']").click(toggle_playlist);
                     $html.find('#search-video-btn').click(search_video_list);
+                    $html.find("iframe").attr("id","yt-playlist-iframe");
+                    $html.find("#refresh-playlist-btn").attr("data-iframe","yt-playlist-iframe").click(refresh_iframe);
 
                     //insertion
                     $("#main-content").html($html);
