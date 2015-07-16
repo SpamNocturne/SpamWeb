@@ -15,3 +15,17 @@ def getDatabaseConfig():
         }
     }
     return DATABASES
+
+# ou
+def getDatabaseConfig():
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'webspam-bdd',
+            'HOST': '',
+            'PASSWORD': '',
+            'PORT': '5432',
+            'USER': 'postgres',
+        }
+    }
+    return DATABASES
