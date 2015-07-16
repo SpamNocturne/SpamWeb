@@ -216,12 +216,15 @@ def search_video_list(youtube, q):
 
 def add_video_to_playlist(youtube, playlist_id, video_id):
     kwargs = {
-        "snippet": {
-            "resourceId": {
-                "videoId": video_id,
-                "kind": "youtube#video"
+        'part': 'id,snippet',
+        'body': {
+            "snippet": {
+                "resourceId": {
+                    "videoId": video_id,
+                    "kind": "youtube#video"
+                },
+                "playlistId": playlist_id,
             },
-            "playlistId": playlist_id,
         }
     }
     return youtube.playlistItems().insert(**kwargs).execute()

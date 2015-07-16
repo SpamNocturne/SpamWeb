@@ -39,6 +39,41 @@ $(function(){
         $(".main-header a[data-toggle='control-sidebar']").click();
         $("a[href='#control-sidebar-playlist-tab']").click();
     };
+    var add_video_to_playlist = function(event){
+        event.preventDefault();
+        var $this = $(this);
+        var video_id = $this.attr("data-videoId");
+        var playlist_id = $("#yt-tab-search-results").attr("data-playlistId");
+        $this.attr('disabled','disabled');
+        var params = {
+            video_id: video_id,
+            playlist_id: playlist_id
+        };
+        console.log("GO AJAX GO");
+        var paramsEncoded = $.param(params);
+        $.ajax({
+            method: "POST",
+            url: URLS.spamusicAddVideoToPlaylist,
+            data: paramsEncoded,
+            dataType : 'html',
+            cache: false,
+            success: function(html){
+                console.log("AJAX OK");
+                console.log(html);
+                $(html).appendTo("#playlistItem-list");
+                $this.replaceWith("<p class='pull-right btn btn-success'>Vidéo ajoutée</p>");
+            },
+            error: function(resultat, statut, erreur){
+                console.log("AJAX NOK");
+                $this.removeAttr('disabled');
+                alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
+            },
+            complete: function(){
+                console.log("AJAX DONE");
+            }
+        });
+    };
+
 
     var search_video_list = function(event){
         event.preventDefault();
@@ -63,7 +98,9 @@ $(function(){
                 success: function(html){
                     console.log("AJAX OK");
                     console.log(html);
-                    $("#yt-tab-search-results").html($(html));
+                    $html = $(html);
+                    $html.find(".add-to-playlist-btn").click(add_video_to_playlist);
+                    $("#yt-tab-search-results").html($html);
                 },
                 error: function(resultat, statut, erreur){
                     console.log("AJAX NOK");
