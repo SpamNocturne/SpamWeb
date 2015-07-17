@@ -9,6 +9,7 @@
 # For more information about the client_secrets.json file format, see:
 #   https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
 import os
+from django.core.urlresolvers import reverse
 import httplib2
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -43,12 +44,7 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
 YOUTUBE_ALL_SCOPE = "https://www.googleapis.com/auth/youtube"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
-FLOW = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
-                               message=MISSING_CLIENT_SECRETS_MESSAGE,
-                               scope=YOUTUBE_ALL_SCOPE,
-                               #  TODO REDIRECT URI PAS PROPRE
-                               redirect_uri='http://127.0.0.1:8000/spamusic/OAuthReturn/')
-
+FLOW = None
 
 # Propriétaire de la playlist collaborative
 YOUTUBE_MASTER_USERNAME = "spamadmin"
@@ -73,6 +69,13 @@ def get_youtube_master():
 
 
 def get_flow():
+    global FLOW
+    if FLOW is None:
+        FLOW = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
+                               message=MISSING_CLIENT_SECRETS_MESSAGE,
+                               scope=YOUTUBE_ALL_SCOPE,
+                               #  TODO REDIRECT URI PAS PROPRE
+                               redirect_uri="http://" + settings.SITE_ID + reverse('spamusic:OAuthReturn'))
     return FLOW
 
 
@@ -111,8 +114,8 @@ def check_api_token(request, master):
     credential = storage.get()
     # Si les autorisation n'ont pas été données où sont devenue invalides
     if credential is None or credential.invalid is True:
-        FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY, master)
-        authorize_url = FLOW.step1_get_authorize_url()
+        get_flow().params['state'] = xsrfutil.generate_token(settings.SECRET_KEY, master)
+        authorize_url = get_flow().step1_get_authorize_url()
 
         # si l'utilisateur connecté est un admin, il doit mettre à jour les autorisations
         if request.user.is_superuser:

@@ -5,7 +5,6 @@ from . import functions as f
 from django.shortcuts import redirect, render
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseBadRequest
 from oauth2client import xsrfutil
 from oauth2client.django_orm import Storage
@@ -24,7 +23,7 @@ def OAuthReturn(request):
     credential = f.get_flow().step2_exchange(request.REQUEST)
     storage = Storage(CredentialsYoutubeModel, 'id', master, 'credential')
     storage.put(credential)
-    return redirect(reverse('spamusic:index'))
+    return redirect('spamusic:index')
 
 
 @login_required

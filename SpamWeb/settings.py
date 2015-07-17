@@ -26,6 +26,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['spamweb.huguesverlin.fr', 'localhost', '127.0.0.1']
 
+SITE_ID = "127.0.0.1:8000"
+
 
 # Application definition
 
