@@ -41,7 +41,7 @@ A la racine du projet :
 
 ## Installation (testé sur windows7)
 ###Python et Django
-* installer python anaconda (python + pas mal de package dont django sont installés [anaconda](http://continuum.io/downloads#py34)
+* installer python anaconda (python + pas mal de package dont django sont installés) : [anaconda](http://continuum.io/downloads#py34)
 
 ou bien 
 
