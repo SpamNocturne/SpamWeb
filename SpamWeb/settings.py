@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = "127.0.0.1:8000"
+
 
 # Application definition
 
