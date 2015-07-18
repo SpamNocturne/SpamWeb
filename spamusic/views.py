@@ -17,10 +17,10 @@ from oauth2client.django_orm import Storage
 @login_required
 def OAuthReturn(request):
     master = f.get_youtube_master()
-    if not xsrfutil.validate_token(settings.SECRET_KEY.encode('latin1'), request.REQUEST['state'].encode('latin1'),
+    if not xsrfutil.validate_token(settings.SECRET_KEY.encode('latin1'), request.GET['state'].encode('latin1'),
                                    master):
         return HttpResponseBadRequest()
-    credential = f.get_flow().step2_exchange(request.REQUEST)
+    credential = f.get_flow().step2_exchange(request.GET)
     storage = Storage(CredentialsYoutubeModel, 'id', master, 'credential')
     storage.put(credential)
     return redirect('spamusic:index')
