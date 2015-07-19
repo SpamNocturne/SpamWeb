@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^jacques/a/dit/idea/', include('jacquesIdea.urls', namespace='jacquesIdea')),
     url(r'^ajax/', include('ajax.urls', namespace='ajax')),
     url(r'^$', RedirectView.as_view(pattern_name='home:index', permanent=True)),
+    url(r'^(?i)spamAlyzer', include('SpamAlyzer.urls', namespace='SpamAlyzer')),
 ]

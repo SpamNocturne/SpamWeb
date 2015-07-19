@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'jacquesIdea',
     'userManager',
     'LTE',
+    'SpamAlyzer'
 )
 
 MIDDLEWARE_CLASSES = (
