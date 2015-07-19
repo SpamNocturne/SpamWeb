@@ -10,10 +10,12 @@
 <!-- here add you own stylesheet -->
 {% block base_additional_stylesheet %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dropzone.css' %}">
 {% endblock %}
 
 <!-- here add you own scripts -->
 {% block base_additional_scripts %}
+    <!--
     <div id="preview-template" style="display: none;">
         <div class="dz-preview dz-file-preview">
           <div class="dz-details">
@@ -27,6 +29,7 @@
           </div>
         </div>
     </div>
+    -->
     <script src="{% static 'js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.myDropzone = {
@@ -35,7 +38,7 @@
 
             paramName: "fichier",
 
-            previewTemplate: document.getElementById('preview-template').innerHTML,
+            //previewTemplate: document.getElementById('preview-template').innerHTML,
 
             init: function() {
                 this.on("addedfile", function() {
@@ -359,17 +362,21 @@
 <!-- Page content - body -->
 {% block body %}
 Charge ton fichier messages.htm de ton archive Facebook et analyse le spam !
-<form action="{% url 'SpamAlyzer:index' %}" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" id="myDropzone">
-<p class="dz-message" id="dz-message">
-    Pose ton archive de messages FB ici !
-</p>
-    <!-- if dropzone.js not supported, creates these elements -->
-    <div class="fallback">
-        <input name="fichier" type="file" />
-        <input type="submit" value="Upload"/>
-    </div>
-    {% csrf_token %}
-</form>
+    <section class="row">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <form action="{% url 'SpamAlyzer:index' %}" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" id="myDropzone">
+                <p class="dz-message" id="dz-message">
+                    Pose ton archive de messages FB ici !
+                </p>
+                <!-- if dropzone.js not supported, creates these elements -->
+                <div class="fallback">
+                    <input name="fichier" type="file" />
+                    <input type="submit" value="Upload"/>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    </section>
 
 <p class="error" id="error">
     {% if error_message %}
