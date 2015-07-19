@@ -15,5 +15,15 @@
     </li>
     <li {% ifequal active "repertoire" %}class="active" {% endifequal %}><a href="#"><i class='fa fa-book'></i> <span>Répertoire</span></a></li>
     <li {% ifequal active "spamusic" %}class="active" {% endifequal %}><a href="{% url 'spamusic:index' %}"><i class='fa fa-youtube'></i> <span>Spamusic</span></a></li>
-    <li {% ifequal active "SpamAlyzer" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-comments-o'></i> <span>SpamAlyzer</span></a></li>
+    <li class="treeview {% if "SpamAlyzer" in active %}active{% endif %}">
+      <a href="#">
+          <i class='fa fa-comments-o'></i> <span>SpamAlyzer</span> <i class="fa fa-angle-left pull-right"></i>
+      </a>
+      <ul class="treeview-menu">
+        <li {% ifequal active "SpamAlyzer/depot" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-file-archive-o'></i> Dépôt d'archive</a></li>
+        <li {% ifequal active "SpamAlyzer/conversation" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-comments'></i> LA conversation</a></li>
+        <li {% ifequal active "SpamAlyzer/statsG" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-line-chart'></i> Stats globales</a></li>
+        <li {% ifequal active "SpamAlyzer/statsU" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-bar-chart'></i> Stats des spammeurs</a></li>
+      </ul>
+    </li>
   </ul><!-- /.sidebar-menu -->

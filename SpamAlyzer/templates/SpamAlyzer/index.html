@@ -10,6 +10,11 @@
 <!-- Page content header optional description -->
 {% block base_content_header_title_description %}{{ block.super }}{% endblock %}
 
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="SpamAlyzer/depot" only %}
+{% endblock %}
+
 <!-- Page content breadcrumb (fil d'arianne) -->
 <!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
 {% block base_content_header_breadcrumb %}
