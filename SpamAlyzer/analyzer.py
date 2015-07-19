@@ -4,7 +4,7 @@ __author__ = 'David'
 __date__ = '2015-07-07'
 
 from lxml import etree
-import datetime
+from datetime import datetime, timezone, timedelta
 import re
 from SpamAlyzer import models
 
@@ -12,6 +12,7 @@ class Analyzer:
 
     textchars = bytearray([7,8,9,10,12,13,27]) + bytearray(range(0x20, 0x100))
     is_binary_string = lambda bytes: bool(bytes.translate(None, Analyzer.textchars))
+    utc_offset = lambda offset: timezone(timedelta(seconds=offset))
 
     xsdschema_root = etree.parse("SpamAlyzer/static/SpamAlyzer/facebook_messages.xsd")
     xsdschema = etree.XMLSchema(xsdschema_root)
@@ -110,8 +111,9 @@ class Analyzer:
         time = re.search("\d{2}:\d{2}", date).group(0).split(':')
         hour = int(time[0])
         minute = int(time[1])
+        utc_offset_seconds = int(re.search("UTC\+\d{2}", date).group(0).lstrip("UTC+")) * 60 * 60
 
-        return datetime.datetime(year, month, day, hour, minute)
+        return datetime(year, month, day, hour, minute, tzinfo=Analyzer.utc_offset(utc_offset_seconds))
 
     months = {
         # DE
