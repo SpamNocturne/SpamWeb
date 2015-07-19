@@ -13,23 +13,21 @@
 <!-- Page content breadcrumb (fil d'arianne) -->
 <!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
 {% block base_content_header_breadcrumb %}
-    {% include 'LTE/breadcrumb.html' with current='SpamAnalyzer' only %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
 {% endblock %}
 
 {% block page_header_addons %}
-    <link rel="stylesheet" type="text/css" href="{% static 'SpamAnalyzer/css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/index.css' %}">
 {% endblock %}
 
 {% block page_footer_addons %}
-    <script src="{% static 'SpamAnalyzer/js/dropzone.js' %}"></script>
+    <script src="{% static 'SpamAlyzer/js/dropzone.js' %}"></script>
     <script type="text/javascript">
         Dropzone.options.myDropzone = {
-            // Load dropped file directly
+            // Load dropped file directly (POST request)
             autoProcessQueue: true,
-
+            maxFilesize: 40, // MegaBytes
             paramName: "fichier",
-
-            //previewTemplate: document.getElementById('preview-template').innerHTML,
 
             init: function() {
                 this.on("addedfile", function() {
@@ -40,6 +38,14 @@
 
                     document.getElementById("dz-message").setAttribute("style", "display:none;");
                 });
+            },
+
+            success: function(file, result) {
+                resultHtml = "";
+                if ($(result).attr("id") == "error-container") {
+                    resultHtml = result;
+                }
+                $("#message").html(resultHtml);
             }
         };
     </script>
@@ -63,11 +69,8 @@
         </div>
     </section>
 
-    <p class="error" id="error">
-        {% if error_message %}
-            {{ error_message }}
-    {% endif %}
-    </p>
+    <div id="message"/>
+
     {%  if conversation %}
 
     {% endif %}

@@ -18,18 +18,25 @@ def index(request):
             fichier.auteur = request.user
 
             try:
-                anal = analyzer.Analyzer(fichier.fichier)
-                msg = anal.get_spam_messages() # TODO, ca va etre plus compliqué que ca
+                anal = analyzer.Analyzer(fichier)
+                fichier.save()
+                if not anal.analyze_the_spam_muhaha():
+                    fichier.remove()
+                else:
+                    context["error_message"] = "Désolé, mais ton archive était inutile (peut-être comme toi?). " \
+                                               "On n'a trouvé aucun message " \
+                                               "qu'on ne connaissait pas déjà. Allez, tchoubidou-bye!"
+                    return render_to_response("SpamAlyzer/message.html", context)
             except etree.DocumentInvalid:
                 context["error_message"] = "Oh non! Ton fichier est tout naze. " \
                                            "Python me dit dans l'oreillette DocumentInvalid. " \
                                            "C'est triste. Et franchement, tu me déçois. Je te croyais mieux que ça."
-                return render_to_response('SpamAlyzer/message.html', context)
+                return render_to_response("SpamAlyzer/message.html", context)
         else:
             context["error_message"] = "Oh non! Ton fichier est tout naze. " \
                                        "Python me dit dans l'oreillette que le formulaire n'est pas valide. " \
                                        "C'est triste. Et franchement, tu me déçois. Je te croyais mieux que ça."
-            return render_to_response('SpamAlyzer/index.html', context)
+            return render_to_response("SpamAlyzer/message.html", context)
     # No POST made, normal
     else:
         context["conversation"] = None

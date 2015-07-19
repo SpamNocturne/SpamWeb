@@ -27,7 +27,7 @@
 
 <!-- here add you own stylesheet and scripts in header -->
 {% block base_header_addons %}
-    <link rel="stylesheet" type="text/css" href="{% static 'SpamAnalyzer/css/dropzone.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/dropzone.css' %}">
     <!-- Here : addons for the layout, in the whole App -->
     {% block page_header_addons %}
     {% endblock %}
@@ -74,7 +74,7 @@
 
 <!-- Left Sidebar Menu -->
 {% block base_left_sidebar_menu %}
-    {% include "LTE/menu.html" with active="SpamAnalyzer" only %}
+    {% include "LTE/menu.html" with active="SpamAlyzer" only %}
 {% endblock %}
 
 
