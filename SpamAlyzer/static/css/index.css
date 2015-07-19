@@ -1,0 +1,37 @@
+.dropzone.dz-clickable {
+    cursor: pointer;
+}
+
+.dropzone {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: #FFF none repeat scroll 0% 0%;
+    max-width: 420px;
+    margin: 10px auto;
+    text-align: center;
+    height: 200px;
+
+    position: relative;
+}
+
+.dropzone .dz-message {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+
+    font-size: x-large;
+}
+
+.dz-file-preview {
+    display: inline-block;
+    vertical-align: middle;
+    border: 10px groove #FF33c1;
+    border-radius: 5px;
+    margin: 20px auto;
+    width: auto;
+    padding: 2px;
+}
+
+.error {
+    font-weight: bold;
+}

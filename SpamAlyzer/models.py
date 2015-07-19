@@ -11,7 +11,6 @@ class FichierSoumis(models.Model):
     auteur = models.ForeignKey(User)
     date = models.DateField(auto_now_add=True)
     fichier = models.FileField(upload_to='uploads/SpamAlyzer/%Y-%m-%d/')
-    status = models.IntegerField(default=0) # 0 nothing, -1 failed, 1 in process, 2 done
 
 class Message(models.Model):
     texte = models.CharField(max_length=5000)

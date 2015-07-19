@@ -1,10 +1,11 @@
-__author__ = 'David'
+__author__ = 'david'
 
-from django.forms import ModelForm
-from .models import FichierSoumis
+from django import forms
 
-class FichierSoumisForm(ModelForm):
+from SpamAlyzer.models import FichierSoumis
+
+
+class FichierSoumisForm(forms.ModelForm):
     class Meta:
         model = FichierSoumis
-        fields = ('fichier', )
-        labels = {'fichier' : 'Archive des messages Facebook : ', }
+        fields = ["fichier"]
