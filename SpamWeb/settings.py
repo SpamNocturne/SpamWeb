@@ -27,8 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SITE_ID = "127.0.0.1:8000"
-
 
 # Application definition
 
@@ -44,7 +42,7 @@ INSTALLED_APPS = (
     'jacquesIdea',
     'userManager',
     'LTE',
-    'spamusic'
+    'SpamAlyzer'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,7 +103,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 # UserManager
 LOGIN_URL = '/user/login/'
