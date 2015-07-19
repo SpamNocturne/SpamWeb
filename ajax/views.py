@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseForbidden
 
@@ -5,12 +7,14 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.datetime_safe import datetime
 from jacquesIdea.models import Idee, Commentaire
+from home.log import add_log
 from spamusic import functions as f
+
+ONLINE = True
 
 '''
     AJAX JACQUESIDEA
 '''
-ONLINE = False
 
 
 @login_required
@@ -28,6 +32,11 @@ def jacquesIdeaEnregistrerCommentaire(request):
     com.pub_date = timezone.now()
     com.save()
 
+    add_log(text="%s a commenté l'idée : %s" % (request.user.username, com.idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_comment",
+            user=request.user)
+
     # generation du template
     context = {'commentaire': com}
     return render(request, 'ajax/rightComment.html', context)
@@ -43,6 +52,10 @@ def jacquesIdeaDownvote(request):
     vote = idee.get_vote_from(request.user)
     vote.downvote()
     vote.save()
+    add_log(text="%s n'aime pas l'idée : %s" % (request.user.username, idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_vote",
+            user=request.user)
     return HttpResponse()
 
 
@@ -56,6 +69,10 @@ def jacquesIdeaUpvote(request):
     vote = idee.get_vote_from(request.user)
     vote.upvote()
     vote.save()
+    add_log(text="%s aime l'idée : %s" % (request.user.username, idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_vote",
+            user=request.user)
     return HttpResponse()
 
 
@@ -73,6 +90,26 @@ def jacquesIdeaSupprimerIdee(request):
     # idee.votants.clear()
     # On supprime l'idée
     idee.delete()
+    add_log(text="%s a supprimé l'idée : %s" % (request.user.username, idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_delete_idea",
+            user=request.user)
+    return HttpResponse()
+
+
+'''
+    AJAX LOG
+'''
+
+
+@login_required
+def homeAddLog(request):
+    # recupération des parametres
+    text = request.POST["text"]
+    app = request.POST["app"]
+    log_type = request.POST["log_type"]
+    user = request.user
+    log = add_log(text=text, app=app, log_type=log_type, user=user)
     return HttpResponse()
 
 
@@ -98,6 +135,10 @@ def spamusicAjouterPlaylist(request):
 
     youtube = f.build_youtube(credential)
     playlist = f.playlist_create(youtube=youtube, name=name)
+    add_log(text="%s a créé une nouvelle playlist : %s" % (request.user.username, name),
+            app="spamusic",
+            log_type="spamusic_add_playlist",
+            user=request.user)
     context = {'playlist': playlist}
     return render(request, 'spamusic/control-sidebar-playlist.html', context)
 
@@ -530,6 +571,7 @@ def spamusicRechercherVideos(request):
     }
     return render(request, 'spamusic/yt-tab-search-results.html', context)
 
+
 def spamusicAddVideoToPlaylist(request):
     playlist_id = request.POST['playlist_id']
     video_id = request.POST['video_id']
@@ -545,6 +587,7 @@ def spamusicAddVideoToPlaylist(request):
 
     youtube = f.build_youtube(credential)
     playlist_item = f.add_video_to_playlist(youtube=youtube, playlist_id=playlist_id, video_id=video_id)
+
     '''
     playlist_item = {
         "kind": "youtube#playlistItem",
@@ -591,7 +634,13 @@ def spamusicAddVideoToPlaylist(request):
         }
     }
     '''
-    playlist_item["snippet"]["publishedAt"] = datetime.strptime(playlist_item["snippet"]["publishedAt"], '%Y-%m-%dT%H:%M:%S.000Z')
+    playlist_item["snippet"]["publishedAt"] = datetime.strptime(playlist_item["snippet"]["publishedAt"],
+                                                                '%Y-%m-%dT%H:%M:%S.000Z')
+    add_log(text="%s a ajouté une nouvelle vidéo : %s" % (request.user.username, playlist_item["snippet"]["title"]),
+            app="spamusic",
+            log_type="spamusic_add_video",
+            user=request.user)
+
     context = {
         'playlist_item': playlist_item,
     }
