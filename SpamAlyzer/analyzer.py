@@ -94,6 +94,8 @@ class Analyzer:
             msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
             msg.save()
 
+            print("{0}/{1}".format(i/2, len(conversation)/2))
+
         return one_element_added
 
     def to_python_date(self, date):
