@@ -8,42 +8,47 @@
 {% block base_title %}AdminLTE 2 | Dashboard{% endblock %}
 
 <!-- here add you own stylesheet -->
-{% block base_additional_stylesheet %}{% endblock %}
+{% block base_additional_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
 
 <!-- here add you own scripts -->
 {% block base_additional_scripts %}
-    {% comment %}<script>
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
+    <div id="preview-template" style="display: none;">
+        <div class="dz-preview dz-file-preview">
+          <div class="dz-details">
+            <div class="dz-filename">
+                <span data-dz-name></span>
+            </div>
+            <div class="dz-size" data-dz-size></div>
+          </div>
+          <div class="dz-progress">
+              <span class="dz-upload" data-dz-uploadprogress></span>
+          </div>
+        </div>
+    </div>
+    <script src="{% static 'js/dropzone.js' %}"></script>
+    <script type="text/javascript">
+        Dropzone.options.myDropzone = {
+            // Load dropped file directly
+            autoProcessQueue: true,
+
+            paramName: "fichier",
+
+            previewTemplate: document.getElementById('preview-template').innerHTML,
+
+            init: function() {
+                this.on("addedfile", function() {
+                    // If new file is dropped, replace old one
+                    if (this.files[1] != null) {
+                        this.removeFile(this.files[0]);
                     }
-                }
+
+                    document.getElementById("dz-message").setAttribute("style", "display:none;");
+                });
             }
-            return cookieValue;
-        }
-
-        var csrftoken = getCookie('csrftoken');
-
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
-    </script>{% endcomment %}
+        };
+    </script>
 {% endblock %}
 
 
@@ -353,21 +358,25 @@
 ---->
 <!-- Page content - body -->
 {% block body %}
-    {% if not conversation %}
 Charge ton fichier messages.htm de ton archive Facebook et analyse le spam !
-    <form action="{% url 'SpamAlyzer:index' %}" method="post" enctype="multipart/form-data">
-        {{ form.fichier.label_tag }} {{ form.fichier }}
-      <input type="submit">
+<form action="{% url 'SpamAlyzer:index' %}" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" id="myDropzone">
+<p class="dz-message" id="dz-message">
+    Pose ton archive de messages FB ici !
+</p>
+    <!-- if dropzone.js not supported, creates these elements -->
+    <div class="fallback">
+        <input name="fichier" type="file" />
+        <input type="submit" value="Upload"/>
+    </div>
     {% csrf_token %}
-    </form>
+</form>
 
-    {% else %}
-Conversation est en cours de chargement.
-{{ conversation }}. C'est la conversation.
+<p class="error" id="error">
+    {% if error_message %}
+        {{ error_message }}
+{% endif %}
+</p>
+    {%  if conversation %}
+
     {% endif %}
-    <p>
-    {%  for a in table %}
-        {{ a }}
-    {% endfor %}
-    </p>
 {% endblock %}
