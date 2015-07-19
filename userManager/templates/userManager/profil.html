@@ -1,5 +1,11 @@
 {% extends "userManager/layout.html" %}
 
+<!-- Page content header title -->
+{% block base_content_header_title %}Ton profil | {{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}SpamMembre de qualitay !{% endblock %}
+
 {% block body %}
     <div class="box box-sucess">
         <div class="box-header with-border">
@@ -28,8 +34,8 @@
                 <p class="text-red">{{ error }}</p>
                 {% endfor %}
             </div>
-            <div class="col-xs-4 col-xs-offset-4">
-                <button type="submit" class="btn btn-primary btn-block btn-flat">Poster mon idée !</button>
+            <div class="col-sm-4 col-sm-offset-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Mettre à jour mon profil !</button>
             </div><!-- /.col -->
             {% csrf_token %}
 

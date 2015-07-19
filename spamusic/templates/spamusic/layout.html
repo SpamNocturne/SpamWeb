@@ -16,18 +16,19 @@
   |---------------------------------------------------------|
   NB : Elles existent toutes en version "light", exemple : "skin-blue-light"
    La version light change le menu de gauche en blanc -->
-{% block body_skin_class %}{{ block.super }}{%  endblock %}
+{% block body_skin_class %}skin-red{%  endblock %}
 <!-- changez block-super en la couleur de votre app -->
 
 <!--
 ----    HEAD
 ---->
 <!-- page head title -->
-{% block base_title %}Mon App | {{ block.super }}{% endblock %}
+{% block base_title %}Spamusic | {{ block.super }}{% endblock %}
 
 <!-- here add you own stylesheet and scripts in header -->
 {% block base_header_addons %}
     <!-- Here : addons for the layout, in the whole App -->
+    <link href="{% static 'spamusic/css/spamusic.css' %}" rel="stylesheet" type="text/css" />
     {% block page_header_addons %}
     {% endblock %}
 {% endblock %}
@@ -73,7 +74,7 @@
 
 <!-- Left Sidebar Menu -->
 {% block base_left_sidebar_menu %}
-    {% include "LTE/menu.html" with active="monOngletActif" only %}
+    {% include "LTE/menu.html" with active="spamusic" only %}
 {% endblock %}
 
 
@@ -81,14 +82,14 @@
 ----    PAGE CONTENT HEADER
 ---->
 <!-- Page content header title -->
-{% block base_content_header_title %}{{ block.super }}{% endblock %}
+{% block base_content_header_title %}Spamusic{% endblock %}
 
 <!-- Page content header optional description -->
-{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+{% block base_content_header_title_description %}Y'a du son, c'est ça qu'est bon !{% endblock %}
 
 <!-- Page content breadcrumb (fil d'arianne) -->
 {% block base_content_header_breadcrumb %}
-    {% include 'LTE/breadcrumb.html' with current='Mon App' only %}
+    {% include 'LTE/breadcrumb.html' with current='Spamusic' only %}
 {% endblock %}
 
 
@@ -97,10 +98,20 @@
 ---->
 <!-- Right Sidebar List of tabs -->
 {# block base_right_sidebar_tabs #}
+{% block base_right_sidebar_tabs %}
+    <li><a href="#control-sidebar-playlist-tab" data-toggle="tab"><i class="fa fa-youtube"></i></a></li>
+{% endblock %}
 
 <!-- Right sidebar Contents of tabs -->
 {# block base_right_sidebar_contents #}
-
+{% block base_right_sidebar_contents %}
+    <div class="tab-pane" id="control-sidebar-playlist-tab">
+        <p class="text-center row"><a class="btn bg-navy btn-xs btn-flat btn-block" href="#" data-toggle="control-sidebar" title="Fermer les playlist">Fermer&nbsp;<i class="fa fa-times"></i></a></p>
+        <h3 class="control-sidebar-heading">Playlist du <b>Spam</b>Web</h3>
+        {% block page_right_sidebar_contents %}
+        {% endblock %}
+    </div>
+{% endblock %}
 
 <!--
 ----    FOOTER
@@ -111,4 +122,5 @@
 ----    PAGE CONTENT BODY
 ---->
 <!-- Page content - body -->
-{% block body %}{% endblock %}
+{% block body %}
+{% endblock %}

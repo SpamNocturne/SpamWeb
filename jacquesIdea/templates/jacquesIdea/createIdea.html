@@ -2,19 +2,17 @@
 {% load staticfiles %}
 
 <!-- page head title -->
-{% block base_title %}Nouvelle Idée | SpamWeb{% endblock %}
+{% block base_title %}Nouvelle Idée | {{ block.super }}{% endblock %}
 
 <!-- Page content header title -->
-{% block base_content_header_title %}Nouvelle Idée | <b>Spam</b>Web{% endblock %}
+{% block base_content_header_title %}Nouvelle Idée ?{% endblock %}
 
 <!-- Page content header optional description -->
 {% block base_content_header_title_description %}Partages ton avis !{% endblock %}
 
 <!-- Page content breadcrumb (fil d'arianne) -->
 {% block base_content_header_breadcrumb %}
-    <li><a href="#"><i class="fa fa-dashboard"></i> <b>Spam</b>Web</a></li>
-    <li><a href="{% url 'jacquesIdea:index' %}">Idées</a></li>
-    <li class="active">Création</li>
+    {% include 'LTE/breadcrumb.html' with current='Création' prev1Name='Idées' prev1Url='jacquesIdea:index' only %}
 {% endblock %}
 
 {% block body %}
@@ -50,6 +48,6 @@
     </div>
 {% endblock %}
 
-{% block base_additional_scripts %}
+{% block page_footer_addons %}
 
 {% endblock %}

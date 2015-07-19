@@ -25,11 +25,19 @@
 {% block login_box_msg %}
     <p class="login-box-msg">Connectez vous ici, pour un monde de folies !</p>
     {% if error %}
+        {% ifequal error_type "inactive" %}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> Erreur de connection !</h4>
+            Votre compte est inactif, veuillez contacter un administrateur
+        </div>
+        {% else %}
         <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h4><i class="icon fa fa-ban"></i> Erreur de connection !</h4>
             La combinaison identifiant / mot de passe est incorrecte
         </div>
+        {% endifequal %}
     {% endif %}
 {%  endblock %}
 
@@ -38,27 +46,21 @@
 
 <!-- fields inside the form -->
 {% block login_form_fields %}
-    {% if user.is_authenticated %}
-    Vous êtes connecté, {{ user.username }} !
-    <p><a href="{% url 'userManager:password_change' %}">Changer son mot de passe</a></p>
-    <p><a href="{% url 'userManager:deconnexion' %}">Se déconnecter</a></p>
-    {% else %}
-        <div class="form-group has-feedback {% if form.username.errors %}has-error{% endif %}">
-            {{ form.username.label_tag }} {{ form.username }}
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-            {% for error in form.username.errors %}
-            <p class="text-red">{{ error }}</p>
-            {% endfor %}
-        </div>
-        <div class="form-group has-feedback {% if form.password.errors %}has-error{% endif %}">
-            {{ form.password.label_tag }} {{ form.password }}
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            {% for error in form.password.errors %}
-            <p class="text-red">{{ error }}</p>
-            {% endfor %}
-        </div>
-        {% csrf_token %}
-    {% endif %}
+    <div class="form-group has-feedback {% if form.username.errors %}has-error{% endif %}">
+        {{ form.username.label_tag }} {{ form.username }}
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        {% for error in form.username.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group has-feedback {% if form.password.errors %}has-error{% endif %}">
+        {{ form.password.label_tag }} {{ form.password }}
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        {% for error in form.password.errors %}
+        <p class="text-red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% csrf_token %}
 {% endblock %}
 
 <!-- remember me checkbox (same row as submit, check the 12cols rules)-->
@@ -83,12 +85,11 @@
 
 <!-- links for social authentification -->
 {% block login_social_auth %}
-    <!--
+
 <div class="social-auth-links text-center">
-  <p>- OR -</p>
   <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>
-  <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
-</div><!-- /.social-auth-links -->
+  <!--<a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a> -->
+</div>
 {% endblock %}
 
 <!-- links for forgotten password -->

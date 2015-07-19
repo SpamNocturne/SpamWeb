@@ -9,6 +9,9 @@ SpamWeb est un projet communautaire dont les objectifs principaux sont :
 * Gestion des SpamMembres (membres du Spam).
 * Planification des SpamEvents (évènements organisés par et pour le spam).
 * Jauge de pinte de chouffe à boire chaque semaine.
+* Quantité de tacos ingurgités
+* Système de régulation de comptes entre membres (en UDI)
+* Partage d'idées avec votes et commentaires
 * ...
 * Tout ce dont le spam a besoin pour manquer de sérieux en amphi ! 
 
@@ -37,7 +40,12 @@ A la racine du projet :
 
 
 ## Installation (testé sur windows7)
-* Installer [Python3](https://www.python.org/)   
+###Python et Django
+* installer python anaconda (python + pas mal de package dont django sont installés) : [anaconda](http://continuum.io/downloads#py34)
+
+ou bien 
+
+* Installer [Python3](https://www.python.org/)
   *NB:* Pensez a mettre a jour la variable **PATH** pour lui ajouter les chemins `C:\Python34\Scripts` et `C:\Python34`.   
 * Executer [ez_setup.py](https://pypi.python.org/pypi/ez_setup)   
 * Executer `easy_install pip` : pip étant le gestionnaire de packages, à utiliser pour les téléchargements de packages
@@ -46,6 +54,11 @@ A la racine du projet :
 * Si vous avez des problèmes sous Windaub et mysql : suivre le tuto [ici](http://stackoverflow.com/questions/28251314/error-microsoft-visual-c-10-0-is-required-unable-to-find-vcvarsall-bat)
 pour pouvoir installer mysql python
 
+###Base de données
+Vous avez le choix : 
+* pour MySQL, il suffit d'aller ici : [MySQL](https://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-web-community-5.6.25.0.msi)
+* Suivre les instructions
+* Créer une base de données (schema en mysql)
 
 ## Configuration 
 ### Base de donnée
@@ -55,10 +68,18 @@ de données en vous inspirant du fichier `databases-example.py`.
 
 Il faut ensuite executer une la commande `python manage.py migrate` une première fois. Cela va créer les tables nécessaires aux applications installées par défaut.
 
+### librairies
+* Utiliser Pip pour installer oauth : ``pip install --upgrade oauth2client`` [oauth2](https://github.com/google/oauth2client)
+* Ensuite installer  Google APIs Client Library for Python : ``pip install --upgrade google-api-python-client`` [lien](https://developers.google.com/api-client-library/python/start/installation?hl=fr)
+* /!\ pour python3 : appliquer la correction de ce commit : [lien](https://github.com/SpamNocturne/SpamWeb/commit/94094aa29d6002b76962df2953aa24a425f067ed)
 
 ### Super utilisateur
 Pour acceder à l'interface d'administration et se connecter sur le site avec un premier utilisateur, il faut créer un super administrateur :
 Grâce à la commande : `python manage.py createsuperuser`
+
+* super-user spamadmin pour accéder au spammusic :)
+
+--------------------------------------------------------------------
 
 ## Fonctionnement et commandes de Django :
 ### *Pour modifier le modèle et la base de donnée :*   
@@ -85,9 +106,12 @@ Pour vous aider a créer un nouvelle application (*monApp*) sur le site voici qu
   
 * *Pour les* **templates** *:*  
   * Copier le fichier **LTE/templates/LTE/starter.html**, et le renommer en **layout.html** dans **monApp/templates/monApp/**  
-  * Faire hériter le **layout.html** du **starter.html** en changeant la première ligne : `{% extends "LTE/starter.html" %}`  
   * Adapter et redéfinir tout les blocks du **layout.html** pour *monApp*  
-  * Faire hériter hériter les nouveaux templates de *monApp* de **monApp/templates/monApp/layout.html**   
+  * Ce fichier **layout.html** sera la base de votre application, toute vos pages seront basées dessus  
+  * Creer maintenant un *nouveau* template basé sur le fichier **LTE/templates/LTE/page.html**   
+  * Faire donc hériter le nouveau template de **monApp/templates/monApp/layout.html**   
+  * Modifier le contenu de ce fichier pour qu'il corresponde à votre page   
+  * *C'est bon !* Le templating en 3 couches (Base / Layout / Page) est terminé ! 
   * Si vous utilisez de l'**AJAX** passez par l'app ajax qui centralise ces requetes. Un **jeton csrf** est obligatoire même en ajax ! Infos [ici](https://docs.djangoproject.com/fr/1.7/ref/contrib/csrf/#csrf-ajax).   
 
 ### Bonne chance ! :)

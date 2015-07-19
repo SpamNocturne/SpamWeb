@@ -1,0 +1,205 @@
+/*********************
+ *      DIVERS       *
+ *********************/
+
+#add-playlist-form,
+#search-video-form {
+    overflow: hidden;
+    text-overflow: clip;
+    display: block !important;
+}
+
+#add-playlist-form input:focus,
+#search-video-form input:focus {
+    border-color: transparent !important;
+}
+
+/*********************
+ *      SIDEBAR      *
+ *********************/
+.control-sidebar-playlist {
+    height: 130px;
+    background: no-repeat center center;
+    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+    background-size: cover; /* version standardisée */
+    position: relative;
+}
+
+.playlist-play-link .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    overflow: hidden;
+}
+
+.playlist-play-link:hover .overlay {
+    display: block;
+}
+
+.playlist-play-link .overlay .btn,
+.playlist-play-link .overlay .fa,
+.my-overlay .fa {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15px;
+    margin-top: -15px;
+    color: #fff;
+    font-size: 30px;
+}
+
+.playlist-info {
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+/*********************
+ *   MAIN-CONTENT    *
+ *********************/
+.my-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+#main-content {
+    position: relative;
+}
+
+.bg-black-gradient-reverse {
+    background: #111111 !important;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #2b2b2b), color-stop(1, #111111)) !important;
+    background: -ms-linear-gradient(bottom, #2b2b2b, #111111) !important;
+    background: -moz-linear-gradient(center bottom, #2b2b2b 0%, #111111 100%) !important;
+    background: -o-linear-gradient(#111111, #2b2b2b) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#111111', endColorstr='#2b2b2b', GradientType=0) !important;
+    color: #fff;
+}
+
+.dark-themed {
+    color: #b8c7ce;
+    background: #1C2529;
+    /*background: #222d32;*/
+}
+
+.dark-themed .black-nav {
+    border: #1c2529;
+}
+
+.dark-themed .black-nav > li > a {
+    background: #181f23;
+    color: #b8c7ce;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.dark-themed .black-nav > li > a,
+.dark-themed .black-nav > li > a:hover {
+    border-left-color: #141a1d !important;
+    border-right-color: #141a1d !important;
+    border-bottom-color: #141a1d !important;
+    border-top-color: #141a1d !important;
+}
+
+.dark-themed .black-nav > li > a:hover,
+.dark-themed .black-nav > li > a:focus,
+.dark-themed .black-nav > li > a:active {
+    background: #1c2529;
+}
+
+.dark-themed .black-nav > li.active > a,
+.dark-themed .black-nav > li.active > a:hover,
+.dark-themed .black-nav > li.active > a:focus,
+.dark-themed .black-nav > li.active > a:active {
+    /* background: #222d32; */
+    background: #1C2529;
+    color: #fff;
+}
+
+.dark-themed h1,
+.dark-themed h2,
+.dark-themed h3,
+.dark-themed h4,
+.dark-themed h5,
+.dark-themed h6 {
+    color: #fff;
+}
+
+.dark-themed .black-tab-content li:hover {
+    background: #181F23;
+}
+
+.dark-themed .black-tab-content > li > a .menu-info > p {
+    color: #b8c7ce;
+}
+
+.black-nav > li.active > a,
+.black-nav > li.active > a:hover,
+.black-nav > li.active > a:focus,
+.black-nav > li.active > a:active {
+    border: medium none !important;
+    border-bottom: medium none !important;
+    border-top: medium none !important;
+}
+
+/*********************
+ *      VIDEO        *
+ *********************/
+#yt-playlist-header {
+    background-color: #2b2b2b;
+    color: #fff;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.video-wrapper {
+    width: 640px;
+    max-width: 100%;
+    margin: auto;
+}
+
+/*********************
+ *      SEARCH       *
+ *********************/
+#search-video-form {
+    max-width: 600px;
+}
+
+.media {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 0;
+}
+
+.media:first-child {
+    padding-top: 0;
+}

@@ -4,12 +4,11 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from django.contrib.auth import  authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-
 from .forms import ConnexionForm, ChangeMdpForm, InscriptionForm, ProfilForm
 from .models import UserProfile
 
@@ -30,12 +29,15 @@ def inscription(request):
             last_name = form.cleaned_data["last_name"]
             user.first_name = first_name
             user.last_name = last_name
+            user.is_active = False
 
             user.save()
-
+            return redirect(reverse('userManager:connexion'))
+            '''
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect(reverse('home:index'))
+            '''
         else:
             error = True
     else:
@@ -56,9 +58,13 @@ def connexion(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             user = authenticate(username=username, password=password)
-            if user: #!= None
-                login(request, user)
-                return redirect(reverse('home:index'))
+            if user:    # != None
+                if user.is_active:
+                    login(request, user)
+                    return redirect(reverse('home:index'))
+                else:
+                    error = True
+                    error_type = "inactive"
             else:
                 error = True
     else:
