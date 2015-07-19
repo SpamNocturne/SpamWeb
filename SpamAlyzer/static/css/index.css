@@ -1,4 +1,4 @@
-.dropzone.dz-clickable {
+/*.dropzone.dz-clickable {
     cursor: pointer;
 }
 
@@ -31,6 +31,7 @@
     width: auto;
     padding: 2px;
 }
+*/
 
 .error {
     font-weight: bold;
