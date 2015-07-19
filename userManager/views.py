@@ -10,6 +10,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from .forms import ConnexionForm, ChangeMdpForm, InscriptionForm, ProfilForm
+from home.log import add_log
 from .models import UserProfile
 
 # Create your views here.
@@ -32,6 +33,10 @@ def inscription(request):
             user.is_active = False
 
             user.save()
+            add_log(text="Un nouveau Spamembre s'est inscrit : %s  - ( %s %s )" % (username, first_name, last_name),
+                    app="userManager",
+                    log_type="userManager_register",
+                    user=user)
             return redirect(reverse('userManager:connexion'))
             '''
             user = authenticate(username=username, password=password)
