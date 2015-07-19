@@ -4,7 +4,7 @@ __author__ = 'David'
 __date__ = '2015-07-07'
 
 from lxml import etree
-
+from django.templatetags.static import static
 from SpamAlyzer import models
 
 class Analyzer:
@@ -12,7 +12,7 @@ class Analyzer:
     textchars = bytearray([7,8,9,10,12,13,27]) + bytearray(range(0x20, 0x100))
     is_binary_string = lambda bytes: bool(bytes.translate(None, Analyzer.textchars))
 
-    xsdschema_root = etree.parse("SpamAlyzer/static/facebook_messages.xsd")
+    xsdschema_root = etree.parse(static("SpamAlyzer/facebook_messages.xsd"))
     xsdschema = etree.XMLSchema(xsdschema_root)
 
     # Exception si non valide, à catcher
