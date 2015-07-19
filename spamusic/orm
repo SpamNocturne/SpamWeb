@@ -44,12 +44,37 @@ class CredentialsField(models.Field, metaclass = models.SubfieldBase):
       return None
     if isinstance(value, oauth2client.client.Credentials):
       return value
+    '''
+    print("Type : "+str(type(value)))
+    print("IF : "+value[0:2]+" == "+"\\x")
+    '''
+    # If this string is an hex value, put it into bytes
+    if value[0:2] == "\\x":
+      value = bytes.fromhex(value[2:])
+    '''
+    else:
+      print("ELSE")
+    print("Type : "+str(type(value)))
+
+    print("ORM.TO_PYTHON (len="+str(len(value))+") : "+str(value))
+    '''
     return pickle.loads(base64.b64decode(value))
 
   def get_db_prep_value(self, value, connection, prepared=False):
     if value is None:
       return None
-    return base64.b64encode(pickle.dumps(value))
+    '''
+    try:
+      print("TRY")
+      int(value,16)
+      value = bytes.fromhex(value)
+    except ValueError:
+      print("EXCEPT")
+      None
+    '''
+    res = base64.b64encode(pickle.dumps(value))
+    # print("ORM.GET_DB_PREP_VALUE (len="+str(len(res))+") : "+str(res))
+    return res
 
 
 class FlowField(models.Field, metaclass = models.SubfieldBase):
