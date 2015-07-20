@@ -22,6 +22,11 @@
     hyphens: auto;
 }
 
+.idee-header .box-title
+{
+    cursor : pointer;
+}
+
 .vote-up.voted
 {
     background-color: #00a65a !important;
