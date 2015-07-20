@@ -45,7 +45,7 @@
                 <!-- Construct the box with style you want. Here we are using box-danger -->
                 <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                 <!-- The contextual class should match the box, so we are using direct-chat-danger -->
-                <div class="box box-solid box-info direct-chat direct-chat-info collapsed-box">
+                <div class="box box-solid box-info direct-chat collapsed-box">
                   <div class="box-header with-border idee-header">
                     <div class="box-tools pull-right">
                         <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}" class="btn btn-box-tool vote-up {% if idee|is_upvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active" id="cpt-up-{{ idee.id }}">{{ idee.get_upvotes|length }}</span></button>
