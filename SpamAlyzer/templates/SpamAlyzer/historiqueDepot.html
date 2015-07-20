@@ -1,0 +1,49 @@
+{% extends "SpamAlyzer/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="SpamAlyzer/histoDepot" only %}
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/index.css' %}">
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+    <p class="well">Mais qui a donc déposé ces magnifiques archives pour que nous puissions admirer la conversation depuis le SpamWeb ?!</p>
+    {% if depots %}
+        <div class="depots">
+        {% for d in depots %}
+            <div class="depot">
+                <div class="auteur">
+                    {{ d.auteur }}
+                </div> le
+                <div class="date">
+                    {{ d.date }}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p class="no_element_found_wesh">Oh non! Il n'y a aucune archive de déposée! Vite! Viens par <a href="{% url "SpamAlyzer:index" %}">là</a> et upload la tienne.</p>
+    {% endif %}
+{% endblock %}
