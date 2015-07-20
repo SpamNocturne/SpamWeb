@@ -1,7 +1,23 @@
 .idee-header.box-header h3
 {
-    max-width: 80%;
     text-align: justify;
+}
+
+.box-header > .box-tools {
+    right: 10px;
+    top: 5px;
+    position: initial;
+}
+
+.box-header .box-title{
+    display : block;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
 }
 
 .vote-up.voted

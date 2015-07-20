@@ -47,7 +47,6 @@
                 <!-- The contextual class should match the box, so we are using direct-chat-danger -->
                 <div class="box box-solid box-info direct-chat direct-chat-info collapsed-box">
                   <div class="box-header with-border idee-header">
-                    <h3 class="box-title">{{ idee.titre }}</h3>
                     <div class="box-tools pull-right">
                         <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}" class="btn btn-box-tool vote-up {% if idee|is_upvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active" id="cpt-up-{{ idee.id }}">{{ idee.get_upvotes|length }}</span></button>
                         <button data-idee="{{ idee.id }}" id="vote-down-{{ idee.id }}" class="btn btn-box-tool vote-down {% if idee|is_downvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pas&nbsp;Pouce"><i class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active" id="cpt-down-{{ idee.id }}">{{ idee.get_downvotes|length }}</span></button>
@@ -56,6 +55,7 @@
                             <button class="btn btn-box-tool" data-toggle="modal" data-target="#modal-delete-{{ idee.id }}"><i class="fa fa-times"></i></button>
                         {% endifequal %}
                     </div>
+                    <h3 class="box-title">{{ idee.titre }}</h3>
                   </div><!-- /.box-header -->
                   <div class="box-body">
                     <!-- Conversations are loaded here -->
