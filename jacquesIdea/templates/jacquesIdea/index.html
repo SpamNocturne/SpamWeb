@@ -45,17 +45,17 @@
                 <!-- Construct the box with style you want. Here we are using box-danger -->
                 <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                 <!-- The contextual class should match the box, so we are using direct-chat-danger -->
-                <div class="box box-solid box-info direct-chat direct-chat-info collapsed-box">
+                <div class="box box-solid box-info direct-chat collapsed-box">
                   <div class="box-header with-border idee-header">
-                    <h3 class="box-title">{{ idee.titre }}</h3>
                     <div class="box-tools pull-right">
                         <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}" class="btn btn-box-tool vote-up {% if idee|is_upvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active" id="cpt-up-{{ idee.id }}">{{ idee.get_upvotes|length }}</span></button>
                         <button data-idee="{{ idee.id }}" id="vote-down-{{ idee.id }}" class="btn btn-box-tool vote-down {% if idee|is_downvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pas&nbsp;Pouce"><i class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active" id="cpt-down-{{ idee.id }}">{{ idee.get_downvotes|length }}</span></button>
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                        <button class="btn btn-box-tool btn-toggle" data-widget="collapse"><i class="fa fa-plus"></i></button>
                         {% ifequal user idee.auteur %}
                             <button class="btn btn-box-tool" data-toggle="modal" data-target="#modal-delete-{{ idee.id }}"><i class="fa fa-times"></i></button>
                         {% endifequal %}
                     </div>
+                    <h3 class="box-title">{{ idee.titre }}</h3>
                   </div><!-- /.box-header -->
                   <div class="box-body">
                     <!-- Conversations are loaded here -->
@@ -69,7 +69,7 @@
                               <span class='direct-chat-name pull-right'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-left'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
                               {{ idee.idee_text }}
                             </div><!-- /.direct-chat-text -->
@@ -81,7 +81,7 @@
                               <span class='direct-chat-name pull-left'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-right'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if idee.auteur.userprofile.avatar %}{{ idee.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
                               {{ idee.idee_text }}
                             </div><!-- /.direct-chat-text -->
@@ -97,7 +97,7 @@
                               <span class='direct-chat-name pull-right'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-left'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
                               {{ commentaire.commentaire_text }}
                             </div><!-- /.direct-chat-text -->
@@ -109,7 +109,7 @@
                               <span class='direct-chat-name pull-left'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-right'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if commentaire.auteur.userprofile.avatar %}{{ commentaire.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
                               {{ commentaire.commentaire_text }}
                             </div><!-- /.direct-chat-text -->
@@ -307,6 +307,11 @@
             });
         });
 
+        //trigger du toggle des idée lorsqu'on clique sur le titre
+        $(".idee-header .box-title").click(function(){
+            $(this).parent().find(".box-tools .btn-toggle").click()
+        });
+        
         $(function(){
             //$('.direct-chat-messages').slimscroll({start: $(this).find('.direct-chat-msg').last()});
             //TODO slimscroll empeche de descendre LA PAGE avec le scroll molette si la souris est dans une zone de slimscroll

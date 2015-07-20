@@ -1,5 +1,97 @@
 {% extends "home/layout.html" %}
+{% load staticfiles %}
 
 {% block body %}
-    <p>Des choses, et d'autres...</p>
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Bienvenue sur <b>Spam</b>Web !</h1>
+
+            <p>Ici, vous pouvez faire pleiiiin de choses ! <em class="text-muted">(Bon pas tout de suite par contre
+                ...)</em></p>
+
+            <h3>Les fonctionnalités actuelles sont : </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h2><i class="fa fa-globe"></i> Général</h2>
+
+            <p>Voir les prochains évènements dans le panel de droite (cliquez en haut a droite sur <i
+                    class="fa fa-gears"></i>) [Fake :c]</p>
+
+            <p class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Vous connecter via votre adresse e-mail, pour garder son pseudo stylé même s'il est compliqué !</span>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2><i class="fa fa-user"></i> Profil</h2>
+
+            <p>Remplir quelques information sur votre profil !</p>
+
+            <p class="text-success"><span class="label bg-green">New</span><span class="bg-success"> Changer votre image de profil ! Comme ça vous pouvez nous montrer si vous êtes moches :D !</span>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2><i class="fa fa-lightbulb-o"></i> Idées</h2>
+
+            <p>Partager de nouvelles idées !</p>
+
+            <p>Commenter et débattre autour des idées proposées !</p>
+
+            <p>Voter pour vos idées préférées !</p>
+
+            <p class="text-success"><span class="label bg-green">New</span><span class="bg-success"> Cliquer sur un titre pour ouvrir et fermer une idée ! Le plus et trop petit pour nos gros doigts sur téléphone... :x</span>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2><i class="fa fa-youtube"></i> Spamusic</h2>
+
+            <p>Créer des nouvelles playlist pour le Spam !</p>
+
+            <p>&Eacute;couter les playlists collaboratives du Spam !</p>
+
+            <p>Voir les details, et la liste des vidéos d'une playlist !</p>
+
+            <p>Rechercher des vidéos et les ajouter aux playlist !</p>
+        </div>
+        <div class="col-md-4">
+            <h2 class="text-success"><span class="label bg-green">New</span><i class="fa fa-bell-o"></i> Notifications</h2>
+            <p class="text-success"><span class="label bg-green">New</span><span class="bg-success"> Vous pouvez voir ce qui se passe sur le Spam ! (Et voir qui a voté rouge à votre idée Grrrrr ... !)</span></p>
+            <p class="text-warning"><span class="label bg-orange">In Progress</span><span class="bg-warning"> Les notifications ne sont pour l'instant accessible que depuis cette page :/</span></p>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block base_top_navbar %}
+    <!-- Notifications Menu -->
+    <li class="dropdown notifications-menu">
+        <!-- Menu toggle button -->
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-bell-o"></i>
+            <span class="label label-success">New</span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">Activités récentes sur le Spam</li>
+            <li>
+                <!-- Inner Menu: contains the notifications -->
+                <ul class="menu">
+                    <!-- Inner Menu: contains the notifications -->
+                    {% for log in logs %}
+                        <li>
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="
+                                {{ log.date }} : {{ log.text }}">
+                                {% if log.app == "jacquesIdea" %}
+                                    <i class="fa fa-lightbulb-o text-yellow"></i>
+                                {% elif log.app ==  "spamusic" %}
+                                    <i class="fa fa-youtube text-red"></i>
+                                {% elif log.app == "userManager" %}
+                                    <i class="fa fa-user text-blue"></i>
+                                {% endif %}{{ log.text }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="footer"><a href="#">Tout voir (oupa)</a></li>
+        </ul>
 {% endblock %}
