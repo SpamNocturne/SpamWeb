@@ -20,7 +20,6 @@ def index(request):
 
             try:
                 anal = analyzer.Analyzer(fichier)
-                fichier.save()
                 if not anal.analyze_the_spam_muhaha():
                     fichier.delete()
                     context["error_message"] = "Désolé, mais ton archive était inutile (peut-être comme toi?). " \
@@ -69,7 +68,7 @@ def conversation(request, num_page):
 @login_required
 def historique(request):
     context = {}
-    all_depots = models.FichierSoumis.objects.order_by("-date")
+    all_depots = models.FichierSoumis.objects.order_by("-date_depot")
     if all_depots.count() != 0:
         context["depots"] = all_depots
 

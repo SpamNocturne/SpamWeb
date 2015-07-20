@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 class UtilisateurStats(models.Model):
     nom_fb = models.CharField(max_length=250, unique=True)
@@ -9,7 +10,8 @@ class UtilisateurStats(models.Model):
 
 class FichierSoumis(models.Model):
     auteur = models.ForeignKey(User)
-    date = models.DateField(auto_now_add=True)
+    date_depot = models.DateField(auto_now_add=True)
+    date_fichier = models.DateField(null=False, auto_now_add=False)
     fichier = models.FileField(upload_to='uploads/SpamAlyzer/%Y-%m-%d/')
 
 class Message(models.Model):
