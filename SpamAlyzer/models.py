@@ -2,7 +2,6 @@
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
 
 class UtilisateurStats(models.Model):
     nom_fb = models.CharField(max_length=250, unique=True)
