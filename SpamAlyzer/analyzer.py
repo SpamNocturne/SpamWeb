@@ -20,12 +20,17 @@ class Analyzer:
     # Exception si non valide, à catcher
     def __init__(self, fichierDB):
         self.fichier = fichierDB
+
         xml_data = fichierDB.fichier.read().decode() # decode is called because django opens files automatically as binaries
 
         self.xml = etree.fromstring(xml_data, etree.HTMLParser(encoding='utf-8'))
         Analyzer.xsdschema.assertValid(self.xml)
 
         self.create_spam_users()
+
+        # In footer
+        self.fichier.date_fichier = self.to_python_date(self.xml.xpath("//div[@class = 'footer']")[0].text)
+        self.fichier.save()
 
     def create_spam_users(self):
         for qqun in spameurs:
