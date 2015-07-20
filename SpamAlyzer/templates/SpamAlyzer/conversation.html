@@ -1,0 +1,73 @@
+{% extends "SpamAlyzer/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="SpamAlyzer/conversation" only %}
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/index.css' %}">
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+    <p class="well" >Voici la seule et l'unique conversation du SpamNocturne!</p>
+    {% if conversation %}
+        <div class="conversation">
+        {% for m in conversation %}
+            <div class="message">
+                <div class="auteur">
+                    {{ m.auteur.nom_fb }}
+                </div>
+                <div class="date">
+                    {{ m.date }}
+                </div>
+                <p class="text">
+                    {% if m.texte %}
+                        {{ m.texte }}
+                    {% else %}
+                        <img src="https://fbstatic-a.akamaihd.net/rsrc.php/ya/r/FwHVs2eE5cr.svg" class="pouce"/><i class="ou_pas">(ou pas)</i>
+                    {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="choix_page">
+            {% if num_page != 1 %}
+                <a href="{% url "SpamAlyzer:conversation" 1 %}">&lt;&lt;</a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}">&lt;</a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}">{{ num_page|add:"-1" }}</a>
+            {% endif %}
+            <strong>{{ num_page }}</strong>
+            {% if num_page < nb_pages %}
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}">{{ num_page|add:"1" }}</a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}">&gt;</a>
+                <a href="{% url "SpamAlyzer:conversation" nb_pages %}">&gt;&gt;</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <p class="pas_de_conversation_wesh">
+            Il semblerait qu'il n'y ait aucun message du spam dans le base de dounnées! C'est un scandale!
+            Je t'ordonne de demander ton archive Facebook à Facebook pour charger la conversation! Saperlipopette :D
+        </p>
+    {% endif %}
+{% endblock %}
