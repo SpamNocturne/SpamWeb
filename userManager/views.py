@@ -62,6 +62,16 @@ def connexion(request):
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
+
+            # Connexion via email
+            if "@" in username:
+                user_by_mail = User.objects.filter(email=username)
+                if user_by_mail:
+                    # si le master existe, il ne peut y en avoir qu'un et UN SEUL. TRUE MASTEEEEEEER !
+                    # Non plus serieusement, c'est parce que l'username est unique :D
+                    if user_by_mail[0]:
+                        username = user_by_mail[0].username
+
             user = authenticate(username=username, password=password)
             if user:    # != None
                 if user.is_active:
