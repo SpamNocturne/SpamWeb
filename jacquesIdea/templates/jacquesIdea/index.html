@@ -69,7 +69,7 @@
                               <span class='direct-chat-name pull-right'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-left'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
                               {{ idee.idee_text }}
                             </div><!-- /.direct-chat-text -->
@@ -81,7 +81,7 @@
                               <span class='direct-chat-name pull-left'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-right'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if idee.auteur.userprofile.avatar %}{{ idee.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
                               {{ idee.idee_text }}
                             </div><!-- /.direct-chat-text -->
@@ -97,7 +97,7 @@
                               <span class='direct-chat-name pull-right'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-left'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
                               {{ commentaire.commentaire_text }}
                             </div><!-- /.direct-chat-text -->
@@ -109,7 +109,7 @@
                               <span class='direct-chat-name pull-left'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
                               <span class='direct-chat-timestamp pull-right'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
                             </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+                            <img class="direct-chat-img" src="{% if commentaire.auteur.userprofile.avatar %}{{ commentaire.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
                             <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
                               {{ commentaire.commentaire_text }}
                             </div><!-- /.direct-chat-text -->

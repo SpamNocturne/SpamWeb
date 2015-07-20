@@ -38,6 +38,9 @@
                 <button type="submit" class="btn btn-primary btn-block btn-flat">Mettre à jour mon profil !</button>
             </div><!-- /.col -->
             {% csrf_token %}
+            <div class="col-sm-4 col-sm-offset-4">
+               {% if user.userprofile.avatar %} <img src="{{ user.userprofile.avatar.url }}"/>{% else %}default.jpg{% endif %}
+            </div>
 
           </form>
         </div><!-- /.box-body -->
