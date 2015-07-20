@@ -71,30 +71,32 @@ class Analyzer:
 
 
     def analyze_conversation(self, conversation):
+        print("Analyse")
         one_element_added = False
-        # For each message (composed of 2 elements : <div> and <p>
-        for i in range(0, len(conversation), 2):
-            user = conversation[i].xpath("div[@class = 'message_header']/span[@class = 'user']")[0].text
-            userDB = models.UtilisateurStats.objects.filter(nom_fb = user)[0]
-            date = conversation[i].xpath("div[@class = 'message_header']/span[@class = 'meta']")[0].text
+        nb_messages = len(conversation)
+        userXPath = "div[@class = 'message_header']/span[@class = 'user']"
+        dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
+        all_users = models.UtilisateurStats.objects.all()
+        all_messages = models.Message.objects.all()
+
+        # Add all messages
+        for i in range(0, nb_messages, 2):
+            user = conversation[i].xpath(userXPath)[0].text
+            userDB = all_users.filter(nom_fb = user)[0]
+            date = conversation[i].xpath(dateXPath)[0].text
             date = self.to_python_date(date)
             message_text = conversation[i+1].text
 
-            # If the message does already exists
-            if models.Message.objects.filter(auteur = userDB, date = date, texte = message_text).count() != 0:
-                continue
+            if all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
+                one_element_added = True
+                userDB.nb_de_messages += 1
+                # TODO : stats des mots à ajouter
+                userDB.save()
 
-            # Add it (date + user + stats + file)
-            one_element_added = True
+                msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
+                msg.save()
 
-            userDB.nb_de_messages += 1
-            # TODO : stats des mots à ajouter
-            userDB.save()
-
-            msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
-            msg.save()
-
-            print("{0}/{1}".format(i/2, len(conversation)/2))
+            print("{0}/{1}".format(i, nb_messages))
 
         return one_element_added
 
@@ -153,12 +155,6 @@ class Analyzer:
         "october": 10,
         "december": 12
     }
-
-    # Get the actual spam conversation
-    @staticmethod
-    def get_conversation():
-        None
-
 
 spameurs = ["David Wobrock",
             "Loïc Touzard",

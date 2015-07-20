@@ -22,8 +22,7 @@ def index(request):
                 anal = analyzer.Analyzer(fichier)
                 fichier.save()
                 if not anal.analyze_the_spam_muhaha():
-                    fichier.remove()
-                else:
+                    fichier.delete()
                     context["error_message"] = "Désolé, mais ton archive était inutile (peut-être comme toi?). " \
                                                "On n'a trouvé aucun message " \
                                                "qu'on ne connaissait pas déjà. Allez, tchoubidou-bye!"
@@ -67,3 +66,11 @@ def conversation(request, num_page):
 
     return render(request, "SpamAlyzer/conversation.html", context)
 
+@login_required
+def historique(request):
+    context = {}
+    all_depots = models.FichierSoumis.objects.order_by("-date")
+    if all_depots.count() != 0:
+        context["depots"] = all_depots
+
+    return render(request, "SpamAlyzer/historiqueDepot.html", context)
