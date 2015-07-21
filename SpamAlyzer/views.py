@@ -47,7 +47,7 @@ def index(request):
 @login_required
 def conversation(request, num_page):
     num_page = int(num_page)
-    NB_MSG_PAR_PAGE = 1000
+    NB_MSG_PAR_PAGE = 200
     context = { "conversation": None }
     messages = models.Message.objects.order_by("-date")
     nb_messages = messages.count()
