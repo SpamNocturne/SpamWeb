@@ -76,7 +76,6 @@ class Analyzer:
 
 
     def analyze_conversation(self, conversation):
-        print("Analyse")
         one_element_added = False
         nb_messages = len(conversation)
         userXPath = "div[@class = 'message_header']/span[@class = 'user']"
@@ -94,8 +93,10 @@ class Analyzer:
 
             if all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
                 one_element_added = True
+
                 userDB.nb_de_messages += 1
-                # TODO : stats des mots à ajouter
+                for mot in self.get_mots_de_texte(message_text): # TODO : mieux, sans ponctuation
+                    userDB.ajout_mot_score(mot)
                 userDB.save()
 
                 msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
@@ -104,6 +105,9 @@ class Analyzer:
             print("{0}/{1}".format(i, nb_messages))
 
         return one_element_added
+
+    def get_mots_de_texte(self, texte):
+        return texte.split() # TODO : mots = pas de virgule, espace, point, parenthèses...
 
     def to_python_date(self, date):
         # FR : mercredi 14 janvier 2015, 21:39 UTC+01
