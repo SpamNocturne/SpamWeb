@@ -3,3 +3,5 @@ __pycache__
 .DS_Store
 SpamWeb/databases.py
 uploads/*
+media/*
+static/*
