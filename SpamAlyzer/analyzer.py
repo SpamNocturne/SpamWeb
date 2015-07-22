@@ -7,6 +7,7 @@ from lxml import etree
 from datetime import datetime, timezone, timedelta
 import re
 from SpamAlyzer import models
+import threading
 
 class Analyzer:
 
@@ -41,12 +42,10 @@ class Analyzer:
     def analyze_the_spam_muhaha(self):
         conversations = self.find_spam_conversations()
 
-        au_moins_un_message_sauvegarde = False
-        for c in conversations:
-            if self.analyze_conversation(c): # saves each message
-                au_moins_un_message_sauvegarde = True
-
-        return au_moins_un_message_sauvegarde
+        for c in conversations: # saves the messages
+            t = threading.Thread(target=self.spam_analyzer_thread, args=(c, ))
+            t.setDaemon(True)
+            t.start()
 
     def find_spam_conversations(self):
         xpath = "//div[@class = 'thread']"
@@ -58,6 +57,9 @@ class Analyzer:
                 spam_conversations.append(c)
 
         return spam_conversations
+
+    def spam_analyzer_thread(self, conservation):
+        self.analyze_conversation(conservation)
 
     def is_spam_conversation(self, conversation):
         all_participants = []
@@ -95,8 +97,11 @@ class Analyzer:
                 one_element_added = True
 
                 userDB.nb_de_messages += 1
-                for mot in self.get_mots_de_texte(message_text): # TODO : mieux, sans ponctuation
-                    userDB.ajout_mot_score(mot)
+                if message_text is None:
+                    None # TODO ajouter un compteur ? (pouce possible)
+                else:
+                    for mot in self.get_mots_de_texte(message_text): # TODO : mieux, sans ponctuation
+                        userDB.ajout_mot_score(mot)
                 userDB.save()
 
                 msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)

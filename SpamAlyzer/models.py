@@ -30,7 +30,7 @@ class UtilisateurStats(models.Model):
 class MotScore(models.Model):
     user = models.ForeignKey(UtilisateurStats)
 
-    mot = models.CharField(max_length=200)
+    mot = models.CharField(max_length=500)
     score = models.IntegerField(default=0, null=False)
     class Meta:
         unique_together = ("user", "mot")
