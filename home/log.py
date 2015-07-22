@@ -1,3 +1,5 @@
+from django.http import HttpResponseBadRequest
+
 __author__ = '(PRO) Loïc Touzard'
 
 from .models import Log
@@ -35,3 +37,13 @@ def add_log(text, app, log_type, user):
     log.user = user
     log.save()
     return log
+
+
+def get_logs(number=0):
+    if number < 0:
+        return HttpResponseBadRequest()
+    elif number == 0:
+        # All
+        return Log.objects.order_by('-date')
+    else:
+        return Log.objects.order_by('-date')[:number]

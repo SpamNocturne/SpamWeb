@@ -55,45 +55,10 @@
         </div>
         <div class="col-md-4">
             <h2 class="text-success"><span class="label bg-green">New</span><i class="fa fa-bell-o"></i> Notifications</h2>
+
             <p class="text-success"><span class="label bg-green">New</span><span class="bg-success"> Vous pouvez voir ce qui se passe sur le Spam ! (Et voir qui a voté rouge à votre idée Grrrrr ... !)</span></p>
+
             <p class="text-warning"><span class="label bg-orange">In Progress</span><span class="bg-warning"> Les notifications ne sont pour l'instant accessible que depuis cette page :/</span></p>
         </div>
     </div>
-{% endblock %}
-
-
-{% block base_top_navbar %}
-    <!-- Notifications Menu -->
-    <li class="dropdown notifications-menu">
-        <!-- Menu toggle button -->
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-bell-o"></i>
-            <span class="label label-success">New</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">Activités récentes sur le Spam</li>
-            <li>
-                <!-- Inner Menu: contains the notifications -->
-                <ul class="menu">
-                    <!-- Inner Menu: contains the notifications -->
-                    {% for log in logs %}
-                        <li class="notification">
-                            <a href="#" {% comment %} data-toggle="tooltip"  data-placement="bottom" title="{{ log.date }} : {{ log.text }}"{% endcomment %}>
-                                {% if log.app == "jacquesIdea" %}
-                                    <i class="fa fa-lightbulb-o text-yellow"></i>
-                                {% elif log.app ==  "spamusic" %}
-                                    <i class="fa fa-youtube text-red"></i>
-                                {% elif log.app == "userManager" %}
-                                    <i class="fa fa-user text-blue"></i>
-                                {% endif %}
-                                <p class="no-margin">
-                                {{ log.text }}
-                                </p>
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-            <li class="footer"><a href="#">Tout voir (oupa)</a></li>
-        </ul>
 {% endblock %}
