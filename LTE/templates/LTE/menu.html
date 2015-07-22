@@ -22,7 +22,7 @@
       <ul class="treeview-menu">
         <li {% ifequal active "SpamAlyzer/depot" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-file-archive-o'></i> Dépôt d'archive</a></li>
         <li {% ifequal active "SpamAlyzer/conversation" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:conversation' 1 %}"><i class='fa fa-comments'></i> LA conversation</a></li>
-        <li {% ifequal active "SpamAlyzer/statsG" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-line-chart'></i> Stats globales</a></li>
+        <li {% ifequal active "SpamAlyzer/statsG" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:statsGlobales' %}"><i class='fa fa-line-chart'></i> Stats globales</a></li>
         <li {% ifequal active "SpamAlyzer/statsU" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:index' %}"><i class='fa fa-bar-chart'></i> Stats des spammeurs</a></li>
         <li {% ifequal active "SpamAlyzer/histoDepot" %}class="active" {% endifequal %}><a href="{% url 'SpamAlyzer:histoDepot' %}"><i class='fa fa-archive'></i> Historiques de dépôts</a></li>
       </ul>
