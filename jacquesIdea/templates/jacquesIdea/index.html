@@ -186,7 +186,7 @@
                 var paramsEncoded = $.param(params);
                 $.ajax({
                     method: "POST",
-                    url: "{% url 'ajax:jacquesIdeaEnregistrerCommentaire' %}",
+                    url: "{% url 'jacquesIdea:ajax_enregistrer_commentaire' %}",
                     data: paramsEncoded,
                     dataType : 'html',
                     cache: false,
@@ -224,12 +224,12 @@
             if($this.hasClass("vote-up"))
             {
                 action = "up";
-                url = "{% url 'ajax:jacquesIdeaUpvote' %}";
+                url = "{% url 'jacquesIdea:ajax_upvote' %}";
             }
             else if($this.hasClass("vote-down"))
             {
                 action = "down";
-                url = "{% url 'ajax:jacquesIdeaDownvote' %}";
+                url = "{% url 'jacquesIdea:ajax_downvote' %}";
             }
             else
             {
@@ -292,7 +292,7 @@
             //envoie de la requete ajax
             $.ajax({
                 method: "POST",
-                url: "{%  url 'ajax:jacquesIdeaSupprimerIdee' %}",
+                url: "{%  url 'jacquesIdea:ajax_supprimer_idee' %}",
                 data: paramsEncoded,
                 success: function(){
                     $("#modal-delete-"+idee).modal('hide');

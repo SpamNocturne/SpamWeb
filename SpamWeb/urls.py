@@ -25,6 +25,5 @@ urlpatterns = [
     url(r'^home/', include('home.urls', namespace='home')),
     url(r'^jacques/a/dit/idea/', include('jacquesIdea.urls', namespace='jacquesIdea')),
     url(r'^spamusic/', include('spamusic.urls', namespace='spamusic')),
-    url(r'^ajax/', include('ajax.urls', namespace='ajax')),
     url(r'^$', RedirectView.as_view(pattern_name='home:index', permanent=True)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

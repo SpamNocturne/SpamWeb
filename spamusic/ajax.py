@@ -1,126 +1,21 @@
-# -*- coding: utf-8 -*-
-
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseForbidden
-
-from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
-from django.utils.datetime_safe import datetime
-from jacquesIdea.models import Idee, Commentaire
-from home.log import add_log
-from spamusic import functions as f
-
-ONLINE = True
-
-'''
-    AJAX JACQUESIDEA
-'''
-
-
-@login_required
-def jacquesIdeaEnregistrerCommentaire(request):
-    # recuperation des parametres
-    idee_id = request.POST['idee_id']
-    commentaire_text = request.POST['com']
-    idee = get_object_or_404(Idee, pk=idee_id)
-
-    # Creation du commentaire
-    com = Commentaire()
-    com.idee = idee
-    com.auteur = request.user
-    com.commentaire_text = commentaire_text
-    com.pub_date = timezone.now()
-    com.save()
-
-    add_log(text="%s a commenté l'idée : %s" % (request.user.username, com.idee.titre),
-            app="jacquesIdea",
-            log_type="jacquesIdea_comment",
-            user=request.user)
-
-    # generation du template
-    context = {'commentaire': com}
-    return render(request, 'ajax/rightComment.html', context)
-
-
-@login_required
-def jacquesIdeaDownvote(request):
-    # recupération des parametres
-    idee_id = request.POST['idee_id']
-    # user_id = request.POST['idee_id']
-    idee = get_object_or_404(Idee, pk=idee_id)
-    # DownVote
-    vote = idee.get_vote_from(request.user)
-    vote.downvote()
-    vote.save()
-    add_log(text="%s n'aime pas l'idée : %s" % (request.user.username, idee.titre),
-            app="jacquesIdea",
-            log_type="jacquesIdea_vote",
-            user=request.user)
-    return HttpResponse()
-
-
-@login_required
-def jacquesIdeaUpvote(request):
-    # recupération des parametres
-    idee_id = request.POST['idee_id']
-    # user_id = request.POST['idee_id']
-    idee = get_object_or_404(Idee, pk=idee_id)
-    # DownVote
-    vote = idee.get_vote_from(request.user)
-    vote.upvote()
-    vote.save()
-    add_log(text="%s aime l'idée : %s" % (request.user.username, idee.titre),
-            app="jacquesIdea",
-            log_type="jacquesIdea_vote",
-            user=request.user)
-    return HttpResponse()
-
-
-@login_required
-def jacquesIdeaSupprimerIdee(request):
-    # recupération des parametres
-    idee_id = request.POST['idee_id']
-    idee = get_object_or_404(Idee, pk=idee_id)
-    # on vérifie que l'idée appartient bien a l'utilisateur connecté
-    if idee.auteur != request.user:
-        return HttpResponseForbidden()
-    # On supprime les commentaires (automatique en fait :D)
-    # idee.commentaire_set.all().delete()
-    # On supprime les votes (automatique en fait :D)
-    # idee.votants.clear()
-    # On supprime l'idée
-    idee.delete()
-    add_log(text="%s a supprimé l'idée : %s" % (request.user.username, idee.titre),
-            app="jacquesIdea",
-            log_type="jacquesIdea_delete_idea",
-            user=request.user)
-    return HttpResponse()
-
-
-'''
-    AJAX LOG
-'''
-
-
-@login_required
-def homeAddLog(request):
-    # recupération des parametres
-    text = request.POST["text"]
-    app = request.POST["app"]
-    log_type = request.POST["log_type"]
-    user = request.user
-    log = add_log(text=text, app=app, log_type=log_type, user=user)
-    return HttpResponse()
-
 
 '''
     AJAX SPAMUSIC
 '''
 
 
+
 # Va chercher toutes les playlistes du master et les rend en template
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.shortcuts import render
+from django.utils.datetime_safe import datetime
+from home.log import add_log
+from . import functions as f
+
+
 @login_required()
-def spamusicAjouterPlaylist(request):
+def ajax_ajouter_playlist(request):
     name = request.POST['name']
 
     master = f.get_youtube_master()
@@ -145,7 +40,7 @@ def spamusicAjouterPlaylist(request):
 
 # récupère les élément d'une playlist et les rend l'onglet video les contenants
 @login_required()
-def spamusicPlaylistItems(request):
+def ajax_playlistitems(request):
     playlist_id = request.POST['playlist_id']
     master = f.get_youtube_master()
     check = f.check_youtube_master(request=request, master=master)
@@ -343,7 +238,7 @@ def spamusicPlaylistItems(request):
 
 # Va chercher les details d'une playlist et le rend via un template
 @login_required()
-def spamusicDetailsPlaylist(request):
+def ajax_details_playlist(request):
     playlist_id = request.POST['playlist_id']
     master = f.get_youtube_master()
     check = f.check_youtube_master(request=request, master=master)
@@ -415,7 +310,7 @@ def spamusicDetailsPlaylist(request):
 
 # lance une recherche youtube avec les mots clé passés en parametres
 @login_required()
-def spamusicRechercherVideos(request):
+def ajax_rechercher_videos(request):
     q = request.POST['q']
     master = f.get_youtube_master()
     check = f.check_youtube_master(request=request, master=master)
@@ -572,7 +467,7 @@ def spamusicRechercherVideos(request):
     return render(request, 'spamusic/yt-tab-search-results.html', context)
 
 
-def spamusicAddVideoToPlaylist(request):
+def ajax_add_video_to_playlist(request):
     playlist_id = request.POST['playlist_id']
     video_id = request.POST['video_id']
     master = f.get_youtube_master()
