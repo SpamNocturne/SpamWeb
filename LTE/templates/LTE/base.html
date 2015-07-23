@@ -83,8 +83,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-success">New</span>
-                        <span class="label label-error">o</span>
+                        <span id='global-notification-new-count' class='label label-warning'></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">Activités récentes sur le Spam</li>
@@ -392,24 +391,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $.ajax({
                     method: "GET",
                     url: "{% url 'home:ajax_get_notifications' %}",
-                    // data: paramsEncoded,
                     dataType : 'html',
                     cache: false,
                     success: function(html){
-                        console.log("AJAX OK");
-                        console.log(html);
-                        console.log($("#global-notification-container").html(html).find(".notification").length);
+                        var $notif_container = $("#global-notification-container");
+                        $notif_container.html(html);
+                        var new_notif_nb = $notif_container.find(".notification-new").length;
+                        var $label = $("#global-notification-new-count");
+                        if(new_notif_nb > 0)
+                        {
+                            $label.text(new_notif_nb)
+                        }
+                        else
+                        {
+                            $label.text('')
+                        }
+
+
                     },
                     error: function(resultat, statut, erreur){
-                        console.log("AJAX NOK");
-                        $this.removeAttr('disabled');
-                        $this.text(msg);
-                        alert("Désolé ! Une erreur serveur est survenue, réessayez, sinon actualisez la page.");
-                    },
-                    complete: function(){
-                        console.log("AJAX DONE");
+                        console.log("Impossible de récupérer les noifications");
                     }
                 });
+                setTimeout(arguments.callee, 5000);
             };
 
             refresh_notifications();

@@ -25,7 +25,13 @@ def ajax_home_add_log(request):
 def ajax_get_notifications(request):
     number = 20
     logs = get_logs(number)
+    unseenlog = None
+    user = request.user
+    if hasattr(user, 'firstunseenlog'):
+        unseenlog = user.firstunseenlog.log
+
     context = {
         'logs': logs,
+        'unseenlog': unseenlog,
     }
     return render(request, 'home/notifications.html', context)

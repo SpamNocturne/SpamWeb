@@ -1,5 +1,5 @@
 {% for log in logs %}
-    <li class="notification">
+    <li class="notification {% if log.date >= unseenlog.date %}notification-new bg-gray{% endif %}">
         <a href="#">
             {% if log.app == "jacquesIdea" %}
                 <i class="fa fa-lightbulb-o text-yellow"></i>
