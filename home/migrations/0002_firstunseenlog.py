@@ -14,10 +14,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='LastSeenLog',
+            name='FirstUnseenLog',
             fields=[
-                ('user', models.OneToOneField(primary_key=True, to=settings.AUTH_USER_MODEL, serialize=False)),
-                ('log', models.ForeignKey(related_query_name='last_seen_log', to='home.Log', related_name='last_seen_logs')),
+                ('user', models.OneToOneField(serialize=False, primary_key=True, to=settings.AUTH_USER_MODEL)),
+                ('log', models.ForeignKey(related_name='first_unseen_logs', null=True, blank=True, related_query_name='first_unseen_log', to='home.Log')),
             ],
         ),
     ]

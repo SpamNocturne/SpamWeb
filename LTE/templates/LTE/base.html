@@ -387,6 +387,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Notifications -->
     <script>
         $(function(){
+            var has_unseen_notification = false;
             var refresh_notifications = function(){
                 $.ajax({
                     method: "GET",
@@ -400,14 +401,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         var $label = $("#global-notification-new-count");
                         if(new_notif_nb > 0)
                         {
-                            $label.text(new_notif_nb)
+                            $label.text(new_notif_nb);
+                            has_unseen_notification = true;
                         }
                         else
                         {
-                            $label.text('')
+                            $label.text('');
+                            has_unseen_notification = false;
                         }
-
-
                     },
                     error: function(resultat, statut, erreur){
                         console.log("Impossible de récupérer les noifications");
@@ -415,6 +416,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 });
                 setTimeout(arguments.callee, 5000);
             };
+
+            var notifications_seen = function(event){
+                event.preventDefault()
+                if(has_unseen_notification == true)
+                {
+                   $.ajax({
+                    method: "GET",
+                    url: "{% url 'home:ajax_delete_unseen_log' %}",
+                    dataType : 'html',
+                    cache: false,
+                    success: function(html){
+                        var $notif_container = $("#global-notification-container");
+                        $notif_container.find(".notification-new").removeClass(".notification-new");
+                        $("#global-notification-new-count").text('');
+                        has_unseen_notification = false;
+                    },
+                    error: function(resultat, statut, erreur){
+                        console.log("Impossible de Mettre a jour les notifications vues");
+                    }
+                });
+                }
+            };
+
+            $("#global-notification-menu .dropdown-toggle").click(notifications_seen);
 
             refresh_notifications();
         })

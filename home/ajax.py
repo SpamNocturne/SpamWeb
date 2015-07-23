@@ -34,4 +34,16 @@ def ajax_get_notifications(request):
         'logs': logs,
         'unseenlog': unseenlog,
     }
-    return render(request, 'home/notifications.html', context)
+    return render(request, 'home/notifications.html', context)\
+
+
+@login_required
+def ajax_delete_unseen_log(request):
+    # Mise a jour de la derniere notif vue
+    user = request.user
+    if hasattr(user, 'firstunseenlog'):
+        unseen_log = user.firstunseenlog
+        unseen_log.log = None
+        unseen_log.save()
+
+    return HttpResponse()
