@@ -1,0 +1,55 @@
+{% extends "LTE/base.html" %}
+{% load staticfiles %}
+
+
+<!-- page head title -->
+{% block base_title %}Consommations | {{ block.super }}{% endblock %}
+
+
+<!--
+----    LEFT SIDEBAR
+---->
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="spamConso" only %}
+{% endblock %}
+
+
+<!-- here add you own stylesheet and scripts in header -->
+{% block base_header_addons %}
+    <!-- Here : addons for the layout, in the whole App -->
+    <link href="{% static 'SpamConso/css/spamConso.css' %}" rel="stylesheet" type="text/css" />
+    {% block page_header_addons %}
+    {% endblock %}
+{% endblock %}
+
+<!-- here add you own stylesheet and scripts in footer-->
+{% block base_footer_addons %}
+    <!-- Here : addons for the layout, in the whole App-->
+    {% block page_footer_addons %}
+    {% endblock %}
+{% endblock %}
+
+<!--
+----    PAGE CONTENT HEADER
+---->
+<!-- Page content header title -->
+{% block base_content_header_title %}Alors on est <b>gros ?</b> | <b>Spam</b>Web{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+{% block base_content_header_breadcrumb %}
+{% endblock %}
+
+<!--
+----    RIGHT SIDEBAR
+---->
+
+<!--
+----    PAGE CONTENT BODY
+---->
+<!-- Page content - body -->
+{% block body %}{% endblock %}

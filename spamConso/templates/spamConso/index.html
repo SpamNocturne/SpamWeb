@@ -1,0 +1,20 @@
+{% extends "spamConso/layout.html" %}
+{% load staticfiles %}
+
+{% block body %}
+	<form action="{% url 'spamConso:add_conso' %}" method="post">
+		
+		{{form.type.label_tag}} {{form.type}}
+		{{form.description.label_tag}} {{form.description}}
+		<button type="submit">Ajouter</button>
+		{% csrf_token %}
+	</form>
+	<ol>
+    {%  for conso in conso_list.reverse %}
+        <!-- conso -->
+		<li>
+			{{conso.type}} {{conso.consommateur}} {{conso.description}} {{conso.conso_date}}
+		</li>
+    {% endfor %}
+	</ol>
+{% endblock %}

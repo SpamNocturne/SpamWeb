@@ -44,7 +44,8 @@ INSTALLED_APPS = (
     'jacquesIdea',
     'userManager',
     'LTE',
-    'spamusic'
+    'spamusic',
+	'spamConso'
 )
 
 MIDDLEWARE_CLASSES = (
