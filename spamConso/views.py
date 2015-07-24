@@ -31,7 +31,7 @@ def add_conso(request):
             conso.conso_date = timezone.now()
             conso.consommateur = request.user
             conso.save()
-            add_log(text="%s a s'est fait plaiz : %s" % (request.user.username, conso.type),
+            add_log(text="%s a consommé %s" % (conso.type, conso.consommateur.username),
                     app="spamConso",
                     log_type="spamConso_add_conso",
                     user=request.user)
@@ -39,7 +39,7 @@ def add_conso(request):
             error = True
     else:
         form = ConsoForm()
-    return redirect('index.html')
+    return redirect(reverse('spamConso:index'))
 
 
 @login_required

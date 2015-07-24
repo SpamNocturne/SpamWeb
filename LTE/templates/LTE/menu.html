@@ -11,7 +11,7 @@
       </a>
       <ul class="treeview-menu">
         <li {% ifequal active "spamconso/index" %}class="active" {% endifequal %}><a href="{% url 'spamConso:index' %}"><i class='fa fa-plus'></i> Ajouter </a></li>
-        <li {% ifequal active "spamconso/biere" %}class="active" {% endifequal %}><a href="{% url 'spamConso:index' %}"><i class='fa fa-beer'></i> Bières</a></li>
+        <li {% ifequal active "spamconso/biere" %}class="active" {% endifequal %}><a href="{% url 'spamConso:beer_view' %}"><i class='fa fa-beer'></i> Bières</a></li>
         <li {% ifequal active "spamconso/tacos" %}class="active" {% endifequal %}><a href="{% url 'spamConso:index' %}"><i class='fa fa-cutlery'></i> Tacos</a></li>
         <li {% ifequal active "spamconso/pouces" %}class="active" {% endifequal %}><a href="{% url 'spamConso:index' %}"><i class='fa fa-thumbs-o-up'></i> Pouces</a></li>
       </ul>
