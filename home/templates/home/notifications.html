@@ -1,0 +1,16 @@
+{% for log in logs %}
+    <li class="notification {% if log.date >= unseenlog.date %}notification-new bg-gray{% endif %}">
+        <a href="#">
+            {% if log.app == "jacquesIdea" %}
+                <i class="fa fa-lightbulb-o text-yellow"></i>
+            {% elif log.app ==  "spamusic" %}
+                <i class="fa fa-youtube text-red"></i>
+            {% elif log.app == "userManager" %}
+                <i class="fa fa-user text-blue"></i>
+            {% endif %}
+            <p class="no-margin">
+                {{ log.text }}
+            </p>
+        </a>
+    </li>
+{% endfor %}

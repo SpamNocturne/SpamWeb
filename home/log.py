@@ -1,6 +1,8 @@
-__author__ = '(PRO) Loïc Touzard'
+from django.contrib.auth.models import User
+from django.http import HttpResponseBadRequest
 
-from .models import Log
+
+from .models import Log, FirstUnseenLog
 
 # add the params you need, and use is as constants
 LOG_PARAMS = {
@@ -8,6 +10,7 @@ LOG_PARAMS = {
         "jacquesIdea",
         "spamusic",
         "userManager",
+        "spamConso",
     ],
     "log_type": [
         "spamusic_add_playlist",
@@ -16,7 +19,8 @@ LOG_PARAMS = {
         "jacquesIdea_delete_idea",
         "jacquesIdea_comment",
         "jacquesIdea_vote",
-        "userManager_register"
+        "userManager_register",
+        "spamConso_add_conso",
     ],
 }
 
@@ -34,4 +38,26 @@ def add_log(text, app, log_type, user):
     log.log_type = log_type
     log.user = user
     log.save()
+
+    users = User.objects.all()
+    # On met a jour les notif de tous les users
+    for us in users:
+        if us != user:
+            # S'il n'a pas de last log on le lui créé
+            if not hasattr(us, 'firstunseenlog'):
+                lastlog = FirstUnseenLog(user=us, log=log)
+                lastlog.save()
+            # si l'utilisateur est a jour il ne l'est plus
+            elif us.firstunseenlog.log is None:
+                us.firstunseenlog.log = log
     return log
+
+
+def get_logs(number=0):
+    if number < 0:
+        return HttpResponseBadRequest()
+    elif number == 0:
+        # All
+        return Log.objects.order_by('-date')
+    else:
+        return Log.objects.order_by('-date')[:number]

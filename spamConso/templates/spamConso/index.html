@@ -1,6 +1,17 @@
 {% extends "spamConso/layout.html" %}
 {% load staticfiles %}
 
+
+<!-- page head title -->
+{% block base_title %}Nouvelle Conso | {{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}Alors on est <b>gros ?</b> | {{ block.super }}{% endblock %}
+
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='Ajouter une SpamConso' prev1Name='SpamConso' prev1Url='spamConso:index' only %}
+{% endblock %}
+
 {% block body %}
     <form action="{% url 'spamConso:add_conso' %}" method="post">
 
