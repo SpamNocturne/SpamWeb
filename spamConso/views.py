@@ -62,6 +62,8 @@ def beer_view(request):
         .annotate(total=Count('type'))
     for i in chouffe_list:
         i['username'] = user.get(id = i['consommateur'])['username']
-    bpm = biere_list.values('conso_date').annotate(total=Count('type'))
+    bpm = biere_list.extra(select={'month': 'extract( month from conso_date )'})\
+        .values('month')\
+        .annotate(total=Count('type'))
     context = {'user_biere_list':user_biere_list, 'chouffe_list':chouffe_list, 'bpm':bpm}
     return render(request, 'spamConso/biere.html', context)
