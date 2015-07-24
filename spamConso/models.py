@@ -15,4 +15,4 @@ class Consommation(models.Model):
 
 
     def __str__(self):
-        return self.type
+        return "%s à consommé %s le %s" % (self.type, self.consommateur.username, str(self.conso_date.strftime("%d/%m/%Y %H:%M:%S")))

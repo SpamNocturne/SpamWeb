@@ -13,19 +13,33 @@
 {% endblock %}
 
 {% block body %}
-	<form action="{% url 'spamConso:add_conso' %}" method="post">
-		
-		{{form.type.label_tag}} {{form.type}}
-		{{form.description.label_tag}} {{form.description}}
-		<button type="submit">Ajouter</button>
-		{% csrf_token %}
-	</form>
-	<ol>
-    {%  for conso in conso_list.reverse %}
-        <!-- conso -->
-		<li>
-			{{conso.type}} {{conso.consommateur}} {{conso.description}} {{conso.conso_date}}
-		</li>
-    {% endfor %}
-	</ol>
+    <form action="{% url 'spamConso:add_conso' %}" method="post">
+
+        {{ form.type.label_tag }} {{ form.type }}
+        {{ form.description.label_tag }} {{ form.description }}
+        <button type="submit">Ajouter</button>
+        {% csrf_token %}
+    </form>
+    <ol>
+
+    </ol>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th>Type</th>
+            <th>Consommateur</th>
+            <th>Description</th>
+            <th>Date</th>
+        </tr>
+        {% for conso in conso_list.reverse %}
+            <!-- conso -->
+            <tr>
+                <td>{{ conso.type }}</td>
+                <td>{{ conso.consommateur }}</td>
+                <td>{{ conso.description }}</td>
+                <td>{{ conso.conso_date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

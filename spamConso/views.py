@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from home.log import add_log
-
+from django.db.models import Count
 from spamConso.forms import ConsoForm
 from spamConso.models import Consommation
-
 
 
 @login_required
@@ -22,13 +22,6 @@ def index(request):
 
 
 @login_required
-def get_conso(request):
-    conso_list = Conso.objects.filter(type_exact = request.type)
-    user_conso_list = conso_list.filter(consommateur=request.user)
-    context = {'conso_list': conso_list, 'user_conso_list': user_conso_list}
-    return render(request, 'spamConso/%s.html'.format(conso.type), context)
-
-
 def add_conso(request):
     error = False
     if request.method == "POST":
@@ -38,12 +31,24 @@ def add_conso(request):
             conso.conso_date = timezone.now()
             conso.consommateur = request.user
             conso.save()
-            #add_log(text="%s a s'est fait plaiz : %s" % (request.user.username, conso.type),
-            #        app="spamConso",
-            #        log_type="spamConso_add_conso",
-            #        user=request.user)
+            add_log(text="%s a s'est fait plaiz : %s" % (request.user.username, conso.type),
+                    app="spamConso",
+                    log_type="spamConso_add_conso",
+                    user=request.user)
         else:
             error = True
     else:
         form = ConsoForm()
     return redirect('index.html')
+
+
+@login_required
+def beer_view(request):
+    biere_list = Consommation.objects.filter(type='biere')
+    user_biere_list = biere_list.values('consommateur').annotate(total=Count('type'))
+    chouffe_list = biere_list.filter(description='chouffe') \
+        .values('consommateur') \
+        .annotate(total=Count('type'))
+    bpm = biere_list.values('conso_date').annotate(total=Count('type'))
+    context = {'user_biere_list':user_biere_list, 'chouffe_list':chouffe_list, 'bpm':bpm}
+    return render(request, 'spamConso/biere.html', context)
