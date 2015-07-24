@@ -12,34 +12,72 @@
     {% include 'LTE/breadcrumb.html' with current='Ajouter une SpamConso' prev1Name='SpamConso' prev1Url='spamConso:index' only %}
 {% endblock %}
 
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="spamConso/index" only %}
+{% endblock %}
+
+{% block page_footer_addons %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+      $('select').select2();
+    });
+    </script>
+{% endblock %}
+
+{% block page_header_addons %}
+    <!-- select2 -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
 {% block body %}
-    <form action="{% url 'spamConso:add_conso' %}" method="post">
+    <section class="row">
+        <form action="{% url 'spamConso:add_conso' %}" method="post">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
+                <div class="form-group {% if form.type.errors %}has-error{% endif %}">
+                    {{ form.type.label_tag }} {{ form.type }}
+                    {% for error in form.type.errors %}
+                        <p class="text-red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
 
-        {{ form.type.label_tag }} {{ form.type }}
-        {{ form.description.label_tag }} {{ form.description }}
-        <button type="submit">Ajouter</button>
-        {% csrf_token %}
-    </form>
-    <ol>
-
-    </ol>
-    <table class="table table-bordered">
-        <tbody>
-        <tr>
-            <th>Type</th>
-            <th>Consommateur</th>
-            <th>Description</th>
-            <th>Date</th>
-        </tr>
-        {% for conso in conso_list.reverse %}
-            <!-- conso -->
+                <div class="form-group {% if form.description.errors %}has-error{% endif %}">
+                    {{ form.description.label_tag }} {{ form.description }}
+                    {% for error in form.description.errors %}
+                        <p class="text-red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Ajouter</button>
+            </div>
+            <!-- /.col -->
+            {% csrf_token %}
+        </form>
+    </section>
+    <section class="row">
+        <table class="table table-bordered col-xs-12">
+            <tbody>
             <tr>
-                <td>{{ conso.type }}</td>
-                <td>{{ conso.consommateur }}</td>
-                <td>{{ conso.description }}</td>
-                <td>{{ conso.conso_date }}</td>
+                <th>Type</th>
+                <th>Consommateur</th>
+                <th>Description</th>
+                <th>Date</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            {% for conso in conso_list.reverse %}
+                <!-- conso -->
+                <tr>
+                    <td>{{ conso.type }}</td>
+                    <td>{{ conso.consommateur }}</td>
+                    <td>{{ conso.description }}</td>
+                    <td>{{ conso.conso_date }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </section>
 {% endblock %}
