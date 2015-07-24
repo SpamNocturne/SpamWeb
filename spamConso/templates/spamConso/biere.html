@@ -1,0 +1,31 @@
+{% extends "spamConso/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}Ma Page | {{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}Titre de ma page{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}Description de ma page{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+    {% for i in user_biere_list %}
+       <p>
+       {{ i.total }}
+       {{ i.consommateur }}
+       </p>
+    {% endfor %}
+    {{ bpm }}
+    {{ chouffe_list }}
+{% endblock %}
