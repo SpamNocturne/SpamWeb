@@ -5,7 +5,7 @@
       <span class='direct-chat-name pull-right'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
       <span class='direct-chat-timestamp pull-left'>{{ commentaire.pub_date|date:"d F Y" }}</span>
     </div><!-- /.direct-chat-info -->
-    <img class="direct-chat-img" src="{% static 'LTE/dist/img/user3-128x128.jpg' %}" alt="message user image" /><!-- /.direct-chat-img -->
+    <img class="direct-chat-img" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
     <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
       {{ commentaire.commentaire_text }}
     </div><!-- /.direct-chat-text -->
