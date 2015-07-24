@@ -44,16 +44,24 @@ def add_conso(request):
             error = True
     else:
         form = ConsoForm()
+
     return redirect(reverse('spamConso:index'))
 
 
 @login_required
 def beer_view(request):
-    biere_list = Consommation.objects.filter(type='biere')
+    user = User.objects.values('username', 'id')
+    biere_list = Consommation.objects.filter(type='biere').select_related('consommateur')
     user_biere_list = biere_list.values('consommateur').annotate(total=Count('type'))
+
+    for i in user_biere_list:
+        i['username'] = user.get(id = i['consommateur'])['username']
+
     chouffe_list = biere_list.filter(description='chouffe') \
         .values('consommateur') \
         .annotate(total=Count('type'))
+    for i in chouffe_list:
+        i['username'] = user.get(id = i['consommateur'])['username']
     bpm = biere_list.values('conso_date').annotate(total=Count('type'))
     context = {'user_biere_list':user_biere_list, 'chouffe_list':chouffe_list, 'bpm':bpm}
     return render(request, 'spamConso/biere.html', context)
