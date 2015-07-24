@@ -20,7 +20,8 @@ LOG_PARAMS = {
         "jacquesIdea_comment",
         "jacquesIdea_vote",
         "userManager_register",
-        "spamConso_add_conso",
+        "spamConso_add_conso_beer",
+        "spamConso_add_conso_tacos",
     ],
 }
 

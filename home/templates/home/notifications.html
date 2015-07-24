@@ -7,6 +7,14 @@
                 <i class="fa fa-youtube text-red"></i>
             {% elif log.app == "userManager" %}
                 <i class="fa fa-user text-blue"></i>
+            {% elif log.app == "spamConso" %}
+                {% if log.log_type == "spamConso_add_conso_beer" %}
+                    <i class="fa fa-beer text-aqua"></i>
+                {% elif log.log_type == "spamConso_add_conso_tacos"%}
+                    <i class="fa fa-cutlery text-aqua"></i>
+                    {% else %}
+                    BITE {{ log.log_type }}
+                {% endif %}
             {% endif %}
             <p class="no-margin">
                 {{ log.text }}

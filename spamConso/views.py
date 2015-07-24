@@ -31,9 +31,14 @@ def add_conso(request):
             conso.conso_date = timezone.now()
             conso.consommateur = request.user
             conso.save()
+            log_type = ""
+            if conso.type == "biere":
+                log_type = "spamConso_add_conso_beer"
+            elif conso.type == "tacos":
+                log_type = "spamConso_add_conso_tacos"
             add_log(text="%s a consommé %s" % (conso.type, conso.consommateur.username),
                     app="spamConso",
-                    log_type="spamConso_add_conso",
+                    log_type=log_type,
                     user=request.user)
         else:
             error = True

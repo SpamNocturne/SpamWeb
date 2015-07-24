@@ -7,7 +7,7 @@ from django.utils import timezone
 
 
 class Consommation(models.Model):
-    CONSO_CHOICES = ( ('tacos', 'tacos'),
+    CONSO_CHOICES = (('tacos', 'tacos'),
                       ('biere', 'biere'))
     type = models.CharField(max_length=60, choices = CONSO_CHOICES)
     description = models.CharField(max_length=60)
