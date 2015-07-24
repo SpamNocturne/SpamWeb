@@ -18,11 +18,12 @@
 
 {% block page_footer_addons %}
     <script>
-        var data = {
+    var mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
+        var dataBiere = {
             labels: [{% for user in user_biere_list %}"{{ user.username }}", {% endfor %}],
             datasets: [
                 {
-                    label: "My First dataset",
+                    label: "Biere dataset",
                     fillColor: "rgba(220,220,220,0.5)",
                     strokeColor: "rgba(220,220,220,0.8)",
                     highlightFill: "rgba(220,220,220,0.75)",
@@ -31,19 +32,49 @@
                 }
             ]
         };
+        var dataChouffe = {
+            labels: [{% for user in chouffe_list %}"{{ user.username }}", {% endfor %}],
+            datasets: [
+                {
+                    label: "Chouffe dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [{% for user in chouffe_list %}{{ user.total }}, {% endfor %}]
+                }
+            ]
+        };
+        var dataBPM = {
+            labels: [{% for user in bpm %}mois[Math.floor({{ user.month }}) - 1 ], {% endfor %}],
+            datasets: [
+                {
+                    label: "Biere per month dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [{% for user in bpm %}{{ user.total }}, {% endfor %}]
+                }
+            ]
+        };
 
-        $(function(){
-            var ctx = document.getElementById("myBarChart").getContext("2d");
-            var myBarChart = new Chart(ctx).Bar(data);
+        $(function () {
+            var ctx1 = document.getElementById("biereChart").getContext("2d");
+            var biereChart = new Chart(ctx1).Bar(dataBiere);
+            var ctx2 = document.getElementById("chouffeChart").getContext("2d");
+            var chouffeChart = new Chart(ctx2).Bar(dataChouffe);
+            var ctx3 = document.getElementById("bpmChart").getContext("2d");
+            var bpmChart = new Chart(ctx3).Bar(dataBPM);
+
         });
-
     </script>
 
 {% endblock %}
 
 {% block body %}
-    <canvas id = 'myBarChart' width="400" height="400"></canvas>
-    {{ user_biere_list }}
-    {{ chouffe_list }}
-    {{ bpm }}
+    <canvas id='bpmChart' width="400" height="400"></canvas>
+    <canvas id='biereChart' width="400" height="400"></canvas>
+    <canvas id='chouffeChart' width="400" height="400"></canvas>
+
 {% endblock %}
