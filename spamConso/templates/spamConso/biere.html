@@ -17,15 +17,33 @@
 {% endblock %}
 
 {% block page_footer_addons %}
+    <script>
+        var data = {
+            labels: [{% for user in user_biere_list %}"{{ user.username }}", {% endfor %}],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [{% for user in user_biere_list %}{{ user.total }}, {% endfor %}]
+                }
+            ]
+        };
+
+        $(function(){
+            var ctx = document.getElementById("myBarChart").getContext("2d");
+            var myBarChart = new Chart(ctx).Bar(data);
+        });
+
+    </script>
+
 {% endblock %}
 
 {% block body %}
-    {% for i in user_biere_list %}
-       <p>
-       {{ i.total }}
-       {{ i.consommateur }}
-       </p>
-    {% endfor %}
-    {{ bpm }}
+    <canvas id = 'myBarChart' width="400" height="400"></canvas>
+    {{ user_biere_list }}
     {{ chouffe_list }}
+    {{ bpm }}
 {% endblock %}

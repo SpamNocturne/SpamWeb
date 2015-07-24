@@ -27,6 +27,10 @@
 <!-- here add you own stylesheet and scripts in footer-->
 {% block base_footer_addons %}
     <!-- Here : addons for the layout, in the whole App-->
+
+    <!-- ChartJS-->
+    <script src="{% static 'LTE/plugins/chartjs/Chart.min.js' %}"></script>
+
     {% block page_footer_addons %}
     {% endblock %}
 {% endblock %}
