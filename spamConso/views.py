@@ -9,15 +9,22 @@ from django.utils import timezone
 from home.log import add_log
 from django.db.models import Count
 from spamConso.forms import ConsoForm
-from spamConso.models import Consommation
+from spamConso.models import Consommation, ConsoTag
+import json
 
 
 @login_required
 def index(request):
     csrfContext = RequestContext(request)
     conso_list = Consommation.objects.order_by('conso_date')
+    conso_tags = ConsoTag.objects.all()
     form = ConsoForm()
-    context = {'conso_list': conso_list, 'form': form, 'csrfContext': csrfContext}
+    context = {
+        'conso_list': conso_list,
+        'form': form,
+        'conso_tags': conso_tags,
+        'csrfContext': csrfContext
+    }
     return render(request, 'spamConso/index.html', context)
 
 
@@ -31,6 +38,16 @@ def add_conso(request):
             conso.conso_date = timezone.now()
             conso.consommateur = request.user
             conso.save()
+            tags = json.loads(conso.tags)
+            all_tags_value = ConsoTag.objects.all().values('value')
+            for tag_value, tag_name in tags.items():
+                # s'il y a un nouveau tag
+                if not any(d['value'] == tag_value for d in all_tags_value):
+                    new_tag = ConsoTag()
+                    new_tag.name = tag_name
+                    new_tag.value = tag_value
+                    new_tag.save()
+            # ajout du log
             log_type = ""
             if conso.type == "biere":
                 log_type = "spamConso_add_conso_beer"

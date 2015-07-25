@@ -20,15 +20,70 @@
 {% block page_footer_addons %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
     <script type="text/javascript">
-    $(function(){
-      $('select').select2();
-    });
+        $(function () {
+            $('select#id_type').select2({
+                width: '100%',
+            });
+            $('select#conso_tag_choice').select2({
+                tags: true,
+                placeholder: 'Choisis ou crée un nouveau tag pour ta conso !',
+                width: '100%',
+                matcher: function (params, data) {
+                    // If there are no search terms, return all of the data
+                    if ($.trim(params.term) === '') {
+                        return data;
+                    }
+                    // `params.term` should be the term that is used for searching
+                    // `data.text` is the text that is displayed for the data object
+                    if (data.text.toLowerCase().replace("-", "").indexOf(params.term.toLowerCase().replace("-", "")) > -1) {
+                        return $.extend({}, data, true);
+                    }
+
+                    // Return `null` if the term should not be displayed
+                    return null;
+                },
+                createTag: function (tag) {
+
+                    // check if the option is already there
+                    found = false;
+                    $("#conso_tag_choice option").each(function () {
+                        if ($.trim(tag.term).toUpperCase().replace("-", "") == $.trim($(this).text()).toUpperCase().replace("-", "")) {
+                            found = true;
+                        }
+                    });
+
+                    // show the suggestion only if a match was not found
+                    if (!found) {
+                        return {
+                            id: tag.term,
+                            text: tag.term,
+                            isNew: true
+                        };
+                    }
+                }
+            });
+
+            //form submit
+            $("form").submit(function (e) {
+                var tags_text = {};
+                $(this).find("#conso_tag_choice").find("option:selected").each(function () {
+                    var $this = $(this);
+                    var value = $this.val().toLowerCase().replace("-", "").trim();
+                    var name = $this.text().trim();
+                    if (value.length && name.length) {
+                        tags_text[value] = name;
+                    }
+                });
+                // console.log(JSON.stringify(tags_text));
+                $("#id_tags").val(JSON.stringify(tags_text));
+            });
+        });
     </script>
 {% endblock %}
 
 {% block page_header_addons %}
     <!-- select2 -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
@@ -43,7 +98,20 @@
                 </div>
             </div>
             <div class="col-xs-12 col-md-8 col-md-offset-2">
-
+                <div class="form-group {% if form.tags.errors %}has-error{% endif %}">
+                    <label for="conso_tag_choice">{{ form.tags.label }}</label>
+                    {{ form.tags }}<!-- hidden tag -->
+                    <select class="form-control" id="conso_tag_choice" multiple="multiple">
+                        {% for conso_tag in conso_tags %}
+                            <option value="{{ conso_tag.value }}">{{ conso_tag.name }}</option>
+                        {% endfor %}
+                    </select>
+                    {% for error in form.tags.errors %}
+                        <p class="text-red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="form-group {% if form.description.errors %}has-error{% endif %}">
                     {{ form.description.label_tag }} {{ form.description }}
                     {% for error in form.description.errors %}
@@ -59,25 +127,33 @@
         </form>
     </section>
     <section class="row">
-        <table class="table table-bordered col-xs-12">
-            <tbody>
-            <tr>
-                <th>Type</th>
-                <th>Consommateur</th>
-                <th>Description</th>
-                <th>Date</th>
-            </tr>
-            {% for conso in conso_list.reverse %}
-                <!-- conso -->
+        <div class="col-xs-12">
+            <table class="table table-bordered col-xs-12">
+                <caption>Historique des Consommations</caption>
+                <tbody>
                 <tr>
-                    <td>{{ conso.type }}</td>
-                    <td>{{ conso.consommateur }}</td>
-                    <td>{{ conso.description }}</td>
-                    <td>{{ conso.conso_date }}</td>
+                    <th>Type</th>
+                    <th>Consommateur</th>
+                    <th>Tags</th>
+                    <th>Description</th>
+                    <th>Date</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
+                {% for conso in conso_list.reverse %}
+                    <!-- conso -->
+                    <tr>
+                        <td>{{ conso.type }}</td>
+                        <td>{{ conso.consommateur }}</td>
+                        <td>
+                            {% for tag_value, tag_name in conso.get_tags_as_dict.items %}
+                                <span class="label label-info label-{{ tag_value }}">{{ tag_name }}</span>&nbsp;
+                            {% endfor %}
+                        </td>
+                        <td>{{ conso.description }}</td>
+                        <td>{{ conso.conso_date }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </section>
 {% endblock %}

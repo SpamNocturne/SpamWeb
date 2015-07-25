@@ -2,11 +2,14 @@ from django import forms
 from .models import Consommation
 
 class ConsoForm(forms.ModelForm):
+    tags = forms.CharField(widget=forms.HiddenInput())
+
     class Meta:
         model = Consommation
-        fields = ["type", "description"]
+        fields = ["type", "tags", "description"]
         labels = {
             'type': "Type",
+            'tags': "Tags",
             'description': "Description",
         }
 

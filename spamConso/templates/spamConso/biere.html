@@ -18,7 +18,7 @@
 
 {% block page_footer_addons %}
     <script>
-    var mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
+    var mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
         var dataBiere = {
             labels: [{% for user in user_biere_list %}"{{ user.username }}", {% endfor %}],
             datasets: [
@@ -66,7 +66,6 @@
             var chouffeChart = new Chart(ctx2).Bar(dataChouffe);
             var ctx3 = document.getElementById("bpmChart").getContext("2d");
             var bpmChart = new Chart(ctx3).Bar(dataBPM);
-
         });
     </script>
 
