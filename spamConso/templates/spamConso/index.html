@@ -77,6 +77,23 @@
                 // console.log(JSON.stringify(tags_text));
                 $("#id_tags").val(JSON.stringify(tags_text));
             });
+
+            var hashCode = function (s) {
+                return s.split("").reduce(function (a, b) {
+                    a = ((a << 5) - a) + b.charCodeAt(0);
+                    return a & a
+                }, 0);
+            };
+
+            //coloration label
+            LABELS_COLOR = ["label-info", "label-danger", "label-default", "label-primary", "label-success", "label-warning"];
+            $("table td span.label").each(function () {
+                var $this = $(this);
+                var text = $this.attr("data-value");
+                var hash = Math.abs(hashCode(text))%LABELS_COLOR.length;
+                $this.addClass(LABELS_COLOR[hash]);
+            });
+
         });
     </script>
 {% endblock %}
@@ -145,7 +162,7 @@
                         <td>{{ conso.consommateur }}</td>
                         <td>
                             {% for tag_value, tag_name in conso.get_tags_as_dict.items %}
-                                <span class="label label-info label-{{ tag_value }}">{{ tag_name }}</span>&nbsp;
+                                <span class="label" data-value="{{ tag_value }}">{{ tag_name }}</span>&nbsp;
                             {% endfor %}
                         </td>
                         <td>{{ conso.description }}</td>
