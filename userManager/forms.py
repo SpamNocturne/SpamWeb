@@ -7,14 +7,14 @@ from .models import UserProfile
 
 
 class ConnexionForm(forms.Form):
-    username = forms.CharField(label="Pseudo", max_length=30)
+    username = forms.CharField(label="Pseudo ou E-mail", max_length=50)
     password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
         super(ConnexionForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs\
             .update({
-                'placeholder': "Pseudo",
+                'placeholder': "Pseudo ou E-mail",
                 'class': 'form-control'
             })
         self.fields['password'].widget.attrs\

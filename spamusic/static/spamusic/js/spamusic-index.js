@@ -61,7 +61,7 @@ $(function(){
         var paramsEncoded = $.param(params);
         $.ajax({
             method: "POST",
-            url: URLS.spamusicAddVideoToPlaylist,
+            url: URLS.ajax_add_video_to_playlist,
             data: paramsEncoded,
             dataType : 'html',
             cache: false,
@@ -100,7 +100,7 @@ $(function(){
             var paramsEncoded = $.param(params);
             $.ajax({
                 method: "POST",
-                url: URLS.spamusicRechercherVideos,
+                url: URLS.ajax_rechercher_videos,
                 data: paramsEncoded,
                 dataType : 'html',
                 cache: false,
@@ -140,7 +140,7 @@ $(function(){
             var paramsEncoded = $.param(params);
             $.ajax({
                 method: "POST",
-                url: URLS.spamusicAjouterPlaylist,
+                url: URLS.ajax_ajouter_playlist,
                 data: paramsEncoded,
                 dataType : 'html',
                 cache: false,
@@ -178,7 +178,7 @@ $(function(){
             var paramsEncoded = $.param(params);
             $.ajax({
                 method: "POST",
-                url: URLS.spamusicDetailsPlaylist,
+                url: URLS.ajax_details_playlist,
                 data: paramsEncoded,
                 dataType : 'html',
                 cache: false,
@@ -200,7 +200,7 @@ $(function(){
                     var $loaderVideo = $(loaderTemplate).appendTo("#yt-tab-videos");
                     $.ajax({
                         method: "POST",
-                        url: URLS.spamusicPlaylistItems,
+                        url: URLS.ajax_playlistitems,
                         data: paramsEncoded,
                         dataType : 'html',
                         cache: false,
