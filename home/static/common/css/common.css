@@ -16,6 +16,30 @@
 }
 .notification > a > p{
     padding-left: 20px;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.notification-date{
+    position: absolute;
+    color: #c7cbd3;
+    bottom: 0;
+    right: 0;
+    padding : 0 1px;
+    font-size : x-small;
+    line-height : 16px;
+    height : 16px;
+}
+
+.notification-new{
+    background-color: #BDFBDB;
+}
+
+.notification-new .notification-date{
+    color: #197590;
 }
 
 #lepouce{

@@ -1,5 +1,5 @@
 {% for log in logs %}
-    <li class="notification {% if log.date >= unseenlog.date %}notification-new bg-gray{% endif %}">
+    <li class="notification {% if log.date >= unseenlog.date %}notification-new{% endif %}">
         <a href="#">
             {% if log.app == "jacquesIdea" %}
                 <i class="fa fa-lightbulb-o text-yellow"></i>
@@ -8,8 +8,9 @@
             {% elif log.app == "userManager" %}
                 <i class="fa fa-user text-blue"></i>
             {% endif %}
-            <p class="no-margin">
+            <p class="no-margin notification-text">
                 {{ log.text }}
+                <span class="notification-date">{{ log.date|date:"\l\e j/n à G\hi" }}</span>
             </p>
         </a>
     </li>
