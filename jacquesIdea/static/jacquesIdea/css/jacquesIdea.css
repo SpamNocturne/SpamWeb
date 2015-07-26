@@ -1,18 +1,11 @@
-.idee-header.box-header h3
-{
-    text-align: justify;
-}
-
-.box-header > .box-tools
-{
+.box-header > .box-tools {
     right: 10px;
     top: 5px;
     position: initial;
 }
 
-.box-header .box-title
-{
-    display : block;
+.box-header .box-title {
+    display: block;
     -ms-word-wrap: break-word;
     word-wrap: break-word;
     -webkit-hyphens: auto;
@@ -22,22 +15,28 @@
     hyphens: auto;
 }
 
-.idee-header .box-title
-{
-    cursor : pointer;
+.idee-header .box-title {
+    cursor: pointer;
 }
 
-.vote-up.voted
-{
+.vote-up.voted {
     background-color: #00a65a !important;
 }
 
-.vote-down.voted
-{
+.vote-down.voted {
     background-color: #dd4b39 !important;
 }
 
-.modal-content
-{
-    word-wrap : break-word;
+.modal-content {
+    word-wrap: break-word;
+}
+
+#Container .mix {
+    display: none;
+}
+
+hr.idee-separator {
+    width: 80%;
+    height: 1px;
+    background-color: #004875;
 }

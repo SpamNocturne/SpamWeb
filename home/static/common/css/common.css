@@ -1,3 +1,47 @@
+.notification > a
+{
+    white-space: normal!important;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    display: block;
+    position: relative;
+    min-height : 14px;
+}
+
+.notification > a > i{
+    position : absolute;
+    top : 50%;
+    height : 14px;
+    margin-top : -7px
+}
+.notification > a > p{
+    padding-left: 20px;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.notification-date{
+    position: absolute;
+    color: #c7cbd3;
+    bottom: 0;
+    right: 0;
+    padding : 0 1px;
+    font-size : x-small;
+    line-height : 16px;
+    height : 16px;
+}
+
+.notification-new{
+    background-color: #BDFBDB;
+}
+
+.notification-new .notification-date{
+    color: #197590;
+}
+
 #lepouce{
     position: fixed;
     top: 50%;
@@ -9,11 +53,11 @@
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     z-index: 1100;
-    -webkit-transition: all 10s ease-in;
-    -moz-transition: all 10s ease-in;
-    -ms-transition: all 10s ease-in;
-    -o-transition: all 10s ease-in;
-    transition: all 10s ease-in;
+    -webkit-transition: all 10s ease-in 2s;
+    -moz-transition: all 10s ease-in 2s;
+    -ms-transition: all 10s ease-in 2s;
+    -o-transition: all 10s ease-in 2s;
+    transition: all 10s ease-in 2s;
 }
 
 .lepouce-trigger:hover #lepouce{
@@ -21,3 +65,8 @@
     height: 80%;
     opacity: 1;
 }
+
+.lepouce-trigger{
+    cursor: help;
+}
+

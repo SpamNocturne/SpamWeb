@@ -4,3 +4,4 @@ __pycache__
 SpamWeb/databases.py
 uploads/*
 media/*
+static/*

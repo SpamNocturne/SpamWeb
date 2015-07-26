@@ -4,7 +4,9 @@
 {% block body %}
     <div class="jumbotron">
         <div class="container">
-            <h1>Bienvenue sur <b>Spam</b>Web !</h1>
+            <h1>Bienvenue sur <b>Spam</b>Web !
+                <small>v1.2</small>
+            </h1>
 
             <p>Ici, vous pouvez faire pleiiiin de choses ! <em class="text-muted">(Bon pas tout de suite par contre
                 ...)</em></p>
@@ -15,83 +17,67 @@
     <div class="row">
         <div class="col-md-4">
             <h2><i class="fa fa-globe"></i> Général</h2>
-
-            <p>Voir les prochains évènements dans le panel de droite (cliquez en haut a droite sur <i
-                    class="fa fa-gears"></i>) [Fake :c]</p>
-
-            <p class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Vous connecter via votre adresse e-mail, pour garder son pseudo stylé même s'il est compliqué !</span>
-            </p>
+            <ul>
+                <li>Voir les prochains évènements dans le panel de droite (cliquez en haut a droite sur <i
+                        class="fa fa-gears"></i>) [Fake :c]
+                </li>
+                <li>Vous connecter via votre adresse e-mail, pour garder son pseudo stylé même s'il est compliqué !</li>
+            </ul>
         </div>
+
+        <div class="col-md-4">
+            <h2><i class="fa fa-bell-o"></i> Notifications</h2>
+            <ul>
+                <li>Vous pouvez voir ce qui se passe sur le Spam ! (Et voir qui a voté rouge à votre idée Grrrrr ...
+                    !)
+                </li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Les notifications sont disponibles sur toutes les pages !</span></li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Le design a été modifié, on peut voir tout le contenu et leur date, mais seulement les 20 dernières sont affichées</span></li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Les notifications se mettent a jour sans avoir à changer de page !</span></li>
+            </ul>
+        </div>
+
         <div class="col-md-4">
             <h2><i class="fa fa-user"></i> Profil</h2>
-
-            <p>Remplir quelques information sur votre profil !</p>
-
-            <p class="text-success"><span class="label bg-green">New</span><span class="bg-success"> Changer votre image de profil ! Comme ça vous pouvez nous montrer si vous êtes moches :D !</span>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2><i class="fa fa-lightbulb-o"></i> Idées</h2>
-
-            <p>Partager de nouvelles idées !</p>
-
-            <p>Commenter et débattre autour des idées proposées !</p>
-
-            <p>Voter pour vos idées préférées !</p>
-
-            <p class="text-success"><span class="label bg-green">New</span><span class="bg-success"> Cliquer sur un titre pour ouvrir et fermer une idée ! Le plus et trop petit pour nos gros doigts sur téléphone... :x</span>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2><i class="fa fa-youtube"></i> Spamusic</h2>
-
-            <p>Créer des nouvelles playlist pour le Spam !</p>
-
-            <p>&Eacute;couter les playlists collaboratives du Spam !</p>
-
-            <p>Voir les details, et la liste des vidéos d'une playlist !</p>
-
-            <p>Rechercher des vidéos et les ajouter aux playlist !</p>
-        </div>
-        <div class="col-md-4">
-            <h2 class="text-success"><span class="label bg-green">New</span><i class="fa fa-bell-o"></i> Notifications</h2>
-            <p class="text-success"><span class="label bg-green">New</span><span class="bg-success"> Vous pouvez voir ce qui se passe sur le Spam ! (Et voir qui a voté rouge à votre idée Grrrrr ... !)</span></p>
-            <p class="text-warning"><span class="label bg-orange">In Progress</span><span class="bg-warning"> Les notifications ne sont pour l'instant accessible que depuis cette page :/</span></p>
+            <ul>
+                <li>Remplir quelques information sur votre profil !</li>
+                <li>Changer votre image de profil ! Comme ça vous pouvez nous montrer si vous êtes moches :D !</li>
+            </ul>
         </div>
     </div>
-{% endblock %}
+    <div class="row">
+        <div class="col-md-4">
+            <h2><i class="fa fa-lightbulb-o"></i> Idées <small>By Loïc</small></h2>
+            <ul>
+                <li>Partager de nouvelles idées !</li>
+                <li>Commenter et débattre autour des idées proposées !</li>
+                <li>Voter pour vos idées préférées !</li>
+                <li>Cliquer sur un titre pour ouvrir et fermer une idée ! Le plus et trop petit pour nos gros doigts sur
+                    téléphone... :x
+                </li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Nouveau design ! On peut voir le détail des idées lorsqu'on a un ecran assez grand ! (pas pour les pauvres, ni les téléphones)</span></li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Trier les idées selon différents critères ! Et c'est joli en plus ça bouge tout seul !</span></li>
+            </ul>
+        </div>
 
+        <div class="col-md-4">
+            <h2><i class="fa fa-youtube"></i> Spamusic <small>By Loïc</small></h2>
+            <ul>
+                <li>Créer des nouvelles playlist pour le Spam !</li>
+                <li>&Eacute;couter les playlists collaboratives du Spam !</li>
+                <li>Voir les details, et la liste des vidéos d'une playlist !</li>
+                <li>Rechercher des vidéos et les ajouter aux playlist !</li>
+            </ul>
+        </div>
 
-{% block base_top_navbar %}
-    <!-- Notifications Menu -->
-    <li class="dropdown notifications-menu">
-        <!-- Menu toggle button -->
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-bell-o"></i>
-            <span class="label label-success">New</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">Activités récentes sur le Spam</li>
-            <li>
-                <!-- Inner Menu: contains the notifications -->
-                <ul class="menu">
-                    <!-- Inner Menu: contains the notifications -->
-                    {% for log in logs %}
-                        <li>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="
-                                {{ log.date }} : {{ log.text }}">
-                                {% if log.app == "jacquesIdea" %}
-                                    <i class="fa fa-lightbulb-o text-yellow"></i>
-                                {% elif log.app ==  "spamusic" %}
-                                    <i class="fa fa-youtube text-red"></i>
-                                {% elif log.app == "userManager" %}
-                                    <i class="fa fa-user text-blue"></i>
-                                {% endif %}{{ log.text }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-            <li class="footer"><a href="#">Tout voir (oupa)</a></li>
-        </ul>
+        <div class="col-md-4">
+            <h2 class="text-success"><span class="label bg-green">New</span> <i class="fa fa-bar-chart"></i> SpamConso <small>By Alexis</small></h2>
+            <ul>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Enregistrer vos consommations, Tacos ou Bières, sur SpamConso !</span></li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Affecter des tags existants ou créez en de nouveaux à votre conso (Chouffe forever) !</span></li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Obtenir des graphiques sur la consommation des consommations consommées par le Spam ! (Quoi !? C'est mal écrit ?)</span></li>
+                <li class="text-success"><span class="label bg-green">New</span> <span class="bg-success">Filter les graphiques pour plus de détails selon les tags que vous avez mis sur vos conso !</span></li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

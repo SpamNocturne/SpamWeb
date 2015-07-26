@@ -1,0 +1,94 @@
+{% extends "spamConso/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}Mon Tacos | {{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}#Tacos{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}Ici tu peux avoir des graphes concernant les tacos{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+
+{% block page_header_addons %}
+    <!-- select2 -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with prev1Url='spamConso:index' prev1Name="SpamConso" current="Tacos" only %}
+{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="spamConso/tacos" only %}
+{% endblock %}
+
+{% block page_footer_addons %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script>
+        var mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+        var chartData = {
+            labels: [{% for value in graphe %} "{{ value.xaxis }}" ,{% endfor %}],
+            datasets: [
+                {
+                    label: "Biere per month dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [{% for value in graphe %} {{ value.yaxis }}, {% endfor %}]
+                }
+            ]
+        };
+
+        $(function () {
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx).Bar(chartData, {
+                responsive: true,
+                maintainAspectRatio: false
+            });
+
+            $('select').select2({
+                width: '100%'
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h3>Nombre de <b>Tacos</b> #{{ yaxis }} par {{ xaxis }}</h3>
+    <form action="{% url 'spamConso:conso_view' %}?type=tacos" method="get" class="row">
+        <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0">
+        <input name="type" value="tacos" hidden>
+            <select name="yaxis">
+                <option value="all">Tous</option>
+                {% for conso_tag in conso_tags %}
+                    <option value="{{ conso_tag.value }}"
+                            {% ifequal conso_tag.value request.GET.yaxis %}selected="selected"{% endifequal %}>{{ conso_tag.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0">
+            <select name="xaxis">
+                <option value="personne" {% ifequal "personne" request.GET.xaxis %}selected="selected"{% endifequal %}>
+                    Par personne
+                </option>
+                <option value="date" {% ifequal "date" request.GET.xaxis %}selected="selected"{% endifequal %}>Par
+                    mois
+                </option>
+            </select>
+        </div>
+        <div class="col-xs-4 col-xs-offset-4 col-md-4 col-md-offset-0">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Get !</button>
+        </div>
+    </form>
+    <div class="row">
+        <canvas id='myChart' class="col-xs-12" width="100%" height="400"></canvas>
+    </div>
+
+{% endblock %}

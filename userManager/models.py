@@ -7,8 +7,10 @@ from django.db.models.signals import post_save
 
 # Create your models here.
 
+
 def content_file_name(instance, filename):
     return '/'.join(['avatars', instance.user.username, filename])
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)

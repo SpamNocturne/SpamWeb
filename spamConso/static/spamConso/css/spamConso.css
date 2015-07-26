@@ -1,0 +1,23 @@
+table{
+    margin-top : 30px;
+}
+tr{
+    -webkit-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    -ms-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    transition: background-color 0.3s;
+}
+tr:nth-child(odd) {
+  background-color: #8edbff;
+}
+
+tr:nth-child(even) {
+  background-color: #d1ffff;
+}
+
+tr:hover,
+tr th{
+    background-color: #3d6bc2;
+    color: white;
+}

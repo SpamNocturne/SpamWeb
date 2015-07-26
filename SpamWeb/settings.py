@@ -38,12 +38,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ajax',
     'home',
     'jacquesIdea',
     'userManager',
     'LTE',
-    'spamusic'
+    'spamusic',
+	'spamConso'
 )
 
 MIDDLEWARE_CLASSES = (
