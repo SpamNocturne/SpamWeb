@@ -10,6 +10,7 @@ LOG_PARAMS = {
         "jacquesIdea",
         "spamusic",
         "userManager",
+        "spamConso",
     ],
     "log_type": [
         "spamusic_add_playlist",
@@ -18,7 +19,9 @@ LOG_PARAMS = {
         "jacquesIdea_delete_idea",
         "jacquesIdea_comment",
         "jacquesIdea_vote",
-        "userManager_register"
+        "userManager_register",
+        "spamConso_add_conso_beer",
+        "spamConso_add_conso_tacos",
     ],
 }
 
