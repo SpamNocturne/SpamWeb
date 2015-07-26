@@ -18,9 +18,11 @@ class Analyzer:
     xsdschema_root = etree.parse("SpamAlyzer/static/SpamAlyzer/facebook_messages.xsd")
     xsdschema = etree.XMLSchema(xsdschema_root)
 
+
     # Exception si non valide, à catcher
     def __init__(self, fichierDB):
         self.fichier = fichierDB
+        self.new_messages = 0
 
         xml_data = fichierDB.fichier.read().decode() # decode is called because django opens files automatically as binaries
 
@@ -43,17 +45,14 @@ class Analyzer:
         conversations = self.find_spam_conversations()
 
         threads = []
-        new_messages = 0
         for c in conversations: # saves the messages
-            t = Thread(target=self.spam_analyzer_thread, args=(c, ))
+            t = Thread(target=self.analyze_conversation, args=(c, ))
             t.setDaemon(True)
             threads.append(t)
             t.start()
 
         for t in threads:
-            new_messages += t.join() # TODO thread return value
-
-        return new_messages
+            t.join()
 
 
     def find_spam_conversations(self):
@@ -66,9 +65,6 @@ class Analyzer:
                 spam_conversations.append(c)
 
         return spam_conversations
-
-    def spam_analyzer_thread(self, conservation):
-        self.analyze_conversation(conservation)
 
     def is_spam_conversation(self, conversation):
         all_participants = []
@@ -87,8 +83,8 @@ class Analyzer:
 
 
     def analyze_conversation(self, conversation):
-        one_element_added = False
         nb_messages = len(conversation)
+        nb_counting_messages = nb_messages / 2
         userXPath = "div[@class = 'message_header']/span[@class = 'user']"
         dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
         all_users = models.UtilisateurStats.objects.all()
@@ -103,7 +99,7 @@ class Analyzer:
             message_text = conversation[i+1].text
 
             if all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
-                one_element_added = True
+                new_messages += 1
 
                 userDB.nb_de_messages += 1
                 if message_text is None:
@@ -116,9 +112,9 @@ class Analyzer:
                 msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
                 msg.save()
 
-            print("{0}/{1}".format(i, nb_messages))
+            # Messages counting (server log)
+            print("Analyzing conversations {0}/{1}".format(i / 2, nb_counting_messages))
 
-        return one_element_added
 
     def get_mots_de_texte(self, texte):
         return texte.split() # TODO : mots = pas de virgule, espace, point, parenthèses...

@@ -10,6 +10,7 @@ from SpamAlyzer import graph_helper
 from lxml import etree
 from threading import Thread
 from home.log import add_log
+import traceback
 
 @login_required
 def index(request):
@@ -23,10 +24,9 @@ def index(request):
 
             try:
                 anal = analyzer.Analyzer(fichier)
-                t = Thread(target=anal.analyze_the_spam_muhaha())
-                t.setDaemon(True)
-                await_t = Thread(target=await_analyze_ending()
-                t.start()
+                await_t = Thread(target=await_analyze_ending, args=(anal, request.user,))
+                await_t.setDaemon(True)
+                await_t.start()
                 #anal.analyze_the_spam_muhaha()
                 #if not anal.analyze_the_spam_muhaha():
                     #fichier.delete()
@@ -38,6 +38,15 @@ def index(request):
                 context["error_message"] = "Oh non! Ton fichier est tout naze. " \
                                            "Python me dit dans l'oreillette DocumentInvalid. " \
                                            "C'est triste. Et franchement, tu me déçois. Je te croyais mieux que ça."
+                return render_to_response("SpamAlyzer/message.html", context)
+            except:
+                context["error_message"] = "Aïe aïe aïe. Je ne saurais pas te dire ce qu'il s'est passé. Enfin bon, " \
+                                           "de toute façon je ne suis qu'un texte écrit en dur dans le code par " \
+                                           "David. " \
+                                           "Normal que je ne pas déduire grand chose de l'erreur. " \
+                                           "Mais voilà le message de l'exception si ça peut t'aider. (mais vu que " \
+                                           "t'es nul(le), envoie ça à David. Il saura débugger, mieux que toi, " \
+                                           "sa merde qu'il a pondu) : {0}".format(traceback.format_exc())
                 return render_to_response("SpamAlyzer/message.html", context)
         else:
             context["error_message"] = "Oh non! Ton fichier est tout naze. " \
@@ -52,11 +61,14 @@ def index(request):
     context["form"] = form
     return render(request, 'SpamAlyzer/index.html', context)
 
-def async_await_analyze_ending(analyze_thread, user):
-    nb_new_msg = analyze_thread.join()
+def await_analyze_ending(analyzer, user):
+    t = Thread(target=analyzer.analyze_the_spam_muhaha())
+    t.setDaemon(True)
+    t.start()
+    t.join()
     add_log(text="{0} a déposé une archive Facebook pour alimenter la conversation du spam !"
                  "Sa contribution nous a apporté {1} messages que le SpamWeb ne référençait pas encore."
-                 "Merci !".format(user, nb_new_msg),
+                 "Merci !".format(user, analyzer.new_messages),
             app="SpamAlyzer",
             log_type="SpamAlyzer_depot_archive",
             user=user)
