@@ -5,10 +5,10 @@
 {% block base_title %}Ma Page | {{ block.super }}{% endblock %}
 
 <!-- Page content header title -->
-{% block base_content_header_title %}Titre de ma page{% endblock %}
+{% block base_content_header_title %}#Bieres{% endblock %}
 
 <!-- Page content header optional description -->
-{% block base_content_header_title_description %}Description de ma page{% endblock %}
+{% block base_content_header_title_description %}Ici tu peux avoir des graphes concernant les bieres{% endblock %}
 
 <!-- Page content breadcrumb (fil d'arianne) -->
 <!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
@@ -18,35 +18,9 @@
 
 {% block page_footer_addons %}
     <script>
-    var mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
-        var dataBiere = {
-            labels: [{% for user in user_biere_list %}"{{ user.username }}", {% endfor %}],
-            datasets: [
-                {
-                    label: "Biere dataset",
-                    fillColor: "rgba(220,220,220,0.5)",
-                    strokeColor: "rgba(220,220,220,0.8)",
-                    highlightFill: "rgba(220,220,220,0.75)",
-                    highlightStroke: "rgba(220,220,220,1)",
-                    data: [{% for user in user_biere_list %}{{ user.total }}, {% endfor %}]
-                }
-            ]
-        };
-        var dataChouffe = {
-            labels: [{% for user in chouffe_list %}"{{ user.username }}", {% endfor %}],
-            datasets: [
-                {
-                    label: "Chouffe dataset",
-                    fillColor: "rgba(220,220,220,0.5)",
-                    strokeColor: "rgba(220,220,220,0.8)",
-                    highlightFill: "rgba(220,220,220,0.75)",
-                    highlightStroke: "rgba(220,220,220,1)",
-                    data: [{% for user in chouffe_list %}{{ user.total }}, {% endfor %}]
-                }
-            ]
-        };
-        var dataBPM = {
-            labels: [{% for user in bpm %}mois[Math.floor({{ user.month }}) - 1 ], {% endfor %}],
+        var mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+        var chartData = {
+            labels: [{% for value in graphe %} "{{ value.xaxis }}" ,{% endfor %}],
             datasets: [
                 {
                     label: "Biere per month dataset",
@@ -54,26 +28,34 @@
                     strokeColor: "rgba(220,220,220,0.8)",
                     highlightFill: "rgba(220,220,220,0.75)",
                     highlightStroke: "rgba(220,220,220,1)",
-                    data: [{% for user in bpm %}{{ user.total }}, {% endfor %}]
+                    data: [{% for value in graphe %} {{ value.yaxis }}, {% endfor %}]
                 }
             ]
         };
 
         $(function () {
-            var ctx1 = document.getElementById("biereChart").getContext("2d");
-            var biereChart = new Chart(ctx1).Bar(dataBiere);
-            var ctx2 = document.getElementById("chouffeChart").getContext("2d");
-            var chouffeChart = new Chart(ctx2).Bar(dataChouffe);
-            var ctx3 = document.getElementById("bpmChart").getContext("2d");
-            var bpmChart = new Chart(ctx3).Bar(dataBPM);
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx).Bar(chartData);
         });
     </script>
 
 {% endblock %}
 
 {% block body %}
-    <canvas id='bpmChart' width="400" height="400"></canvas>
-    <canvas id='biereChart' width="400" height="400"></canvas>
-    <canvas id='chouffeChart' width="400" height="400"></canvas>
+    <h3>Nombre de {{ yaxis }} par {{ xaxis }}</h3>
+    <form action="{% url 'spamConso:beer_view' %}" method="get">
+        <select name="yaxis">
+            <option value = "all">Tous</option>
+            {% for conso_tag in conso_tags %}
+                <option value="{{ conso_tag.value }}">{{ conso_tag.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="xaxis">
+            <option value="personne">Par personne</option>
+            <option value="date">Par mois</option>
+        </select>
+        <button type="submit" class="btn btn-primary btn-block btn-flat">Get !</button>
+    </form>
+    <canvas id='myChart' width="400" height="400"></canvas>
 
 {% endblock %}

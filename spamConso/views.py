@@ -67,20 +67,31 @@ def add_conso(request):
 
 @login_required
 def beer_view(request):
+    conso_tags = ConsoTag.objects.all()
     user = User.objects.values('username', 'id')
-    biere_list = Consommation.objects.filter(type='biere').select_related('consommateur')
-    user_biere_list = biere_list.values('consommateur').annotate(total=Count('type'))
+    biere_list = Consommation.objects.filter(type='biere')
+    yaxis = 'bieres'
+    xaxis = 'rien'
+    if request.GET.get('yaxis') and request.GET.get('yaxis') != 'all':
+        yaxis = request.GET.get('yaxis')
+        biere_list = biere_list.filter(tags__contains= request.GET.get('yaxis'))
+    graphe = []
+    if request.GET.get('xaxis') == 'personne':
+        xaxis = 'personne'
+        biere_list = biere_list.values('consommateur').annotate(total=Count('type'))
+        for biere_row in biere_list:
+            biere_row['username'] = user.get(id=biere_row['consommateur'])['username']
+        graphe = [{'xaxis': row['username'], 'yaxis': row['total']} for row in biere_list]
 
-    for i in user_biere_list:
-        i['username'] = user.get(id = i['consommateur'])['username']
+    elif request.GET.get('xaxis') == 'date':
+        xaxis = 'mois'
+        biere_list = biere_list.extra(select={'month': 'extract( month from conso_date )'}) \
+            .values('month') \
+            .annotate(total=Count('type'))
+        graphe = [{'xaxis': row['month'], 'yaxis': row['total']} for row in biere_list]
 
-    chouffe_list = biere_list.filter(description='chouffe') \
-        .values('consommateur') \
-        .annotate(total=Count('type'))
-    for i in chouffe_list:
-        i['username'] = user.get(id = i['consommateur'])['username']
-    bpm = biere_list.extra(select={'month': 'extract( month from conso_date )'})\
-        .values('month')\
-        .annotate(total=Count('type'))
-    context = {'user_biere_list':user_biere_list, 'chouffe_list':chouffe_list, 'bpm':bpm}
+    context = {'conso_tags': conso_tags,
+               'graphe': graphe,
+               'xaxis': xaxis,
+               'yaxis': yaxis}
     return render(request, 'spamConso/biere.html', context)
