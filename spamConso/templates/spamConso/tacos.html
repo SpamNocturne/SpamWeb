@@ -2,13 +2,13 @@
 {% load staticfiles %}
 
 <!-- page head title -->
-{% block base_title %}Ma Bières | {{ block.super }}{% endblock %}
+{% block base_title %}Mon Tacos | {{ block.super }}{% endblock %}
 
 <!-- Page content header title -->
-{% block base_content_header_title %}#Bieres{% endblock %}
+{% block base_content_header_title %}#Tacos{% endblock %}
 
 <!-- Page content header optional description -->
-{% block base_content_header_title_description %}Ici tu peux avoir des graphes concernant les bieres{% endblock %}
+{% block base_content_header_title_description %}Ici tu peux avoir des graphes concernant les tacos{% endblock %}
 
 <!-- Page content breadcrumb (fil d'arianne) -->
 <!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
@@ -20,7 +20,7 @@
 
 <!-- Page content breadcrumb (fil d'arianne) -->
 {% block base_content_header_breadcrumb %}
-    {% include 'LTE/breadcrumb.html' with prev1Url='spamConso:index' prev1Name="SpamConso" current="Bières" only %}
+    {% include 'LTE/breadcrumb.html' with prev1Url='spamConso:index' prev1Name="SpamConso" current="Tacos" only %}
 {% endblock %}
 
 <!-- Left Sidebar Menu -->
@@ -61,10 +61,10 @@
 {% endblock %}
 
 {% block body %}
-    <h3>Nombre de <b>Bières</b> #{{ yaxis }} par {{ xaxis }}</h3>
-    <form action="{% url 'spamConso:conso_view' %}" method="get" class="row">
+    <h3>Nombre de <b>Tacos</b> #{{ yaxis }} par {{ xaxis }}</h3>
+    <form action="{% url 'spamConso:conso_view' %}?type=tacos" method="get" class="row">
         <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-0">
-        <input name="type" value="biere" hidden>
+        <input name="type" value="tacos" hidden>
             <select name="yaxis">
                 <option value="all">Tous</option>
                 {% for conso_tag in conso_tags %}

@@ -66,11 +66,11 @@ def add_conso(request):
 
 
 @login_required
-def beer_view(request):
+def conso_view(request):
     conso_tags = ConsoTag.objects.all()
     user = User.objects.values('username', 'id')
-    biere_list = Consommation.objects.filter(type='biere')
-    yaxis = 'bieres'
+    biere_list = Consommation.objects.filter(type=request.GET.get('type'))
+    yaxis = request.GET.get('type')
     xaxis = 'rien'
     if request.GET.get('yaxis') and request.GET.get('yaxis') != 'all':
         yaxis = request.GET.get('yaxis')
@@ -95,4 +95,4 @@ def beer_view(request):
                'graphe': graphe,
                'xaxis': xaxis,
                'yaxis': yaxis}
-    return render(request, 'spamConso/biere.html', context)
+    return render(request, 'spamConso/%s.html' % request.GET.get('type'), context)
