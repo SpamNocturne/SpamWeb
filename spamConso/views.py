@@ -84,11 +84,12 @@ def beer_view(request):
         graphe = [{'xaxis': row['username'], 'yaxis': row['total']} for row in biere_list]
 
     elif request.GET.get('xaxis') == 'date':
+        mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
         xaxis = 'mois'
         biere_list = biere_list.extra(select={'month': 'extract( month from conso_date )'}) \
             .values('month') \
             .annotate(total=Count('type'))
-        graphe = [{'xaxis': row['month'], 'yaxis': row['total']} for row in biere_list]
+        graphe = [{'xaxis': mois[int(row['month'])- 1], 'yaxis': row['total']} for row in biere_list]
 
     context = {'conso_tags': conso_tags,
                'graphe': graphe,
