@@ -7,7 +7,7 @@ from lxml import etree
 from datetime import datetime, timezone, timedelta
 import re
 from SpamAlyzer import models
-import threading
+from threading import Thread
 
 class Analyzer:
 
@@ -38,14 +38,23 @@ class Analyzer:
             if not models.UtilisateurStats.objects.filter(nom_fb = qqun).exists():
                 models.UtilisateurStats.objects.create(nom_fb = qqun).save()
 
-    # Analyze method
+    # Analyze method (should be started with a thread because long work)
     def analyze_the_spam_muhaha(self):
         conversations = self.find_spam_conversations()
 
+        threads = []
+        new_messages = 0
         for c in conversations: # saves the messages
-            t = threading.Thread(target=self.spam_analyzer_thread, args=(c, ))
+            t = Thread(target=self.spam_analyzer_thread, args=(c, ))
             t.setDaemon(True)
+            threads.append(t)
             t.start()
+
+        for t in threads:
+            new_messages += t.join() # TODO thread return value
+
+        return new_messages
+
 
     def find_spam_conversations(self):
         xpath = "//div[@class = 'thread']"

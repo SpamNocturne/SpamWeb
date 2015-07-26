@@ -8,6 +8,8 @@ from django.http import Http404
 from SpamAlyzer import graph_helper
 
 from lxml import etree
+from threading import Thread
+from home.log import add_log
 
 @login_required
 def index(request):
@@ -21,7 +23,11 @@ def index(request):
 
             try:
                 anal = analyzer.Analyzer(fichier)
-                anal.analyze_the_spam_muhaha()
+                t = Thread(target=anal.analyze_the_spam_muhaha())
+                t.setDaemon(True)
+                await_t = Thread(target=await_analyze_ending()
+                t.start()
+                #anal.analyze_the_spam_muhaha()
                 #if not anal.analyze_the_spam_muhaha():
                     #fichier.delete()
                     #context["error_message"] = "Désolé, mais ton archive était inutile (peut-être comme toi?). " \
@@ -45,6 +51,15 @@ def index(request):
 
     context["form"] = form
     return render(request, 'SpamAlyzer/index.html', context)
+
+def async_await_analyze_ending(analyze_thread, user):
+    nb_new_msg = analyze_thread.join()
+    add_log(text="{0} a déposé une archive Facebook pour alimenter la conversation du spam !"
+                 "Sa contribution nous a apporté {1} messages que le SpamWeb ne référençait pas encore."
+                 "Merci !".format(user, nb_new_msg),
+            app="SpamAlyzer",
+            log_type="SpamAlyzer_depot_archive",
+            user=user)
 
 @login_required
 def conversation(request, num_page):
