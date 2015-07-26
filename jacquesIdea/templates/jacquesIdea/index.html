@@ -6,140 +6,195 @@
 
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-12">
-            <a href="{% url 'jacquesIdea:createIdea' %}" class=" btn btn-block btn-success margin-bottom"><span class="glyphicon glyphicon-plus"></span> J'ai une nouvelle idée !</a>
+            <a href="{% url 'jacquesIdea:createIdea' %}" class=" btn btn-block btn-success margin-bottom"><span
+                    class="glyphicon glyphicon-plus"></span> J'ai une nouvelle idée !</a>
         </div>
     </div>
-    <div class="row">
 
-    {%  for idee in idee_list %}
-        {% if forloop.counter0|divisibleby:3 %}
-        {% endif %}
-        {% ifequal user idee.auteur %}
-        <!-- modal de suppression -->
-        <div id="modal-delete-{{ idee.id }}"  class="modal fade modal-warning" role="dialog" tabindex="-1">
-              <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">Attention !</h4>
-                  </div>
-                  <div class="modal-body">
-                      <p>L'idée suivante va être supprimée :</p>
-                      <h4 class="text-center"><strong>{{ idee.titre }}</strong></h4>
-                      {% if idee.commentaire_set.all|length == 1 %}
-                      <p>Ainsi que son <strong>seul</strong> commentaire.</p>
-                      {% elif idee.commentaire_set.all|length > 1 %}
-                      <p>Ainsi que ses <strong>{{ idee.commentaire_set.all|length }}</strong> commentaires.</p>
-                      {% endif %}
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-danger btn-delete-idee" data-idee="{{ idee.id }}">Supprimer l'idée</button>
-                  </div>
-                </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
-            </div>
-        {% endifequal %}
-        <!-- idée -->
-            <div class="col-lg-4 col-md-6 col-sm-12" id="block-idee-{{ idee.id }}">
+    {% for idee in idee_list %}
+        <div class="row">
+            {% if forloop.counter0|divisibleby:3 %}
+            {% endif %}
+            <!-- idée -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-12" id="block-idee-{{ idee.id }}">
                 <!-- Construct the box with style you want. Here we are using box-danger -->
                 <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                 <!-- The contextual class should match the box, so we are using direct-chat-danger -->
                 <div class="box box-solid box-info direct-chat collapsed-box">
-                  <div class="box-header with-border idee-header">
-                    <div class="box-tools pull-right">
-                        <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}" class="btn btn-box-tool vote-up {% if idee|is_upvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span class="badge bg-green-active" id="cpt-up-{{ idee.id }}">{{ idee.get_upvotes|length }}</span></button>
-                        <button data-idee="{{ idee.id }}" id="vote-down-{{ idee.id }}" class="btn btn-box-tool vote-down {% if idee|is_downvoted_by:user %}voted{% endif %}" data-toggle="tooltip" title="Pas&nbsp;Pouce"><i class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active" id="cpt-down-{{ idee.id }}">{{ idee.get_downvotes|length }}</span></button>
-                        <button class="btn btn-box-tool btn-toggle" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                        {% ifequal user idee.auteur %}
-                            <button class="btn btn-box-tool" data-toggle="modal" data-target="#modal-delete-{{ idee.id }}"><i class="fa fa-times"></i></button>
-                        {% endifequal %}
+                    <div class="box-header with-border idee-header">
+                        <div class="box-tools pull-right">
+                            <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}"
+                                    class="btn btn-box-tool vote-up {% if idee|is_upvoted_by:user %}voted{% endif %}"
+                                    data-toggle="tooltip" title="Pouce"><i class="fa fa-thumbs-o-up"></i><span
+                                    class="badge bg-green-active"
+                                    id="cpt-up-{{ idee.id }}">{{ idee.get_upvotes|length }}</span></button>
+                            <button data-idee="{{ idee.id }}" id="vote-down-{{ idee.id }}"
+                                    class="btn btn-box-tool vote-down {% if idee|is_downvoted_by:user %}voted{% endif %}"
+                                    data-toggle="tooltip" title="Pas&nbsp;Pouce"><i
+                                    class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active"
+                                                                          id="cpt-down-{{ idee.id }}">{{ idee.get_downvotes|length }}</span>
+                            </button>
+                            <button class="btn btn-box-tool btn-toggle" data-widget="collapse"><i
+                                    class="fa fa-plus"></i></button>
+                            {% ifequal user idee.auteur %}
+                                <button class="btn btn-box-tool" data-toggle="modal"
+                                        data-target="#modal-delete-{{ idee.id }}"><i class="fa fa-times"></i></button>
+                            {% endifequal %}
+                        </div>
+                        <h3 class="box-title">{{ idee.titre }}</h3>
                     </div>
-                    <h3 class="box-title">{{ idee.titre }}</h3>
-                  </div><!-- /.box-header -->
-                  <div class="box-body">
-                    <!-- Conversations are loaded here -->
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <!-- Conversations are loaded here -->
 
-                  <!-- SUJET DE L'IDEE -->
-                    <div class="direct-chat-messages" id="messages-container-{{ idee.id }}">
-                      {% ifequal user idee.auteur %}
-                          <!-- Message to the right -->
-                          <div class="direct-chat-msg right">
-                            <div class='direct-chat-info clearfix'>
-                              <span class='direct-chat-name pull-right'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-left'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
-                            </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
-                            <div class="direct-chat-text">
-                              {{ idee.idee_text }}
-                            </div><!-- /.direct-chat-text -->
-                          </div><!-- /.direct-chat-msg -->
-                      {% else %}
-                          <!-- Message. Default to the left -->
-                          <div class="direct-chat-msg">
-                            <div class='direct-chat-info clearfix'>
-                              <span class='direct-chat-name pull-left'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-right'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
-                            </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% if idee.auteur.userprofile.avatar %}{{ idee.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
-                            <div class="direct-chat-text">
-                              {{ idee.idee_text }}
-                            </div><!-- /.direct-chat-text -->
-                          </div><!-- /.direct-chat-msg -->
-                      {% endifequal %}
+                        <!-- SUJET DE L'IDEE -->
+                        <div class="direct-chat-messages" id="messages-container-{{ idee.id }}">
+                            {% ifequal user idee.auteur %}
+                                <!-- Message to the right -->
+                                <div class="direct-chat-msg right">
+                                    <div class='direct-chat-info clearfix'>
+                                        <span class='direct-chat-name pull-right'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
+                                        <span class='direct-chat-timestamp pull-left'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
+                                    </div>
+                                    <!-- /.direct-chat-info -->
+                                    <img class="direct-chat-img" src="
 
-                     <!-- COMMENTAIRES DE L'IDEE -->
-                    {% for commentaire in idee.commentaire_set.all %}
-                      {% ifequal user commentaire.auteur %}
-                          <!-- Message to the right -->
-                          <div class="direct-chat-msg right">
-                            <div class='direct-chat-info clearfix'>
-                              <span class='direct-chat-name pull-right'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-left'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
-                            </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
-                            <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
-                              {{ commentaire.commentaire_text }}
-                            </div><!-- /.direct-chat-text -->
-                          </div><!-- /.direct-chat-msg -->
-                      {% else %}
-                          <!-- Message. Default to the left -->
-                          <div class="direct-chat-msg">
-                            <div class='direct-chat-info clearfix'>
-                              <span class='direct-chat-name pull-left'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
-                              <span class='direct-chat-timestamp pull-right'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
-                            </div><!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" src="{% if commentaire.auteur.userprofile.avatar %}{{ commentaire.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="message user image" /><!-- /.direct-chat-img -->
-                            <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
-                              {{ commentaire.commentaire_text }}
-                            </div><!-- /.direct-chat-text -->
-                          </div><!-- /.direct-chat-msg -->
-                      {% endifequal %}
-                    {% endfor %}
-                    </div><!--/.direct-chat-messages-->
-                  </div><!-- /.box-body -->
-                  <div class="box-footer">
-                    <div class="input-group">
-                      <input id="message-text-{{ idee.id }}" onKeyPress="if (event.keyCode == 13) sendIdeaComment({{ idee.id }})" type="text" name="message" placeholder="Répondez a cette idée !" class="form-control"/>
+
+                                            {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
+                                         alt="message user image"/><!-- /.direct-chat-img -->
+                                    <div class="direct-chat-text">
+                                        {{ idee.idee_text }}
+                                    </div>
+                                    <!-- /.direct-chat-text -->
+                                </div><!-- /.direct-chat-msg -->
+                            {% else %}
+                                <!-- Message. Default to the left -->
+                                <div class="direct-chat-msg">
+                                    <div class='direct-chat-info clearfix'>
+                                        <span class='direct-chat-name pull-left'>{{ idee.auteur.first_name|capfirst }} {{ idee.auteur.last_name|capfirst }} - {{ idee.auteur.username }}</span>
+                                        <span class='direct-chat-timestamp pull-right'>le {{ idee.pub_date|date:"d F Y" }} à {{ idee.pub_date|date:"G" }}h{{ idee.pub_date|date:"i" }}</span>
+                                    </div>
+                                    <!-- /.direct-chat-info -->
+                                    <img class="direct-chat-img" src="
+
+
+                                            {% if idee.auteur.userprofile.avatar %}{{ idee.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
+                                         alt="message user image"/><!-- /.direct-chat-img -->
+                                    <div class="direct-chat-text">
+                                        {{ idee.idee_text }}
+                                    </div>
+                                    <!-- /.direct-chat-text -->
+                                </div><!-- /.direct-chat-msg -->
+                            {% endifequal %}
+
+                            <!-- COMMENTAIRES DE L'IDEE -->
+                            {% for commentaire in idee.commentaire_set.all %}
+                                {% ifequal user commentaire.auteur %}
+                                    <!-- Message to the right -->
+                                    <div class="direct-chat-msg right">
+                                        <div class='direct-chat-info clearfix'>
+                                            <span class='direct-chat-name pull-right'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
+                                            <span class='direct-chat-timestamp pull-left'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
+                                        </div>
+                                        <!-- /.direct-chat-info -->
+                                        <img class="direct-chat-img" src="
+
+
+                                                {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
+                                             alt="message user image"/><!-- /.direct-chat-img -->
+                                        <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
+                                            {{ commentaire.commentaire_text }}
+                                        </div>
+                                        <!-- /.direct-chat-text -->
+                                    </div><!-- /.direct-chat-msg -->
+                                {% else %}
+                                    <!-- Message. Default to the left -->
+                                    <div class="direct-chat-msg">
+                                        <div class='direct-chat-info clearfix'>
+                                            <span class='direct-chat-name pull-left'>{{ commentaire.auteur.first_name|capfirst }} {{ commentaire.auteur.last_name|capfirst }} - {{ commentaire.auteur.username }}</span>
+                                            <span class='direct-chat-timestamp pull-right'>le {{ commentaire.pub_date|date:"d F Y" }} à {{ commentaire.pub_date|date:"G" }}h{{ commentaire.pub_date|date:"i" }}</span>
+                                        </div>
+                                        <!-- /.direct-chat-info -->
+                                        <img class="direct-chat-img" src="
+
+
+                                                {% if commentaire.auteur.userprofile.avatar %}{{ commentaire.auteur.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
+                                             alt="message user image"/><!-- /.direct-chat-img -->
+                                        <div class="direct-chat-text" id="comment-{{ commentaire.id }}">
+                                            {{ commentaire.commentaire_text }}
+                                        </div>
+                                        <!-- /.direct-chat-text -->
+                                    </div><!-- /.direct-chat-msg -->
+                                {% endifequal %}
+                            {% endfor %}
+                        </div>
+                        <!--/.direct-chat-messages-->
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="input-group">
+                            <input id="message-text-{{ idee.id }}"
+                                   onKeyPress="if (event.keyCode == 13) sendIdeaComment({{ idee.id }})" type="text"
+                                   name="message" placeholder="Répondez a cette idée !" class="form-control"/>
                       <span class="input-group-btn">
-                        <button type="submit" class="btn btn-primary btn-flat button-comment-submit" data-idee="{{ idee.id }}">Commenter</button>
+                        <button type="submit" class="btn btn-primary btn-flat button-comment-submit"
+                                data-idee="{{ idee.id }}">Commenter
+                        </button>
                       </span>
+                        </div>
                     </div>
-                  </div><!-- /.box-footer-->
-                </div><!--/.direct-chat -->
+                    <!-- /.box-footer-->
+                </div>
+                <!--/.direct-chat -->
             </div>
-        {% if forloop.counter0|divisibleby:3 == 2 or forloop.last%}
-        {% endif %}
+            {% if forloop.counter0|divisibleby:3 == 2 or forloop.last %}
+            {% endif %}
+        </div>
     {% endfor %}
-    </div>
+
+    {% for idee in idee_list %}
+        {% ifequal user idee.auteur %}
+            <!-- modal de suppression -->
+            <div id="modal-delete-{{ idee.id }}" class="modal fade modal-warning" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                            <h4 class="modal-title">Attention !</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>L'idée suivante va être supprimée :</p>
+                            <h4 class="text-center"><strong>{{ idee.titre }}</strong></h4>
+                            {% if idee.commentaire_set.all|length == 1 %}
+                                <p>Ainsi que son <strong>seul</strong> commentaire.</p>
+                            {% elif idee.commentaire_set.all|length > 1 %}
+                                <p>Ainsi que ses <strong>{{ idee.commentaire_set.all|length }}</strong>
+                                    commentaires.</p>
+                            {% endif %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer
+                            </button>
+                            <button type="button" class="btn btn-danger btn-delete-idee" data-idee="{{ idee.id }}">
+                                Supprimer l'idée
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        {% endifequal %}
+    {% endfor %}
 {% endblock %}
 
 {% block page_footer_addons %}
     <script>
         var USER_ID = {{ user.id }};
         //ajout d'un fonction custom dans jQuery
-        $.fn.scrollBottom = function() {
-          return $(document).height() - this.scrollTop() - this.height();
+        $.fn.scrollBottom = function () {
+            return $(document).height() - this.scrollTop() - this.height();
         };
 
 
@@ -167,17 +222,16 @@
         }
 
         $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
+            beforeSend: function (xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
                 }
             }
         });
 
-        function sendIdeaComment(idee){
-            var msg = $("#message-text-"+idee).val().trim();
-            if(msg.length > 0)
-            {
+        function sendIdeaComment(idee) {
+            var msg = $("#message-text-" + idee).val().trim();
+            if (msg.length > 0) {
                 var params = {
                     idee_id: idee,
                     com: msg
@@ -188,51 +242,47 @@
                     method: "POST",
                     url: "{% url 'jacquesIdea:ajax_enregistrer_commentaire' %}",
                     data: paramsEncoded,
-                    dataType : 'html',
+                    dataType: 'html',
                     cache: false,
-                    success: function(html, statut){
+                    success: function (html, statut) {
                         var scrollToId = $(html).find('.direct-chat-txt').attr("id");
-                        $(html).appendTo('#messages-container-'+idee);
-                        var objDiv = document.getElementById('messages-container-'+idee);
+                        $(html).appendTo('#messages-container-' + idee);
+                        var objDiv = document.getElementById('messages-container-' + idee);
                         objDiv.scrollTop = objDiv.scrollHeight;
-                        $("#message-text-"+idee).val("");
+                        $("#message-text-" + idee).val("");
                     },
-                    error : function(resultat, statut, erreur){
+                    error: function (resultat, statut, erreur) {
                         alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
                     }
                 });
             }
         }
 
-        $(".button-comment-submit").click(function(){
-            var idee =$(this).attr("data-idee");
-           sendIdeaComment(idee);
+        $(".button-comment-submit").click(function () {
+            var idee = $(this).attr("data-idee");
+            sendIdeaComment(idee);
         });
 
         //detecion du vote
-        $(".vote-up, .vote-down").click(function(){
+        $(".vote-up, .vote-down").click(function () {
             $this = $(this);
             //si le choix cliqué a déjà été voté, on quitte
-            if($this.hasClass('voted'))
-            {
+            if ($this.hasClass('voted')) {
                 return false;
             }
 
             //determination de l'action up/down
             var action = "";
             var url = '';
-            if($this.hasClass("vote-up"))
-            {
+            if ($this.hasClass("vote-up")) {
                 action = "up";
                 url = "{% url 'jacquesIdea:ajax_upvote' %}";
             }
-            else if($this.hasClass("vote-down"))
-            {
+            else if ($this.hasClass("vote-down")) {
                 action = "down";
                 url = "{% url 'jacquesIdea:ajax_downvote' %}";
             }
-            else
-            {
+            else {
                 return false;
             }
 
@@ -248,30 +298,28 @@
                 method: "POST",
                 url: url,
                 data: paramsEncoded,
-                success: function(){
-                    $votedCpt = $("#cpt-"+action+"-"+idee);
+                success: function () {
+                    $votedCpt = $("#cpt-" + action + "-" + idee);
                     //si ce n'est pas le premier vote
-                    if($("#vote-up-"+idee+".voted, #vote-down-"+idee+".voted").length)
-                    {
+                    if ($("#vote-up-" + idee + ".voted, #vote-down-" + idee + ".voted").length) {
                         //changement de la valeur du compteur
-                        $("#cpt-up-"+idee+", #cpt-down-"+idee).each(function(){
+                        $("#cpt-up-" + idee + ", #cpt-down-" + idee).each(function () {
                             //pour les deux on fait -1 (pour eviter de devoir faire un IF(action)
-                            $(this).text(parseInt($(this).text())-1);
+                            $(this).text(parseInt($(this).text()) - 1);
                         });
                         //pour le selectionné on fait + 2
-                        $votedCpt.text(parseInt($votedCpt.text())+2);
+                        $votedCpt.text(parseInt($votedCpt.text()) + 2);
                     }
-                    else
-                    {
+                    else {
                         //pour le selectionné on fait + 1
-                        $votedCpt.text(parseInt($votedCpt.text())+1);
+                        $votedCpt.text(parseInt($votedCpt.text()) + 1);
                     }
 
                     //changements css du vote
-                    $("#vote-up-"+idee+", #vote-down-"+idee).removeClass("voted");
-                    $("#vote-"+action+"-"+idee).addClass("voted");
+                    $("#vote-up-" + idee + ", #vote-down-" + idee).removeClass("voted");
+                    $("#vote-" + action + "-" + idee).addClass("voted");
                 },
-                error : function(){
+                error: function () {
                     alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
                 }
             });
@@ -279,7 +327,7 @@
         });
 
         //Suppression d'une idée
-        $(".btn-delete-idee").click(function(){
+        $(".btn-delete-idee").click(function () {
             $this = $(this);
 
             //Création des parametres pour l'ajax
@@ -294,25 +342,25 @@
                 method: "POST",
                 url: "{%  url 'jacquesIdea:ajax_supprimer_idee' %}",
                 data: paramsEncoded,
-                success: function(){
-                    $("#modal-delete-"+idee).modal('hide');
-                    $("#modal-delete-"+idee).on('hidden.bs.modal', function () {
-                        $("#block-idee-"+idee).remove();
-                        $("#modal-delete-"+idee).remove();
+                success: function () {
+                    $("#modal-delete-" + idee).modal('hide');
+                    $("#modal-delete-" + idee).on('hidden.bs.modal', function () {
+                        $("#block-idee-" + idee).remove();
+                        $("#modal-delete-" + idee).remove();
                     })
                 },
-                error : function(){
+                error: function () {
                     alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
                 }
             });
         });
 
         //trigger du toggle des idée lorsqu'on clique sur le titre
-        $(".idee-header .box-title").click(function(){
+        $(".idee-header .box-title").click(function () {
             $(this).parent().find(".box-tools .btn-toggle").click()
         });
-        
-        $(function(){
+
+        $(function () {
             //$('.direct-chat-messages').slimscroll({start: $(this).find('.direct-chat-msg').last()});
             //TODO slimscroll empeche de descendre LA PAGE avec le scroll molette si la souris est dans une zone de slimscroll
             $('.direct-chat-messages').slimscroll({start: 'bottom'});

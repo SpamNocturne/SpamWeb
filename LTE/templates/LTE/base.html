@@ -5,28 +5,29 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>{% block base_title %}SpamWeb{% endblock %}</title>
 
-    <link rel="icon" type="image/png" href="{% static 'LTE/img/icon.png' %}" />
+    <link rel="icon" type="image/png" href="{% static 'LTE/img/icon.png' %}"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.4 -->
-    <link href="{% static 'LTE/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'LTE/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
     <!-- Font Awesome Icons -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
     <!-- Ionicons -->
-    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
     <!-- Theme style -->
-    <link href="{% static 'LTE/dist/css/AdminLTE.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'LTE/dist/css/AdminLTE.min.css' %}" rel="stylesheet" type="text/css"/>
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect.
     -->
-    <link href="{% static 'LTE/dist/css/skins/_all-skins.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'LTE/dist/css/skins/_all-skins.min.css' %}" rel="stylesheet" type="text/css"/>
     <!-- css commun a toutes les pages -->
-    <link href="{% static 'common/css/common.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'common/css/common.css' %}" rel="stylesheet" type="text/css"/>
     {% block base_header_addons %}{% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,72 +35,72 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
-  <!--
-  BODY TAG OPTIONS:
-  =================
-  Apply one or more of the following classes to get the
-  desired effect
-  |---------------------------------------------------------|
-  | SKINS         | skin-blue                               |
-  |               | skin-black                              |
-  |               | skin-purple                             |
-  |               | skin-yellow                             |
-  |               | skin-red                                |
-  |               | skin-green                              |
-  |---------------------------------------------------------|
-  |LAYOUT OPTIONS | fixed                                   |
-  |               | layout-boxed                            |
-  |               | layout-top-nav                          |
-  |               | sidebar-collapse                        |
-  |               | sidebar-mini                            |
-  |---------------------------------------------------------|
-  -->
-  <body class="{% block body_skin_class %}skin-blue-light{% endblock %} sidebar-mini fixed">
-    <div class="wrapper">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="{% block body_skin_class %}skin-blue-light{% endblock %} sidebar-mini fixed">
+<div class="wrapper">
 
-      <!-- Main Header -->
-      <header class="main-header">
+    <!-- Main Header -->
+    <header class="main-header">
 
         <!-- Logo -->
         <a href="{% block base_index_url %}{% url 'home:index' %}{% endblock %}" class="logo">
-          <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini">{% block base_mini_logo %}<b>S</b>W{% endblock %}</span>
-          <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">{% block base_logo %}<b>Spam</b>Web{% endblock %}</span>
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini">{% block base_mini_logo %}<b>S</b>W{% endblock %}</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">{% block base_logo %}<b>Spam</b>Web{% endblock %}</span>
         </a>
 
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
-          <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-          </a>
-          <!-- Navbar Right Menu -->
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-                <!-- Notifications Menu -->
-                <li class="dropdown notifications-menu" id="global-notification-menu">
-                    <!-- Menu toggle button -->
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell-o"></i>
-                        <span id='global-notification-new-count' class='label label-warning'></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="header">Activités récentes sur le Spam</li>
-                        <li>
-                            <!-- Inner Menu: contains the notifications -->
-                            <ul class="menu" id="global-notification-container">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Notifications Menu -->
+                    <li class="dropdown notifications-menu" id="global-notification-menu">
+                        <!-- Menu toggle button -->
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span id='global-notification-new-count' class='label label-warning'></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">Activités récentes sur le Spam</li>
+                            <li>
                                 <!-- Inner Menu: contains the notifications -->
+                                <ul class="menu" id="global-notification-container">
+                                    <!-- Inner Menu: contains the notifications -->
 
-                            </ul>
-                        </li>
-                        <li class="footer"><a href="#">Tout voir (oupa)</a></li>
-                    </ul>
-                </li>
+                                </ul>
+                            </li>
+                            <li class="footer"><a href="#">Tout voir (oupa)</a></li>
+                        </ul>
+                    </li>
 
-                {% block base_top_navbar %}
-                    {% comment %}
+                    {% block base_top_navbar %}
+                        {% comment %}
               <!-- Messages: style can be found in dropdown.less-->
               <li class="dropdown messages-menu">
                 <!-- Menu toggle button -->
@@ -169,68 +170,77 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </ul>
               </li>
               {% endcomment %}
-              {% endblock %}
-              {% block base_top_navbar_user %}
-              <!-- User Account Menu -->
-              <li class="dropdown user user-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <!-- The user image in the navbar-->
-                  <img src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" class="user-image" alt="User Image"/>
-                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- The user image in the menu -->
-                  <li class="user-header">
-                    <img src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" class="img-circle" alt="User Image" />
-                    <p>
-                      {{ user.first_name|capfirst }} {{ user.last_name|capfirst }} - {{ user.username }}
-                      <small>SpamMembre depuis le {{ user.date_joined|date:"d F Y" }}</small>
-                    </p>
-                  </li>
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="{% url 'userManager:profile_edit' %}" class="btn btn-default btn-flat">Profil</a>
-                    </div>
-                    <div class="pull-right">
-                      <a href="{% url 'userManager:deconnexion' %}" class="btn btn-default btn-flat">Se déconnecter</a>
-                    </div>
-                  </li>
+                    {% endblock %}
+                    {% block base_top_navbar_user %}
+                        <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- The user image in the navbar-->
+                                <img src="
+                                        {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
+                                     class="user-image" alt="User Image"/>
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                <span class="hidden-xs">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img src="
+                                            {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
+                                         class="img-circle" alt="User Image"/>
+
+                                    <p>
+                                        {{ user.first_name|capfirst }} {{ user.last_name|capfirst }}
+                                        - {{ user.username }}
+                                        <small>SpamMembre depuis le {{ user.date_joined|date:"d F Y" }}</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="{% url 'userManager:profile_edit' %}" class="btn btn-default btn-flat">Profil</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="{% url 'userManager:deconnexion' %}" class="btn btn-default btn-flat">Se
+                                            déconnecter</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endblock %}
+                    {% block base_top_navbar_control_button %}
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    {% endblock %}
                 </ul>
-              </li>
-              {% endblock %}
-              {% block base_top_navbar_control_button %}
-              <!-- Control Sidebar Toggle Button -->
-              <li>
-                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-              </li>
-              {% endblock %}
-            </ul>
-          </div>
+            </div>
         </nav>
-      </header>
-      <!-- Left side column. contains the logo and sidebar -->
-      <aside class="main-sidebar">
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
 
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-         {% block base_left_sidebar_user_panel %}
-          <!-- Sidebar user panel (optional) -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" class="img-circle" alt="User Image" />
+            {% block base_left_sidebar_user_panel %}
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="
+                                {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
+                             class="img-circle" alt="User Image"/>
+                    </div>
+                    <div class="pull-left info">
+                        <p>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</p>
+                        <!-- Status -->
+                        <a href="#"><i class="fa fa-circle text-success"></i> En Ligne</a>
+                    </div>
                 </div>
-                <div class="pull-left info">
-                    <p>{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</p>
-                    <!-- Status -->
-                    <a href="#"><i class="fa fa-circle text-success"></i> En Ligne</a>
-                </div>
-            </div>
-        {% endblock %}
-        {% block base_left_sidebar_search_form %}
-            {% comment %}
+            {% endblock %}
+            {% block base_left_sidebar_search_form %}
+                {% comment %}
           <!-- search form (Optional) -->
           <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
@@ -242,214 +252,241 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </form>
           <!-- /.search form -->
           {% endcomment %}
-        {% endblock %}
-        {% block base_left_sidebar_menu %}
-            {% include "LTE/menu.html" with active="" only %}
-        {% endblock %}
+            {% endblock %}
+            {% block base_left_sidebar_menu %}
+                {% include "LTE/menu.html" with active="" only %}
+            {% endblock %}
         </section>
         <!-- /.sidebar -->
-      </aside>
+    </aside>
 
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-          <h1>
-            {% block base_content_header_title %}<b>Spam</b>Web{% endblock %}
-            <small>{% block base_content_header_title_description %}Y'a plein de choses ici !{% endblock %}</small>
-          </h1>
-          <ol class="breadcrumb">
-            {% block base_content_header_breadcrumb %}
-                {% include 'LTE/breadcrumb.html' with current='Home' only %}
-            {% endblock %}
-          </ol>
+            <h1>
+                {% block base_content_header_title %}<b>Spam</b>Web{% endblock %}
+                <small>{% block base_content_header_title_description %}Y'a plein de choses ici !{% endblock %}</small>
+            </h1>
+            <ol class="breadcrumb">
+                {% block base_content_header_breadcrumb %}
+                    {% include 'LTE/breadcrumb.html' with current='Home' only %}
+                {% endblock %}
+            </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
 
-          <!-- Your Page Content Here -->
+            <!-- Your Page Content Here -->
 
-        {% block body %}
-        {% endblock %}
+            {% block body %}
+            {% endblock %}
 
-        </section><!-- /.content -->
-      </div><!-- /.content-wrapper -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
-      <!-- Main Footer -->
-      <footer class="main-footer">
+    <!-- Main Footer -->
+    <footer class="main-footer">
         {% block base_footer %}
-        <!-- To the right -->
-        <div class="pull-right hidden-xs lepouce-trigger">
-          Pouce !
-            <img src="https://fbstatic-a.akamaihd.net/rsrc.php/ya/r/FwHVs2eE5cr.svg" id="lepouce">
-        </div>
-        <!-- Default to the left -->
-        <strong>Copyright &copy; 2015 <a href="#"><b>Spam</b>Web</a>.</strong> Tous droits r&eacute;serv&eacute;s.
+            <!-- To the right -->
+            <div class="pull-right hidden-xs lepouce-trigger">
+                Pouce !
+                <img src="https://fbstatic-a.akamaihd.net/rsrc.php/ya/r/FwHVs2eE5cr.svg" id="lepouce">
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2015 <a href="#"><b>Spam</b>Web</a>.</strong> Tous droits r&eacute;serv&eacute;s.
         {% endblock %}
-      </footer>
-      
-      <!-- Control Sidebar -->      
-      <aside class="control-sidebar control-sidebar-dark">
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
         <!-- Create the tabs -->
         <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-          <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-          <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-          {% block base_right_sidebar_tabs %}
-          {% endblock %}
+            <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            {% block base_right_sidebar_tabs %}
+            {% endblock %}
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
             {# TODO  FAIRE RENDER CETTE PARTIE PAR UN CONTROLLER TIERS APPELE DEPUIS LE TEMPLATE (comment ??) include avec variables ? #}
-           <!-- Home tab content -->
+            <!-- Home tab content -->
             <div class="tab-pane active" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">&#199;a arrive bient&ocirc;t !</h3>
-            <ul class='control-sidebar-menu'>
-              <li>
-                 <a href='#'>
-                  <i class="menu-icon fa fa-sun-o bg-orange"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">K-Fet : Post partiels</h4>
-                    <p>Le 20 Juin</p>
-                  </div>
-                </a>
-                <a href=''>
-                  <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Anniversaire : Alexis Andra</h4>
-                    <p>Le 22 Juin</p>
-                  </div>
-                </a>
-              </li>
-            </ul><!-- /.control-sidebar-menu -->
+                <h3 class="control-sidebar-heading">&#199;a arrive bient&ocirc;t !</h3>
+                <ul class='control-sidebar-menu'>
+                    <li>
+                        <a href='#'>
+                            <i class="menu-icon fa fa-sun-o bg-orange"></i>
 
-            <h3 class="control-sidebar-heading">Avancement des projets</h3>
-            <ul class='control-sidebar-menu'>
-              <li>
-                <a href='#'>
-                  <h4 class="control-sidebar-subheading">
-                    TP DASI
-                    <span class="label label-success pull-right">100%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-success" style="width: 100%"></div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href='#'>
-                  <h4 class="control-sidebar-subheading">
-                    Site SpamWeb
-                    <span class="label label-warning pull-right">20%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-aqua" style="width: 20%"></div>
-                  </div>
-                </a>
-              </li>
-            </ul><!-- /.control-sidebar-menu -->
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">K-Fet : Post partiels</h4>
 
-            </div><!-- /.tab-pane -->
+                                <p>Le 20 Juin</p>
+                            </div>
+                        </a>
+                        <a href=''>
+                            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Anniversaire : Alexis Andra</h4>
+
+                                <p>Le 22 Juin</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.control-sidebar-menu -->
+
+                <h3 class="control-sidebar-heading">Avancement des projets</h3>
+                <ul class='control-sidebar-menu'>
+                    <li>
+                        <a href='#'>
+                            <h4 class="control-sidebar-subheading">
+                                TP DASI
+                                <span class="label label-success pull-right">100%</span>
+                            </h4>
+
+                            <div class="progress progress-xxs">
+                                <div class="progress-bar progress-bar-success" style="width: 100%"></div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href='#'>
+                            <h4 class="control-sidebar-subheading">
+                                Site SpamWeb
+                                <span class="label label-warning pull-right">20%</span>
+                            </h4>
+
+                            <div class="progress progress-xxs">
+                                <div class="progress-bar progress-bar-aqua" style="width: 20%"></div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.control-sidebar-menu -->
+
+            </div>
+            <!-- /.tab-pane -->
             <!-- Settings tab content -->
             <div class="tab-pane" id="control-sidebar-settings-tab">
-            <form method="post">
-              <h3 class="control-sidebar-heading">Réglages Généraux</h3>
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Activer les notifications
-                  <input type="checkbox" class="pull-right" checked />
-                </label>
-                <p>
-                  Pour recevoir des notifications et rappels par mail sur les évènements et activités du <b>Spam</b>
-                </p>
-              </div><!-- /.form-group -->
-            </form>
-            </div><!-- /.tab-pane -->
-          {% block base_right_sidebar_contents %}
-          {% endblock %}
+                <form method="post">
+                    <h3 class="control-sidebar-heading">Réglages Généraux</h3>
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Activer les notifications
+                            <input type="checkbox" class="pull-right" checked/>
+                        </label>
+
+                        <p>
+                            Pour recevoir des notifications et rappels par mail sur les évènements et activités du <b>Spam</b>
+                        </p>
+                    </div>
+                    <!-- /.form-group -->
+                </form>
+            </div>
+            <!-- /.tab-pane -->
+            {% block base_right_sidebar_contents %}
+            {% endblock %}
         </div>
-      </aside><!-- /.control-sidebar -->
-      <!-- Add the sidebar's background. This div must be placed
-           immediately after the control sidebar -->
-      <div class='control-sidebar-bg'></div>
-    </div><!-- ./wrapper -->
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class='control-sidebar-bg'></div>
+</div>
+<!-- ./wrapper -->
 
-    <!-- REQUIRED JS SCRIPTS -->
+<!-- REQUIRED JS SCRIPTS -->
 
-    <!-- jQuery 2.1.4 -->
-    <script src="{% static 'LTE/plugins/jQuery/jQuery-2.1.4.min.js' %}"></script>
-    <!-- Bootstrap 3.3.2 JS -->
-    <script src="{% static 'LTE/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
-    <!-- SlimScroll -->
-    <script src="{% static 'LTE/dist/js/app.min.js' %}" type="text/javascript"></script>
-    <!-- AdminLTE App -->
-    <script src="{% static 'LTE/plugins/slimScroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script>
-    <!-- Notifications -->
-    <script>
-        $(function(){
-            var has_unseen_notification = false;
-            var refresh_notifications = function(){
+<!-- jQuery 2.1.4 -->
+<script src="{% static 'LTE/plugins/jQuery/jQuery-2.1.4.min.js' %}"></script>
+<!-- Bootstrap 3.3.2 JS -->
+<script src="{% static 'LTE/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
+<!-- SlimScroll -->
+<script src="{% static 'LTE/dist/js/app.min.js' %}" type="text/javascript"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'LTE/plugins/slimScroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script>
+<!-- Notifications -->
+<script>
+    $(function () {
+        var has_unseen_notification = false;
+        var timeout;
+        var refresh_notifications = function () {
+            $.ajax({
+                method: "GET",
+                url: "{% url 'home:ajax_get_notifications' %}",
+                dataType: 'html',
+                cache: false,
+                success: function (html) {
+                    var $notif_container = $("#global-notification-container");
+                    $notif_container.html(html);
+                    var new_notif_nb = $notif_container.find(".notification-new").length;
+                    var $label = $("#global-notification-new-count");
+                    if (new_notif_nb > 0) {
+                        $label.text(new_notif_nb);
+                        has_unseen_notification = true;
+                    }
+                    else {
+                        $label.text('');
+                        has_unseen_notification = false;
+                    }
+                },
+                error: function (resultat, statut, erreur) {
+                    console.log("Impossible de récupérer les noifications");
+                }
+            });
+            timeout = setTimeout(arguments.callee, 5000);
+        };
+
+        var wait_close_notification = function () {
+            console.log("wait_close_notification");
+            $("html").one("click", function () {
+                console.log("Click detecté, réactivation");
+                var $notif_container = $("#global-notification-container");
+                $notif_container.find(".notification-new").removeClass(".notification-new");
+                $("#global-notification-new-count").text('');
+                has_unseen_notification = false;
+                refresh_notifications();
+            });
+        };
+
+        var notifications_seen = function (event) {
+            event.preventDefault();
+            if (has_unseen_notification == true) {
+                clearTimeout(timeout);
                 $.ajax({
                     method: "GET",
-                    url: "{% url 'home:ajax_get_notifications' %}",
-                    dataType : 'html',
-                    cache: false,
-                    success: function(html){
-                        var $notif_container = $("#global-notification-container");
-                        $notif_container.html(html);
-                        var new_notif_nb = $notif_container.find(".notification-new").length;
-                        var $label = $("#global-notification-new-count");
-                        if(new_notif_nb > 0)
-                        {
-                            $label.text(new_notif_nb);
-                            has_unseen_notification = true;
-                        }
-                        else
-                        {
-                            $label.text('');
-                            has_unseen_notification = false;
-                        }
-                    },
-                    error: function(resultat, statut, erreur){
-                        console.log("Impossible de récupérer les noifications");
-                    }
-                });
-                setTimeout(arguments.callee, 5000);
-            };
-
-            var notifications_seen = function(event){
-                event.preventDefault()
-                if(has_unseen_notification == true)
-                {
-                   $.ajax({
-                    method: "GET",
                     url: "{% url 'home:ajax_delete_unseen_log' %}",
-                    dataType : 'html',
+                    dataType: 'html',
                     cache: false,
-                    success: function(html){
-                        var $notif_container = $("#global-notification-container");
-                        $notif_container.find(".notification-new").removeClass(".notification-new");
-                        $("#global-notification-new-count").text('');
-                        has_unseen_notification = false;
+                    success: function (html) {
+                        wait_close_notification();
+                        console.log("Ajax Notification : SUCCESS");
                     },
-                    error: function(resultat, statut, erreur){
+                    error: function (resultat, statut, erreur) {
                         console.log("Impossible de Mettre a jour les notifications vues");
+                        refresh_notifications();
                     }
                 });
-                }
-            };
+            }
+        };
 
-            $("#global-notification-menu .dropdown-toggle").click(notifications_seen);
+        $("#global-notification-menu").find(".dropdown-toggle").click(notifications_seen);
 
-            refresh_notifications();
-        })
-    </script>
+        refresh_notifications();
+    })
+</script>
 
-    <!-- here add you own scripts -->
-    {% block base_footer_addons %}{% endblock %}
-    <!-- Optionally, you can add Slimscroll and FastClick plugins.
-          Both of these plugins are recommended to enhance the
-          user experience. Slimscroll is required when using the
-          fixed layout. -->
-  </body>
+<!-- here add you own scripts -->
+{% block base_footer_addons %}{% endblock %}
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+      Both of these plugins are recommended to enhance the
+      user experience. Slimscroll is required when using the
+      fixed layout. -->
+</body>
 </html>
