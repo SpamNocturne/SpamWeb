@@ -14,5 +14,9 @@ from oauth2client.django_orm import CredentialsField
 
 
 class CredentialsYoutubeModel(models.Model):
+<<<<<<< HEAD
     id = models.ForeignKey(User, primary_key=True)
+=======
+    id = models.OneToOneField(User, primary_key=True)
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
     credential = CredentialsField()

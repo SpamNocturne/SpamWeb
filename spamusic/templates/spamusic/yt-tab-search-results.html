@@ -1,11 +1,19 @@
 <ul id="search-result-list" class="media-list">
     {% for video in video_list.items %}
         <li class="row media">
+<<<<<<< HEAD
             <div class="col-xs-12 col-lg-10 col-lg-offset-1">
                   <div class="media-left media-middle">
                     <a href="#" data-channelId="{{ video.snippet.channelId }}" data-videoId="{{ video.id.videoId }}">
                       <img class="media-object visible-xs visible-sm" src="{{ video.snippet.thumbnails.default.url }}" alt="Thumbnail-default">
                       <img class="media-object visible-md visible-lg" src="{{ video.snippet.thumbnails.medium.url }}" alt="Thumbnail-medium">
+=======
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                  <div class="media-left media-middle">
+                    <a href="#" data-channelId="{{ video.snippet.channelId }}" data-videoId="{{ video.id.videoId }}">
+                      <img class="media-object visible-xs visible-sm visible-md" src="{{ video.snippet.thumbnails.default.url }}" alt="Thumbnail-default">
+                      <img class="media-object visible-lg" src="{{ video.snippet.thumbnails.medium.url }}" alt="Thumbnail-medium">
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
                     </a>
                   </div>
                   <div class="media-body">

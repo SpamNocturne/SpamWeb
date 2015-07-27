@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = "127.0.0.1:8000"
+
 
 # Application definition
 
@@ -37,12 +39,16 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ajax',
     'home',
     'jacquesIdea',
     'userManager',
     'LTE',
+<<<<<<< HEAD
     'SpamAlyzer'
+=======
+    'spamusic',
+    'SpamAlyzer',
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,6 +109,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 # UserManager
 LOGIN_URL = '/user/login/'

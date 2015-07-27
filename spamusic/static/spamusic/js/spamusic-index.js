@@ -61,7 +61,11 @@ $(function(){
         var paramsEncoded = $.param(params);
         $.ajax({
             method: "POST",
+<<<<<<< HEAD
             url: URLS.spamusicAddVideoToPlaylist,
+=======
+            url: URLS.ajax_add_video_to_playlist,
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
             data: paramsEncoded,
             dataType : 'html',
             cache: false,
@@ -100,7 +104,11 @@ $(function(){
             var paramsEncoded = $.param(params);
             $.ajax({
                 method: "POST",
+<<<<<<< HEAD
                 url: URLS.spamusicRechercherVideos,
+=======
+                url: URLS.ajax_rechercher_videos,
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
                 data: paramsEncoded,
                 dataType : 'html',
                 cache: false,
@@ -140,7 +148,11 @@ $(function(){
             var paramsEncoded = $.param(params);
             $.ajax({
                 method: "POST",
+<<<<<<< HEAD
                 url: URLS.spamusicAjouterPlaylist,
+=======
+                url: URLS.ajax_ajouter_playlist,
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
                 data: paramsEncoded,
                 dataType : 'html',
                 cache: false,
@@ -178,7 +190,11 @@ $(function(){
             var paramsEncoded = $.param(params);
             $.ajax({
                 method: "POST",
+<<<<<<< HEAD
                 url: URLS.spamusicDetailsPlaylist,
+=======
+                url: URLS.ajax_details_playlist,
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
                 data: paramsEncoded,
                 dataType : 'html',
                 cache: false,
@@ -200,7 +216,11 @@ $(function(){
                     var $loaderVideo = $(loaderTemplate).appendTo("#yt-tab-videos");
                     $.ajax({
                         method: "POST",
+<<<<<<< HEAD
                         url: URLS.spamusicPlaylistItems,
+=======
+                        url: URLS.ajax_playlistitems,
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
                         data: paramsEncoded,
                         dataType : 'html',
                         cache: false,

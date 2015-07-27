@@ -1,3 +1,26 @@
+<<<<<<< HEAD
+=======
+.notification > a
+{
+    white-space: normal!important;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    display: block;
+    position: relative;
+    min-height : 14px;
+}
+
+.notification > a > i{
+    position : absolute;
+    top : 50%;
+    height : 14px;
+    margin-top : -7px
+}
+.notification > a > p{
+    padding-left: 20px;
+}
+
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 #lepouce{
     position: fixed;
     top: 50%;
@@ -9,15 +32,32 @@
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     z-index: 1100;
+<<<<<<< HEAD
     -webkit-transition: all 10s ease-in;
     -moz-transition: all 10s ease-in;
     -ms-transition: all 10s ease-in;
     -o-transition: all 10s ease-in;
     transition: all 10s ease-in;
+=======
+    -webkit-transition: all 10s ease-in 2s;
+    -moz-transition: all 10s ease-in 2s;
+    -ms-transition: all 10s ease-in 2s;
+    -o-transition: all 10s ease-in 2s;
+    transition: all 10s ease-in 2s;
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 }
 
 .lepouce-trigger:hover #lepouce{
     display : block;
     height: 80%;
     opacity: 1;
+<<<<<<< HEAD
 }
+=======
+}
+
+.lepouce-trigger{
+    cursor: help;
+}
+
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe

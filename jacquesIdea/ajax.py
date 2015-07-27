@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseForbidden
-
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
+<<<<<<< HEAD:ajax/views.py
 from django.utils.datetime_safe import datetime
+=======
+from home.log import add_log
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe:jacquesIdea/ajax.py
 from jacquesIdea.models import Idee, Commentaire
 from spamusic import functions as f
 
@@ -13,8 +16,9 @@ from spamusic import functions as f
 ONLINE = False
 
 
+
 @login_required
-def jacquesIdeaEnregistrerCommentaire(request):
+def ajax_enregistrer_commentaire(request):
     # recuperation des parametres
     idee_id = request.POST['idee_id']
     commentaire_text = request.POST['com']
@@ -28,13 +32,19 @@ def jacquesIdeaEnregistrerCommentaire(request):
     com.pub_date = timezone.now()
     com.save()
 
+    add_log(text="%s a commenté l'idée : %s" % (request.user.username, com.idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_comment",
+            user=request.user)
+
     # generation du template
     context = {'commentaire': com}
-    return render(request, 'ajax/rightComment.html', context)
+    return render(request, 'jacquesIdea/rightComment.html', context)
+
 
 
 @login_required
-def jacquesIdeaDownvote(request):
+def ajax_downvote(request):
     # recupération des parametres
     idee_id = request.POST['idee_id']
     # user_id = request.POST['idee_id']
@@ -43,11 +53,15 @@ def jacquesIdeaDownvote(request):
     vote = idee.get_vote_from(request.user)
     vote.downvote()
     vote.save()
+    add_log(text="%s n'aime pas l'idée : %s" % (request.user.username, idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_vote",
+            user=request.user)
     return HttpResponse()
 
 
 @login_required
-def jacquesIdeaUpvote(request):
+def ajax_upvote(request):
     # recupération des parametres
     idee_id = request.POST['idee_id']
     # user_id = request.POST['idee_id']
@@ -56,13 +70,19 @@ def jacquesIdeaUpvote(request):
     vote = idee.get_vote_from(request.user)
     vote.upvote()
     vote.save()
+    add_log(text="%s aime l'idée : %s" % (request.user.username, idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_vote",
+            user=request.user)
     return HttpResponse()
 
 
 @login_required
-def jacquesIdeaSupprimerIdee(request):
+def ajax_supprimer_idee(request):
     # recupération des parametres
     idee_id = request.POST['idee_id']
+    if idee_id is None:
+        return HttpResponseBadRequest()
     idee = get_object_or_404(Idee, pk=idee_id)
     # on vérifie que l'idée appartient bien a l'utilisateur connecté
     if idee.auteur != request.user:
@@ -73,6 +93,7 @@ def jacquesIdeaSupprimerIdee(request):
     # idee.votants.clear()
     # On supprime l'idée
     idee.delete()
+<<<<<<< HEAD:ajax/views.py
     return HttpResponse()
 
 
@@ -596,3 +617,10 @@ def spamusicAddVideoToPlaylist(request):
         'playlist_item': playlist_item,
     }
     return render(request, 'spamusic/new-video.html', context)
+=======
+    add_log(text="%s a supprimé l'idée : %s" % (request.user.username, idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_delete_idea",
+            user=request.user)
+    return HttpResponse()
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe:jacquesIdea/ajax.py

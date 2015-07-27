@@ -8,6 +8,12 @@ from django.http import Http404
 from SpamAlyzer import graph_helper
 
 from lxml import etree
+<<<<<<< HEAD
+=======
+from threading import Thread
+from home.log import add_log
+import traceback
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 
 @login_required
 def index(request):
@@ -21,7 +27,14 @@ def index(request):
 
             try:
                 anal = analyzer.Analyzer(fichier)
+<<<<<<< HEAD
                 anal.analyze_the_spam_muhaha()
+=======
+                await_t = Thread(target=await_analyze_ending, args=(anal, request.user,))
+                await_t.setDaemon(True)
+                await_t.start()
+                #anal.analyze_the_spam_muhaha()
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
                 #if not anal.analyze_the_spam_muhaha():
                     #fichier.delete()
                     #context["error_message"] = "Désolé, mais ton archive était inutile (peut-être comme toi?). " \
@@ -33,6 +46,18 @@ def index(request):
                                            "Python me dit dans l'oreillette DocumentInvalid. " \
                                            "C'est triste. Et franchement, tu me déçois. Je te croyais mieux que ça."
                 return render_to_response("SpamAlyzer/message.html", context)
+<<<<<<< HEAD
+=======
+            except:
+                context["error_message"] = "Aïe aïe aïe. Je ne saurais pas te dire ce qu'il s'est passé. Enfin bon, " \
+                                           "de toute façon je ne suis qu'un texte écrit en dur dans le code par " \
+                                           "David. " \
+                                           "Normal que je ne pas déduire grand chose de l'erreur. " \
+                                           "Mais voilà le message de l'exception si ça peut t'aider. (mais vu que " \
+                                           "t'es nul(le), envoie ça à David. Il saura débugger, mieux que toi, " \
+                                           "sa merde qu'il a pondu) : {0}".format(traceback.format_exc())
+                return render_to_response("SpamAlyzer/message.html", context)
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
         else:
             context["error_message"] = "Oh non! Ton fichier est tout naze. " \
                                        "Python me dit dans l'oreillette que le formulaire n'est pas valide. " \
@@ -46,6 +71,21 @@ def index(request):
     context["form"] = form
     return render(request, 'SpamAlyzer/index.html', context)
 
+<<<<<<< HEAD
+=======
+def await_analyze_ending(analyzer, user):
+    t = Thread(target=analyzer.analyze_the_spam_muhaha())
+    t.setDaemon(True)
+    t.start()
+    t.join()
+    add_log(text="{0} a déposé une archive Facebook pour alimenter la conversation du spam ! "
+                 "Sa contribution nous a apporté {1} messages que le SpamWeb ne référençait pas encore. "
+                 "Merci !".format(user, analyzer.new_messages),
+            app="SpamAlyzer",
+            log_type="SpamAlyzer_depot_archive",
+            user=user)
+
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 @login_required
 def conversation(request, num_page):
     num_page = int(num_page)

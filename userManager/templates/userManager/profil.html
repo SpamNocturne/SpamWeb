@@ -1,4 +1,10 @@
 {% extends "userManager/layout.html" %}
+{% load static %}
+<!-- Page content header title -->
+{% block base_content_header_title %}Ton profil | {{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}SpamMembre de qualitay !{% endblock %}
 
 <!-- Page content header title -->
 {% block base_content_header_title %}Ton profil | {{ block.super }}{% endblock %}
@@ -27,18 +33,25 @@
                 <p class="text-red">{{ error }}</p>
                 {% endfor %}
             </div>
-
-            <div class="form-group  {% if form.avatar.errors %}has-error{% endif %}">
-                {{ form.avatar.label_tag }} {{ form.avatar }}
-                {% for error in form.avatar.errors %}
-                <p class="text-red">{{ error }}</p>
-                {% endfor %}
+            <div class="media">
+              <div class="media-left media-middle">
+                <a href="#">
+                  <img class="media-object img-circle" height="100" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}" alt="Photo de profil">
+                </a>
+              </div>
+              <div class="media-body">
+                <div class="form-group  {% if form.avatar.errors %}has-error{% endif %}">
+                    {{ form.avatar.label_tag }} {{ form.avatar }}
+                    {% for error in form.avatar.errors %}
+                    <p class="text-red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+              </div>
             </div>
             <div class="col-sm-4 col-sm-offset-4">
                 <button type="submit" class="btn btn-primary btn-block btn-flat">Mettre à jour mon profil !</button>
             </div><!-- /.col -->
             {% csrf_token %}
-
           </form>
         </div><!-- /.box-body -->
     </div>

@@ -2,13 +2,23 @@
 
 from django.contrib.auth.models import User
 from django.db import models
+<<<<<<< HEAD
 
+=======
+from threading import Lock
+
+mutex = Lock()
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 
 class UtilisateurStats(models.Model):
     nom_fb = models.CharField(max_length=250, unique=True)
     nb_de_messages = models.IntegerField(default=0)
 
     def ajout_mot_score(self, mot):
+<<<<<<< HEAD
+=======
+        mutex.acquire()
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
         mots = MotScore.objects.filter(user = self, mot = mot)
         if mots.count() == 0:
             mot = MotScore(mot = mot, user = self)
@@ -17,6 +27,10 @@ class UtilisateurStats(models.Model):
 
         mot.score += 1
         mot.save()
+<<<<<<< HEAD
+=======
+        mutex.release()
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 
     def get_mots_plus_utilises(self, nb = 0):
         all_mots_tris = MotScore.objects.filter(user = self).order_by("-score")

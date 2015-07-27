@@ -10,6 +10,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from .forms import ConnexionForm, ChangeMdpForm, InscriptionForm, ProfilForm
+from home.log import add_log
 from .models import UserProfile
 
 # Create your views here.
@@ -32,6 +33,13 @@ def inscription(request):
             user.is_active = False
 
             user.save()
+<<<<<<< HEAD
+=======
+            add_log(text="Un nouveau Spamembre s'est inscrit : %s  - ( %s %s )" % (username, first_name, last_name),
+                    app="userManager",
+                    log_type="userManager_register",
+                    user=user)
+>>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
             return redirect(reverse('userManager:connexion'))
             '''
             user = authenticate(username=username, password=password)
@@ -57,6 +65,16 @@ def connexion(request):
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
+
+            # Connexion via email
+            if "@" in username:
+                user_by_mail = User.objects.filter(email=username)
+                if user_by_mail:
+                    # si le master existe, il ne peut y en avoir qu'un et UN SEUL. TRUE MASTEEEEEEER !
+                    # Non plus serieusement, c'est parce que l'username est unique :D
+                    if user_by_mail[0]:
+                        username = user_by_mail[0].username
+
             user = authenticate(username=username, password=password)
             if user:    # != None
                 if user.is_active:
