@@ -66,8 +66,8 @@ def await_analyze_ending(analyzer, user):
     t.setDaemon(True)
     t.start()
     t.join()
-    add_log(text="{0} a déposé une archive Facebook pour alimenter la conversation du spam !"
-                 "Sa contribution nous a apporté {1} messages que le SpamWeb ne référençait pas encore."
+    add_log(text="{0} a déposé une archive Facebook pour alimenter la conversation du spam ! "
+                 "Sa contribution nous a apporté {1} messages que le SpamWeb ne référençait pas encore. "
                  "Merci !".format(user, analyzer.new_messages),
             app="SpamAlyzer",
             log_type="SpamAlyzer_depot_archive",

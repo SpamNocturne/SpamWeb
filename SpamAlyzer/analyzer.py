@@ -84,7 +84,7 @@ class Analyzer:
 
     def analyze_conversation(self, conversation):
         nb_messages = len(conversation)
-        nb_counting_messages = nb_messages / 2
+        nb_counting_messages = int(nb_messages / 2)
         userXPath = "div[@class = 'message_header']/span[@class = 'user']"
         dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
         all_users = models.UtilisateurStats.objects.all()
@@ -99,7 +99,7 @@ class Analyzer:
             message_text = conversation[i+1].text
 
             if all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
-                new_messages += 1
+                self.new_messages += 1
 
                 userDB.nb_de_messages += 1
                 if message_text is None:
@@ -113,7 +113,7 @@ class Analyzer:
                 msg.save()
 
             # Messages counting (server log)
-            print("Analyzing conversations {0}/{1}".format(i / 2, nb_counting_messages))
+            print("Analyzing conversations {0}/{1}".format(int((i+1) / 2), nb_counting_messages))
 
 
     def get_mots_de_texte(self, texte):
