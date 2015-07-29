@@ -33,13 +33,10 @@ def inscription(request):
             user.is_active = False
 
             user.save()
-<<<<<<< HEAD
-=======
             add_log(text="Un nouveau Spamembre s'est inscrit : %s  - ( %s %s )" % (username, first_name, last_name),
                     app="userManager",
                     log_type="userManager_register",
                     user=user)
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
             return redirect(reverse('userManager:connexion'))
             '''
             user = authenticate(username=username, password=password)

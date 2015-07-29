@@ -43,12 +43,8 @@ INSTALLED_APPS = (
     'jacquesIdea',
     'userManager',
     'LTE',
-<<<<<<< HEAD
-    'SpamAlyzer'
-=======
     'spamusic',
     'SpamAlyzer',
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 )
 
 MIDDLEWARE_CLASSES = (

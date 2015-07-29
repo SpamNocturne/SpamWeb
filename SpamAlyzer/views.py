@@ -144,9 +144,6 @@ def statsGlobales(request):
             graphe_nb_msg_per_date[moisEtAn] = 1
     graphe_nb_msg_per_date = collections.OrderedDict(sorted(graphe_nb_msg_per_date.items()))
 
-    print(graphe_nb_msg_per_date)
-
-
     context = {
         "nb_messages" : nb_messages,
         "nb_pouces": nb_pouces,
@@ -156,3 +153,62 @@ def statsGlobales(request):
     }
 
     return render(request, "SpamAlyzer/statsGlobales.html", context)
+
+
+@login_required
+def statsSpammeurs(request):
+    spammeurs = []
+    for spammeur in models.UtilisateurStats.objects.all():
+        spammeurs.append(spammeur)
+    return render(request, "SpamAlyzer/choixSpammeur.html", {"spammeurs": spammeurs})
+
+
+def statsMec(request, id_pers):
+    mecs = models.UtilisateurStats.objects.filter(id = id_pers)
+    if mecs.count() == 0:
+        return render(request, "SpamAlyzer/statsMec.html", {"error_message": "Utilisateur inconnu"})
+    mec = mecs[0]
+
+    all_messages_du_mec = models.Message.objects.filter(auteur = mec)
+    nb_messages = all_messages_du_mec.count()
+    if nb_messages == 0:
+        return render(request, "SpamAlyzer/statsMec.html", {"error_message": "Rien n'a été pour cet utilisateur. "
+                                                                             "N'aurait-il aucun message ?"})
+
+    nb_pouces = all_messages_du_mec.filter(texte = None).count()
+
+    motsScore = {}
+    all_mots = mec.get_mots_plus_utilises()
+    for m in all_mots:
+        if m.mot in motsScore:
+            motsScore[m] += 1
+        else:
+            motsScore[m] = 0
+
+    NB_DISPLAYED_WORDS = 10
+    i = 0
+    graphe_most_used_words = []
+    for unMotScore in sorted(motsScore, key=lambda x: x.score, reverse=True):
+        graphe_most_used_words.append({'xaxis': unMotScore.mot, 'yaxis': unMotScore.score})
+        i += 1
+        if i > NB_DISPLAYED_WORDS:
+            break
+
+    # TIME_INTERVAL one month
+    graphe_nb_msg_per_date = {}
+    for unMsg in all_messages_du_mec:
+        moisEtAn = "{0}-{1}".format(unMsg.date.year, unMsg.date.month)
+        if moisEtAn in graphe_nb_msg_per_date:
+            graphe_nb_msg_per_date[moisEtAn] += 1
+        else:
+            graphe_nb_msg_per_date[moisEtAn] = 1
+    graphe_nb_msg_per_date = collections.OrderedDict(sorted(graphe_nb_msg_per_date.items()))
+
+    context = {
+        "nom": mec.nom_fb,
+        "nb_messages" : nb_messages,
+        "nb_pouces": nb_pouces,
+        "graphe_most_used_words": graphe_most_used_words,
+        "graphe_nb_msg_per_date": graphe_nb_msg_per_date,
+    }
+    return render(request, "SpamAlyzer/statsMec.html", context)
