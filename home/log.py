@@ -19,6 +19,7 @@ LOG_PARAMS = {
         "jacquesIdea_delete_idea",
         "jacquesIdea_comment",
         "jacquesIdea_vote",
+        "jacquesIdea_validate_idea",
         "userManager_register",
         "spamConso_add_conso_beer",
         "spamConso_add_conso_tacos",

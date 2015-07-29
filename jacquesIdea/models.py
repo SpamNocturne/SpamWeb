@@ -5,20 +5,28 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
+
 class Idee(models.Model):
+    STATUTS = {
+        "PENDING": 0,
+        "VALIDATED": 1,
+    }
+
     titre = models.CharField(max_length=150)
     idee_text = models.TextField()
     pub_date = models.DateTimeField()
+    statut = models.IntegerField(default=STATUTS["PENDING"])
     auteur = models.ForeignKey(User, related_name='idees')
     votants = models.ManyToManyField(User, through='Vote')
 
     def __str__(self):
         return self.titre
 
-    #determine si une idee est recente (moins d'une semaine)
+    # determine si une idee est recente (moins d'une semaine)
     def est_recent(self):
         now = timezone.now()
         return now - datetime.timedelta(days=7) <= self.pub_date <= now
+
     est_recent.admin_order_field = 'pub_date'
     est_recent.boolean = True
     est_recent.short_description = 'recent ?'
@@ -26,7 +34,7 @@ class Idee(models.Model):
     def is_upvoted_by(self, user):
         vote = Vote.objects.filter(auteur=user, idee=self)
         if vote:
-            #Si il y a un vote, il ne peut y en avoir qu'un ! contrainte UNIQUE
+            # Si il y a un vote, il ne peut y en avoir qu'un ! contrainte UNIQUE
             if vote[0].valeur > 0:
                 return True
         return False
@@ -34,23 +42,23 @@ class Idee(models.Model):
     def is_downvoted_by(self, user):
         vote = Vote.objects.filter(auteur=user, idee=self)
         if vote:
-            #Si il y a un vote, il ne peut y en avoir qu'un ! contrainte UNIQUE
+            # Si il y a un vote, il ne peut y en avoir qu'un ! contrainte UNIQUE
             if vote[0].valeur < 0:
                 return True
         return False
 
-    #Renvoie le vote de l'utilisateur pour cette idee (le cree si inexistant)
+    # Renvoie le vote de l'utilisateur pour cette idee (le cree si inexistant)
     def get_vote_from(self, user):
         vote = Vote.objects.filter(auteur=user, idee=self)
-        #s'il y a un vote on le retourne
+        # s'il y a un vote on le retourne
         if vote:
             return vote[0]
-        #s'il n'y a pas de vote on le crée
+        # s'il n'y a pas de vote on le crée
         else:
             vote = Vote.objects.create(auteur=user, idee=self)
             return vote
 
-    #retourne le calcul des upvote/downvote sur une idée
+    # retourne le calcul des upvote/downvote sur une idée
     @property
     def get_note(self):
         somme = 0
@@ -85,11 +93,12 @@ class Commentaire(models.Model):
         return self.commentaire_text
 
 
-#un vote est lie a un user et une idee
+# un vote est lie a un user et une idee
 class Vote(models.Model):
     # ici meta sert a avoir une clé primaire sur deux champs
     class Meta:
-          unique_together = ('auteur', 'idee')
+        unique_together = ('auteur', 'idee')
+
     auteur = models.ForeignKey(User)
     idee = models.ForeignKey(Idee)
     valeur = models.IntegerField(default=0)

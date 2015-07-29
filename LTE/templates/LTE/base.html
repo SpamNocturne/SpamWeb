@@ -444,9 +444,7 @@ desired effect
         };
 
         var wait_close_notification = function () {
-            console.log("wait_close_notification");
             $("html").one("click", function () {
-                console.log("Click detecté, réactivation");
                 var $notif_container = $("#global-notification-container");
                 $notif_container.find(".notification-new").removeClass(".notification-new");
                 $("#global-notification-new-count").text('');

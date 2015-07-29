@@ -86,3 +86,25 @@ def ajax_supprimer_idee(request):
             log_type="jacquesIdea_delete_idea",
             user=request.user)
     return HttpResponse()
+
+
+@login_required
+def ajax_valider_idee(request):
+    # recupération des parametres
+    idee_id = request.POST['idee_id']
+    if idee_id is None:
+        return HttpResponseBadRequest()
+    idee = get_object_or_404(Idee, pk=idee_id)
+    # on vérifie que l'idée appartient bien a l'utilisateur connecté
+    if idee.auteur != request.user:
+        return HttpResponseForbidden()
+    # validation
+    idee.statut = idee.STATUTS["VALIDATED"]
+    idee.save()
+    add_log(text="%s a validé l'idée : %s" % (request.user.username, idee.titre),
+            app="jacquesIdea",
+            log_type="jacquesIdea_validate_idea",
+            user=request.user)
+    return HttpResponse()
+
+
