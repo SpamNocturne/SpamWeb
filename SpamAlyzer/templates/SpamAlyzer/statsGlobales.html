@@ -23,6 +23,85 @@
 
 {% block page_header_addons %}
     <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/index.css' %}">
+    {% if not error_message %}
+        <script src="{% static "LTE/plugins/chartjs/Chart.js" %}"></script>
+        <script type="application/javascript">
+        function generateGraphs() {
+            var mostUsedWordsContext = document.getElementById("mostUsedWords").getContext("2d");
+            var mostUsedWordsByUsersContext = document.getElementById("mostUsedWordsByUsers").getContext("2d");
+            var mostUsedWordsByPeriodContext = document.getElementById("mostUsedWordsByPeriod").getContext("2d");
+            var mostUsedWordsData = {
+                labels: [
+                    {% for value in graphe_most_used_words %}
+                        "{{ value.xaxis }}" ,
+                    {% endfor %}
+                ],
+                datasets: [
+                    {
+                        label: "Mots les plus utilisés dans le spam",
+                        fillColor: "rgba(50,50,50,0.5)",
+                        strokeColor: "rgba(220,220,220,0.8)",
+                        highlightFill: "#3d3",
+                        highlightStroke: "#000",
+                        data: [
+                            {% for value in graphe_most_used_words %}
+                                "{{ value.yaxis }}" ,
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            };
+            var mostUsedWordsByUsersData = {
+                labels: [
+                    {% for value in graphe_user_most_msg %}
+                        "{{ value.xaxis }}" ,
+                    {% endfor %}
+                ],
+                datasets: [
+                    {
+                        label: "Nombre de messages par utilisateurs",
+                        fillColor: "rgba(50,50,50,0.5)",
+                        strokeColor: "rgba(220,220,220,0.8)",
+                        highlightFill: "#33d",
+                        highlightStroke: "#000",
+                        data: [
+                            {% for value in graphe_user_most_msg %}
+                                "{{ value.yaxis }}" ,
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            };
+            var mostUsedWordsByPeriodData = {
+                labels: [
+                    {% for key in graphe_nb_msg_per_date %}
+                        "{{ key }}" ,
+                    {% endfor %}
+                ],
+                datasets: [
+                    {
+                        label: "Nombre de messages par période de l'année",
+                        fillColor: "rgba(100,100,100,0.5)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(120,120,120,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#d33",
+                        pointHighlightStroke: "#000",
+                        data: [
+                            {% for value in graphe_nb_msg_per_date.values %}
+                                "{{ value }}" ,
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            };
+
+            var mostUsedWordsChart = new Chart(mostUsedWordsContext).Bar(mostUsedWordsData);
+            var mostUsedWordsByUsersChart = new Chart(mostUsedWordsByUsersContext).Bar(mostUsedWordsByUsersData);
+            var mostUsedWordsByPeriodChart = new Chart(mostUsedWordsByPeriodContext).Line(mostUsedWordsByPeriodData);
+        }
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block page_footer_addons %}
@@ -30,4 +109,18 @@
 
 {% block body %}
     <p class="well">Les statistiques de la conversation !</p>
+
+    {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+    {% else %}
+        <div class="counter-messages">{{ nb_messages }}</div>
+        <div class="counter-pouces">{{ nb_pouces }}</div>
+        <canvas id="mostUsedWords" width="400" height="400"></canvas>
+        <canvas id="mostUsedWordsByUsers" width="400" height="400"></canvas>
+        <canvas id="mostUsedWordsByPeriod" width="400" height="400"></canvas>
+
+        <script type="application/javascript">
+            generateGraphs();
+        </script>
+    {% endif %}
 {% endblock %}

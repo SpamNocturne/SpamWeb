@@ -7,11 +7,7 @@ from lxml import etree
 from datetime import datetime, timezone, timedelta
 import re
 from SpamAlyzer import models
-<<<<<<< HEAD
-import threading
-=======
 from threading import Thread
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 
 class Analyzer:
 
@@ -22,17 +18,10 @@ class Analyzer:
     xsdschema_root = etree.parse("SpamAlyzer/static/SpamAlyzer/facebook_messages.xsd")
     xsdschema = etree.XMLSchema(xsdschema_root)
 
-<<<<<<< HEAD
-    # Exception si non valide, à catcher
-    def __init__(self, fichierDB):
-        self.fichier = fichierDB
-=======
-
     # Exception si non valide, à catcher
     def __init__(self, fichierDB):
         self.fichier = fichierDB
         self.new_messages = 0
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 
         xml_data = fichierDB.fichier.read().decode() # decode is called because django opens files automatically as binaries
 
@@ -50,17 +39,6 @@ class Analyzer:
             if not models.UtilisateurStats.objects.filter(nom_fb = qqun).exists():
                 models.UtilisateurStats.objects.create(nom_fb = qqun).save()
 
-<<<<<<< HEAD
-    # Analyze method
-    def analyze_the_spam_muhaha(self):
-        conversations = self.find_spam_conversations()
-
-        for c in conversations: # saves the messages
-            t = threading.Thread(target=self.spam_analyzer_thread, args=(c, ))
-            t.setDaemon(True)
-            t.start()
-
-=======
     # Analyze method (should be started with a thread because long work)
     def analyze_the_spam_muhaha(self):
         conversations = self.find_spam_conversations()
@@ -76,7 +54,6 @@ class Analyzer:
             t.join()
 
 
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
     def find_spam_conversations(self):
         xpath = "//div[@class = 'thread']"
         all_conversations = self.xml.xpath(xpath)
@@ -88,12 +65,6 @@ class Analyzer:
 
         return spam_conversations
 
-<<<<<<< HEAD
-    def spam_analyzer_thread(self, conservation):
-        self.analyze_conversation(conservation)
-
-=======
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
     def is_spam_conversation(self, conversation):
         all_participants = []
         for p in conversation.text.split(','):
@@ -111,13 +82,8 @@ class Analyzer:
 
 
     def analyze_conversation(self, conversation):
-<<<<<<< HEAD
-        one_element_added = False
-        nb_messages = len(conversation)
-=======
         nb_messages = len(conversation)
         nb_counting_messages = int(nb_messages / 2)
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
         userXPath = "div[@class = 'message_header']/span[@class = 'user']"
         dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
         all_users = models.UtilisateurStats.objects.all()
@@ -132,35 +98,24 @@ class Analyzer:
             message_text = conversation[i+1].text
 
             if all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
-<<<<<<< HEAD
-                one_element_added = True
-=======
                 self.new_messages += 1
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 
                 userDB.nb_de_messages += 1
                 if message_text is None:
                     None # TODO ajouter un compteur ? (pouce possible)
                 else:
-                    for mot in self.get_mots_de_texte(message_text): # TODO : mieux, sans ponctuation
+                    for mot in self.get_mots_de_texte(message_text):
                         userDB.ajout_mot_score(mot)
                 userDB.save()
 
                 msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
                 msg.save()
 
-<<<<<<< HEAD
-            print("{0}/{1}".format(i, nb_messages))
-
-        return one_element_added
-=======
             # Messages counting (server log)
             print("Analyzing conversations {0}/{1}".format(int((i+1) / 2), nb_counting_messages))
 
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
-
     def get_mots_de_texte(self, texte):
-        return texte.split() # TODO : mots = pas de virgule, espace, point, parenthèses...
+        return re.compile('\w+').findall(texte)
 
     def to_python_date(self, date):
         # FR : mercredi 14 janvier 2015, 21:39 UTC+01

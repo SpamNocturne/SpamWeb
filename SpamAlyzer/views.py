@@ -5,15 +5,12 @@ from django.shortcuts import render, render_to_response
 from SpamAlyzer.forms import FichierSoumisForm
 from SpamAlyzer import analyzer, models
 from django.http import Http404
-from SpamAlyzer import graph_helper
 
 from lxml import etree
-<<<<<<< HEAD
-=======
 from threading import Thread
 from home.log import add_log
 import traceback
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
+import collections
 
 @login_required
 def index(request):
@@ -27,14 +24,10 @@ def index(request):
 
             try:
                 anal = analyzer.Analyzer(fichier)
-<<<<<<< HEAD
-                anal.analyze_the_spam_muhaha()
-=======
                 await_t = Thread(target=await_analyze_ending, args=(anal, request.user,))
                 await_t.setDaemon(True)
                 await_t.start()
                 #anal.analyze_the_spam_muhaha()
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
                 #if not anal.analyze_the_spam_muhaha():
                     #fichier.delete()
                     #context["error_message"] = "Désolé, mais ton archive était inutile (peut-être comme toi?). " \
@@ -46,8 +39,6 @@ def index(request):
                                            "Python me dit dans l'oreillette DocumentInvalid. " \
                                            "C'est triste. Et franchement, tu me déçois. Je te croyais mieux que ça."
                 return render_to_response("SpamAlyzer/message.html", context)
-<<<<<<< HEAD
-=======
             except:
                 context["error_message"] = "Aïe aïe aïe. Je ne saurais pas te dire ce qu'il s'est passé. Enfin bon, " \
                                            "de toute façon je ne suis qu'un texte écrit en dur dans le code par " \
@@ -57,7 +48,6 @@ def index(request):
                                            "t'es nul(le), envoie ça à David. Il saura débugger, mieux que toi, " \
                                            "sa merde qu'il a pondu) : {0}".format(traceback.format_exc())
                 return render_to_response("SpamAlyzer/message.html", context)
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
         else:
             context["error_message"] = "Oh non! Ton fichier est tout naze. " \
                                        "Python me dit dans l'oreillette que le formulaire n'est pas valide. " \
@@ -71,8 +61,6 @@ def index(request):
     context["form"] = form
     return render(request, 'SpamAlyzer/index.html', context)
 
-<<<<<<< HEAD
-=======
 def await_analyze_ending(analyzer, user):
     t = Thread(target=analyzer.analyze_the_spam_muhaha())
     t.setDaemon(True)
@@ -85,7 +73,6 @@ def await_analyze_ending(analyzer, user):
             log_type="SpamAlyzer_depot_archive",
             user=user)
 
->>>>>>> 0a362510ac2175dad2071591e7baf7debc9d6dbe
 @login_required
 def conversation(request, num_page):
     num_page = int(num_page)
@@ -118,13 +105,19 @@ def historique(request):
 
 @login_required
 def statsGlobales(request):
-    context = {}
-    all_users = models.UtilisateurStats.objects.all()
+    all_messages = models.Message.objects.all()
+    nb_messages = all_messages.count()
+    if nb_messages == 0:
+        context = {"error_message": "Aucun message n'a été trouvé ! S'il-te-plaît, dépose-moi une archive :D"}
+        return render(request, "SpamAlyzer/statsGlobales.html", context)
 
-    nb_messages = 0
+    nb_pouces = all_messages.filter(texte = None).count()
+
+    all_users = models.UtilisateurStats.objects.all()
+    graphe_user_most_msg = [{'xaxis': user.nom_fb, 'yaxis': user.nb_de_messages} for user in all_users.order_by("-nb_de_messages")]
+
     motsScore = {}
     for u in all_users:
-        nb_messages += u.nb_de_messages
         all_mots = u.get_mots_plus_utilises()
         for m in all_mots:
             if m.mot in motsScore.keys():
@@ -132,7 +125,34 @@ def statsGlobales(request):
             else:
                 motsScore[m] = 0
 
-    context["nb_messages"] = nb_messages
-    graph_helper.generateGraph(motsScore.keys(), motsScore.values(), 30)
+    NB_DISPLAYED_WORDS = 10
+    i = 0
+    graphe_most_used_words = []
+    for unMotScore in sorted(motsScore, key=lambda x: x.score, reverse=True):
+        graphe_most_used_words.append({'xaxis': unMotScore.mot, 'yaxis': unMotScore.score})
+        i += 1
+        if i > NB_DISPLAYED_WORDS:
+            break
+
+    # TIME_INTERVAL one month
+    graphe_nb_msg_per_date = {}
+    for unMsg in all_messages:
+        moisEtAn = "{0}-{1}".format(unMsg.date.year, unMsg.date.month)
+        if moisEtAn in graphe_nb_msg_per_date:
+            graphe_nb_msg_per_date[moisEtAn] += 1
+        else:
+            graphe_nb_msg_per_date[moisEtAn] = 1
+    graphe_nb_msg_per_date = collections.OrderedDict(sorted(graphe_nb_msg_per_date.items()))
+
+    print(graphe_nb_msg_per_date)
+
+
+    context = {
+        "nb_messages" : nb_messages,
+        "nb_pouces": nb_pouces,
+        "graphe_user_most_msg": graphe_user_most_msg,
+        "graphe_most_used_words": graphe_most_used_words,
+        "graphe_nb_msg_per_date": graphe_nb_msg_per_date,
+    }
 
     return render(request, "SpamAlyzer/statsGlobales.html", context)
