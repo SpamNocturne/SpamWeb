@@ -10,7 +10,8 @@ LOG_PARAMS = {
         "jacquesIdea",
         "spamusic",
         "userManager",
-        "SpamAlyzer"
+        "SpamAlyzer",
+        "spamConso",
     ],
     "log_type": [
         "spamusic_add_playlist",
@@ -19,8 +20,11 @@ LOG_PARAMS = {
         "jacquesIdea_delete_idea",
         "jacquesIdea_comment",
         "jacquesIdea_vote",
-        "userManager_register",
+        "jacquesIdea_validate_idea",
         "SpamAlyzer_depot_archive",
+        "userManager_register",
+        "spamConso_add_conso_beer",
+        "spamConso_add_conso_tacos",
     ],
 }
 
@@ -38,7 +42,6 @@ def add_log(text, app, log_type, user):
     log.log_type = log_type
     log.user = user
     log.save()
-
     users = User.objects.all()
     # On met a jour les notif de tous les users
     for us in users:
@@ -50,6 +53,7 @@ def add_log(text, app, log_type, user):
             # si l'utilisateur est a jour il ne l'est plus
             elif us.firstunseenlog.log is None:
                 us.firstunseenlog.log = log
+                us.firstunseenlog.save()
     return log
 
 

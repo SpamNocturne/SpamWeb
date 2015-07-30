@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'LTE',
     'spamusic',
     'SpamAlyzer',
+	'spamConso'
 )
 
 MIDDLEWARE_CLASSES = (

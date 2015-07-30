@@ -23,7 +23,7 @@ def ajax_home_add_log(request):
 
 @login_required
 def ajax_get_notifications(request):
-    number = 20
+    number = 30
     logs = get_logs(number)
     unseenlog = None
     user = request.user
