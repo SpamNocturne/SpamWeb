@@ -83,36 +83,55 @@ class Analyzer:
 
     def analyze_conversation(self, conversation):
         nb_messages = len(conversation)
-        nb_counting_messages = int(nb_messages / 2)
-        userXPath = "div[@class = 'message_header']/span[@class = 'user']"
-        dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
-        all_users = models.UtilisateurStats.objects.all()
-        all_messages = models.Message.objects.all()
+        self.userXPath = "div[@class = 'message_header']/span[@class = 'user']"
+        self.dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
+        self.all_users = models.UtilisateurStats.objects.all()
+        self.all_messages = models.Message.objects.all()
 
-        # Add all messages
-        for i in range(0, nb_messages, 2):
-            user = conversation[i].xpath(userXPath)[0].text
-            userDB = all_users.filter(nom_fb = user)[0]
-            date = conversation[i].xpath(dateXPath)[0].text
+        THREAD_FOR_NB_MSG = 3000
+        NB_THREADS = int(nb_messages / THREAD_FOR_NB_MSG) + 1
+        print("Nombres de threads : {0}".format(NB_THREADS))
+        threads = []
+        for i in range(0, NB_THREADS):
+            beg = i * THREAD_FOR_NB_MSG
+            end = (i+1) * THREAD_FOR_NB_MSG
+            if end > nb_messages:
+                end = nb_messages
+
+            t = Thread(target=self.analyze_conversation_from_to, args=(conversation, beg, end, ))
+            t.setDaemon(True)
+            threads.append(t)
+            t.start()
+
+        for t in threads:
+            t.join()
+
+    def analyze_conversation_from_to(self, conversation, beginIdx, endIdx):
+        nb_counting_messages = int((endIdx - beginIdx) / 2)
+
+        cpt = 0
+        for i in range(beginIdx, endIdx, 2):
+            user = conversation[i].xpath(self.userXPath)[0].text
+            userDB = self.all_users.filter(nom_fb = user)[0]
+            date = conversation[i].xpath(self.dateXPath)[0].text
             date = self.to_python_date(date)
             message_text = conversation[i+1].text
 
-            if all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
+            if self.all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
                 self.new_messages += 1
 
                 userDB.nb_de_messages += 1
-                if message_text is None:
-                    None # TODO ajouter un compteur ? (pouce possible)
-                else:
+                if message_text is not None:
                     for mot in self.get_mots_de_texte(message_text):
                         userDB.ajout_mot_score(mot)
                 userDB.save()
 
                 msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
                 msg.save()
+            cpt += 1
 
             # Messages counting (server log)
-            print("Analyzing conversations {0}/{1}".format(int((i+1) / 2), nb_counting_messages))
+            print("Analyzing a conversation {0}/{1}".format(cpt, nb_counting_messages))
 
     def get_mots_de_texte(self, texte):
         return re.compile('\w+').findall(texte)

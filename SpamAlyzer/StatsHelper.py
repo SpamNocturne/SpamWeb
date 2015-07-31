@@ -42,7 +42,7 @@ class StatsHelper:
                 else:
                     motsScore[m] = 0
 
-        NB_DISPLAYED_WORDS = 10
+        NB_DISPLAYED_WORDS = 20
         i = 0
         self.graphe_most_used_words = []
         for unMotScore in sorted(motsScore, key=lambda x: x.score, reverse=True):
