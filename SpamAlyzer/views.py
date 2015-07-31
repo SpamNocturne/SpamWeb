@@ -110,9 +110,10 @@ def statsGlobales(request):
         "graphe_user_most_msg": stats.graphe_msg_per_user,
         "graphe_most_used_words": stats.graphe_most_used_words,
         "graphe_nb_msg_per_date": stats.graphe_nb_msg_per_date,
+        "stats_type_for_menu": "SpamAlyzer/statsG",
     }
 
-    return render(request, "SpamAlyzer/statsGlobales.html", context)
+    return render(request, "SpamAlyzer/stats.html", context)
 
 
 @login_required
@@ -126,7 +127,7 @@ def statsSpammeurs(request):
 def statsMec(request, id_pers):
     mecs = models.UtilisateurStats.objects.filter(id = id_pers)
     if mecs.count() == 0:
-        return render(request, "SpamAlyzer/statsMec.html", {"error_message": "Utilisateur inconnu"})
+        return render(request, "SpamAlyzer/stats.html", {"error_message": "Utilisateur inconnu"})
     mec = mecs[0]
 
     stats = StatsHelper(mec)
@@ -136,6 +137,7 @@ def statsMec(request, id_pers):
         "nb_pouces": stats.nb_pouces,
         "graphe_most_used_words": stats.graphe_most_used_words,
         "graphe_nb_msg_per_date": stats.graphe_nb_msg_per_date,
+        "stats_type_for_menu": "SpamAlyzer/statsU",
     }
 
-    return render(request, "SpamAlyzer/statsMec.html", context)
+    return render(request, "SpamAlyzer/stats.html", context)
