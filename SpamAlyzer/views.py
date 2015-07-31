@@ -10,7 +10,7 @@ from lxml import etree
 from threading import Thread
 from home.log import add_log
 import traceback
-import collections
+from SpamAlyzer.StatsHelper import StatsHelper
 
 @login_required
 def index(request):
@@ -103,51 +103,13 @@ def historique(request):
 
 @login_required
 def statsGlobales(request):
-    all_messages = models.Message.objects.all()
-    nb_messages = all_messages.count()
-    if nb_messages == 0:
-        context = {"error_message": "Aucun message n'a été trouvé ! S'il-te-plaît, dépose-moi une archive :D"}
-        return render(request, "SpamAlyzer/statsGlobales.html", context)
-
-    nb_pouces = all_messages.filter(texte = None).count()
-
-    all_users = models.UtilisateurStats.objects.all()
-    graphe_user_most_msg = [{'xaxis': user.nom_fb, 'yaxis': user.nb_de_messages} for user in all_users.order_by("-nb_de_messages")]
-
-    motsScore = {}
-    for u in all_users:
-        all_mots = u.get_mots_plus_utilises()
-        for m in all_mots:
-            if m.mot in motsScore.keys():
-                motsScore[m] += 1
-            else:
-                motsScore[m] = 0
-
-    NB_DISPLAYED_WORDS = 10
-    i = 0
-    graphe_most_used_words = []
-    for unMotScore in sorted(motsScore, key=lambda x: x.score, reverse=True):
-        graphe_most_used_words.append({'xaxis': unMotScore.mot, 'yaxis': unMotScore.score})
-        i += 1
-        if i > NB_DISPLAYED_WORDS:
-            break
-
-    # TIME_INTERVAL one month
-    graphe_nb_msg_per_date = {}
-    for unMsg in all_messages:
-        moisEtAn = "{0}-{1}".format(unMsg.date.year, unMsg.date.month)
-        if moisEtAn in graphe_nb_msg_per_date:
-            graphe_nb_msg_per_date[moisEtAn] += 1
-        else:
-            graphe_nb_msg_per_date[moisEtAn] = 1
-    graphe_nb_msg_per_date = collections.OrderedDict(sorted(graphe_nb_msg_per_date.items()))
-
+    stats = StatsHelper()
     context = {
-        "nb_messages" : nb_messages,
-        "nb_pouces": nb_pouces,
-        "graphe_user_most_msg": graphe_user_most_msg,
-        "graphe_most_used_words": graphe_most_used_words,
-        "graphe_nb_msg_per_date": graphe_nb_msg_per_date,
+        "nb_messages" : stats.nb_messages,
+        "nb_pouces": stats.nb_pouces,
+        "graphe_user_most_msg": stats.graphe_msg_per_user,
+        "graphe_most_used_words": stats.graphe_most_used_words,
+        "graphe_nb_msg_per_date": stats.graphe_nb_msg_per_date,
     }
 
     return render(request, "SpamAlyzer/statsGlobales.html", context)
@@ -167,46 +129,13 @@ def statsMec(request, id_pers):
         return render(request, "SpamAlyzer/statsMec.html", {"error_message": "Utilisateur inconnu"})
     mec = mecs[0]
 
-    all_messages_du_mec = models.Message.objects.filter(auteur = mec)
-    nb_messages = all_messages_du_mec.count()
-    if nb_messages == 0:
-        return render(request, "SpamAlyzer/statsMec.html", {"error_message": "Rien n'a été pour cet utilisateur. "
-                                                                             "N'aurait-il aucun message ?"})
-
-    nb_pouces = all_messages_du_mec.filter(texte = None).count()
-
-    motsScore = {}
-    all_mots = mec.get_mots_plus_utilises()
-    for m in all_mots:
-        if m.mot in motsScore:
-            motsScore[m] += 1
-        else:
-            motsScore[m] = 0
-
-    NB_DISPLAYED_WORDS = 10
-    i = 0
-    graphe_most_used_words = []
-    for unMotScore in sorted(motsScore, key=lambda x: x.score, reverse=True):
-        graphe_most_used_words.append({'xaxis': unMotScore.mot, 'yaxis': unMotScore.score})
-        i += 1
-        if i > NB_DISPLAYED_WORDS:
-            break
-
-    # TIME_INTERVAL one month
-    graphe_nb_msg_per_date = {}
-    for unMsg in all_messages_du_mec:
-        moisEtAn = "{0}-{1}".format(unMsg.date.year, unMsg.date.month)
-        if moisEtAn in graphe_nb_msg_per_date:
-            graphe_nb_msg_per_date[moisEtAn] += 1
-        else:
-            graphe_nb_msg_per_date[moisEtAn] = 1
-    graphe_nb_msg_per_date = collections.OrderedDict(sorted(graphe_nb_msg_per_date.items()))
-
+    stats = StatsHelper(mec)
     context = {
         "nom": mec.nom_fb,
-        "nb_messages" : nb_messages,
-        "nb_pouces": nb_pouces,
-        "graphe_most_used_words": graphe_most_used_words,
-        "graphe_nb_msg_per_date": graphe_nb_msg_per_date,
+        "nb_messages" : stats.nb_messages,
+        "nb_pouces": stats.nb_pouces,
+        "graphe_most_used_words": stats.graphe_most_used_words,
+        "graphe_nb_msg_per_date": stats.graphe_nb_msg_per_date,
     }
+
     return render(request, "SpamAlyzer/statsMec.html", context)
