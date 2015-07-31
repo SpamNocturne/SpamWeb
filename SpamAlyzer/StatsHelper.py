@@ -37,10 +37,12 @@ class StatsHelper:
         for u in users_here:
             all_mots = u.get_mots_plus_utilises()
             for m in all_mots:
-                if m.mot in motsScore.keys():
-                    motsScore[m] += 1
-                else:
-                    motsScore[m] = 0
+                m.mot = m.mot.lower()
+                if m.mot not in self.mots_ignore and len(m.mot) != 1:
+                    if m.mot in motsScore.keys():
+                        motsScore[m] += 1
+                    else:
+                        motsScore[m] = 0
 
         NB_DISPLAYED_WORDS = 20
         i = 0
@@ -64,3 +66,54 @@ class StatsHelper:
 
     def fill_msg_per_user(self):
         self.graphe_msg_per_user = [{'xaxis': user.nom_fb, 'yaxis': user.nb_de_messages} for user in self.all_users.order_by("-nb_de_messages")]
+
+    mots_ignore = [
+       ''' "est",
+        "la",
+        "le",
+        "de",
+        "a",
+        "pas",
+        "je",
+        "en",
+        "un",
+        "une",
+        "et",
+        "pour",
+        "ça",
+        "ca",
+        'que',
+        "qui",
+        "quoi",
+        "tu",
+        "on",
+        "les",
+        "et",
+        "dans",
+        "ai",
+        "vous",
+        "il",
+        "elle",
+        "du",
+        "si",
+        "au",
+        "moi",
+        "ce",
+        "avec",
+        "aussi",
+        "plus",
+        "tout",
+        "mais",
+        "fait",
+        "des",
+        "qu",
+        "peut",
+        "suis",
+        "me",
+        "va",
+        "là",
+        "sur",
+        "ne",
+        "se",
+        "faire"'''
+    ]
