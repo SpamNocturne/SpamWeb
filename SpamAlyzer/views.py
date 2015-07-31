@@ -27,12 +27,10 @@ def index(request):
                 await_t = Thread(target=await_analyze_ending, args=(anal, request.user,))
                 await_t.setDaemon(True)
                 await_t.start()
-                #anal.analyze_the_spam_muhaha()
-                #if not anal.analyze_the_spam_muhaha():
-                    #fichier.delete()
-                    #context["error_message"] = "Désolé, mais ton archive était inutile (peut-être comme toi?). " \
-                    #                           "On n'a trouvé aucun message " \
-                    #                           "qu'on ne connaissait pas déjà. Allez, tchoubidou-bye!"
+                fichier.save()
+                context["error_message"] = "Ca bidouille ! Et ça peut prendre un peu de temps parce que je code " \
+                                           "n'importe comment. Bref, ça enverra une notif' dès ça a fini de charger " \
+                                           "l'internet. Merci aurevoir <3";
                 return render_to_response("SpamAlyzer/message.html", context)
             except etree.DocumentInvalid:
                 context["error_message"] = "Oh non! Ton fichier est tout naze. " \
