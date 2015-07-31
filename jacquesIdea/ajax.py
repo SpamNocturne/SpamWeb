@@ -4,6 +4,13 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from home.log import add_log
 from jacquesIdea.models import Idee, Commentaire
+from spamusic import functions as f
+
+'''
+    AJAX JACQUESIDEA
+'''
+ONLINE = False
+
 
 
 @login_required
@@ -29,6 +36,7 @@ def ajax_enregistrer_commentaire(request):
     # generation du template
     context = {'commentaire': com}
     return render(request, 'jacquesIdea/rightComment.html', context)
+
 
 
 @login_required

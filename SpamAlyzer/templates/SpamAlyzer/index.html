@@ -1,0 +1,82 @@
+{% extends "SpamAlyzer/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="SpamAlyzer/depot" only %}
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/index.css' %}">
+{% endblock %}
+
+{% block page_footer_addons %}
+    <script src="{% static 'SpamAlyzer/js/dropzone.js' %}"></script>
+    <script type="text/javascript">
+        Dropzone.options.myDropzone = {
+            // Load dropped file directly (POST request)
+            autoProcessQueue: true,
+            maxFilesize: 40, // MegaBytes
+            paramName: "fichier",
+
+            init: function() {
+                this.on("addedfile", function() {
+                    // If new file is dropped, replace old one
+                    if (this.files[1] != null) {
+                        this.removeFile(this.files[0]);
+                    }
+
+                    document.getElementById("dz-message").setAttribute("style", "display:none;");
+                });
+            },
+
+            success: function(file, result) {
+                resultHtml = "";
+                if ($(result).attr("id") == "error-container") {
+                    resultHtml = result;
+                }
+                $("#message").html(resultHtml);
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block body %}
+    <p class="well" >Charge ton fichier messages.htm de ton archive Facebook et analyse le spam !</p>
+    <section class="row">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <form action="{% url 'SpamAlyzer:index' %}" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" id="myDropzone">
+                <p class="dz-message" id="dz-message">
+                    Pose ton archive de messages FB ici !
+                </p>
+                <!-- if dropzone.js not supported, creates these elements -->
+                <div class="fallback">
+                    <input name="fichier" type="file" />
+                    <input type="submit" value="Upload"/>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    </section>
+
+    <div id="message"/>
+
+    {%  if conversation %}
+
+    {% endif %}
+{% endblock %}
