@@ -28,13 +28,15 @@
 {% endblock %}
 
 {% block body %}
-    <p class="well" >Voici la seule et l'unique conversation du SpamNocturne!</p>
+    <p class="well">Voici la seule et l'unique conversation du SpamNocturne!</p>
 
     {% if conversation %}
         <div class="choix_page row">
             {% if num_page != 1 %}
-                <a href="{% url "SpamAlyzer:conversation" 1 %}" class="col-xs-1 col-xs-offset-1 text-right"><i class="fa fa-angle-double-left"></i></a>
-                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}" class="col-xs-1 text-right"><i class="fa fa-angle-left"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" 1 %}" class="col-xs-1 col-xs-offset-1 text-right"><i
+                        class="fa fa-angle-double-left"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}" class="col-xs-1 text-right"><i
+                        class="fa fa-angle-left"></i></a>
             {% else %}
                 <div class="col-xs-3"></div>
             {% endif %}
@@ -42,40 +44,51 @@
                 <strong>{{ num_page }}</strong>
             </div>
             {% if num_page < nb_pages %}
-                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}" class="col-xs-1 text-left"><i class="fa fa-angle-right"></i></a>
-                <a href="{% url "SpamAlyzer:conversation" nb_pages %}" class="col-xs-1 text-left"><i class="fa fa-angle-double-right"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-right"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" nb_pages %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-double-right"></i></a>
             {% else %}
                 <div class="col-xs-3"></div>
             {% endif %}
         </div>
         <div class="conversation row">
-        {% for m in conversation %}
-            <div class="message col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
-
-                <div class="row">
-                    <div class="auteur col-xs-6">
-                        {{ m.auteur.nom_fb }}
+            {% for m in conversation %}
+                <div class="media message col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                    <div class="media-left media-top">
+                        <a href="#">
+                            <img src="{% static 'userManager/avatar_defaut.jpg' %}" class="user-image" alt="User Image"/>
+                        </a>
                     </div>
-                    <div class="date text-right col-xs-6">
-                        {{ m.date }}
+                    <div class="media-body">
+                        <div class="row">
+                            <div class="auteur col-xs-6">
+                                {{ m.auteur.nom_fb }}
+                            </div>
+                            <div class="date text-right col-xs-6">
+                                {{ m.date }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p class="text col-xs-12">
+                                {% if m.texte %}
+                                    {{ m.texte }}
+                                {% else %}
+                                    <img src="https://fbstatic-a.akamaihd.net/rsrc.php/ya/r/FwHVs2eE5cr.svg"
+                                         class="pouce img-polaroid img-responsive"/><i class="ou_pas">(ou pas)</i>
+                                {% endif %}
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <p class="text col-xs-12">
-                        {% if m.texte %}
-                            {{ m.texte }}
-                        {% else %}
-                            <img src="https://fbstatic-a.akamaihd.net/rsrc.php/ya/r/FwHVs2eE5cr.svg" class="pouce img-polaroid img-responsive"/><i class="ou_pas">(ou pas)</i>
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
         <div class="choix_page row">
             {% if num_page != 1 %}
-                <a href="{% url "SpamAlyzer:conversation" 1 %}" class="col-xs-1 col-xs-offset-1 text-right"><i class="fa fa-angle-double-left"></i></a>
-                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}" class="col-xs-1 text-right"><i class="fa fa-angle-left"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" 1 %}" class="col-xs-1 col-xs-offset-1 text-right"><i
+                        class="fa fa-angle-double-left"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}" class="col-xs-1 text-right"><i
+                        class="fa fa-angle-left"></i></a>
             {% else %}
                 <div class="col-xs-3"></div>
             {% endif %}
@@ -83,8 +96,10 @@
                 <strong>{{ num_page }}</strong>
             </div>
             {% if num_page < nb_pages %}
-                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}" class="col-xs-1 text-left"><i class="fa fa-angle-right"></i></a>
-                <a href="{% url "SpamAlyzer:conversation" nb_pages %}" class="col-xs-1 text-left"><i class="fa fa-angle-double-right"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-right"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" nb_pages %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-double-right"></i></a>
             {% else %}
                 <div class="col-xs-3"></div>
             {% endif %}

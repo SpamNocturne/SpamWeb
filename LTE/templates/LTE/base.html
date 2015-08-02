@@ -63,7 +63,7 @@ desired effect
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="{% block base_index_url %}{% url 'home:index' %}{% endblock %}" class="logo">
+        <a href="{% block base_index_url %}{% url 'home:index' %}{% endblock %}" class="logo hidden-xs">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini">{% block base_mini_logo %}<b>S</b>W{% endblock %}</span>
             <!-- logo for regular state and mobile devices -->
@@ -76,6 +76,10 @@ desired effect
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
+            <a href="{% url 'home:index' %}" class="visible-xs sidebar-toggle" id="home">
+                <span class="sr-only">Home</span>
+            </a>
+
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
@@ -178,6 +182,7 @@ desired effect
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <!-- The user image in the navbar-->
                                 <img src="
+
                                         {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
                                      class="user-image" alt="User Image"/>
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
@@ -187,6 +192,7 @@ desired effect
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
                                     <img src="
+
                                             {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
                                          class="img-circle" alt="User Image"/>
 
@@ -229,6 +235,7 @@ desired effect
                 <div class="user-panel">
                     <div class="pull-left image">
                         <img src="
+
                                 {% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}{% static 'userManager/avatar_defaut.jpg' %}{% endif %}"
                              class="img-circle" alt="User Image"/>
                     </div>

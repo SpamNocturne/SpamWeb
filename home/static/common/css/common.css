@@ -69,3 +69,7 @@
 .lepouce-trigger{
     cursor: help;
 }
+
+.navbar-static-top #home::before{
+  content: "\f015";
+}

@@ -29,24 +29,33 @@
 {% endblock %}
 
 {% block body %}
-    <p class="well">Mais qui a donc déposé ces magnifiques archives pour que nous puissions admirer la conversation depuis le SpamWeb ?!</p>
+    <p class="well">Mais qui a donc déposé ces magnifiques archives pour que nous puissions admirer la conversation
+        depuis le SpamWeb ?!</p>
     {% if depots %}
-        <div class="depots">
-        {% for d in depots %}
-            <div class="depot">
-                <div class="auteur">
-                    {{ d.auteur }}
-                </div> déposé le
-                <div class="date">
-                    {{ d.date_depot }}
+        <div class="depots row">
+            {% for d in depots %}
+                <div class="media depot col-xs-12">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <div class="auteur">
+                            {{ d.auteur }}
+                        </div>
+                        <div class="date">
+                            déposé le {{ d.date_depot }}
+                        </div>
+                        <div class="date_fichier">
+                            Fichier datant du {{ d.date_fichier }}.
+                        </div>
+                    </div>
                 </div>
-                <div class="date_fichier">
-                    Fichier datant du {{ d.date_fichier }}.
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
     {% else %}
-        <p class="no_element_found_wesh">Oh non! Il n'y a aucune archive de déposée! Vite! Viens par <a href="{% url "SpamAlyzer:index" %}">là</a> et upload la tienne.</p>
+        <p class="no_element_found_wesh">Oh non! Il n'y a aucune archive de déposée! Vite! Viens par <a
+                href="{% url "SpamAlyzer:index" %}">là</a> et upload la tienne.</p>
     {% endif %}
 {% endblock %}

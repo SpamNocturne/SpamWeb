@@ -22,17 +22,41 @@
 {% endblock %}
 
 {% block page_header_addons %}
-    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/index.css' %}">
 {% endblock %}
 
 {% block page_footer_addons %}
+    <script>
+        $(function(){
+           var hashCode = function (s) {
+                return s.split("").reduce(function (a, b) {
+                    a = ((a << 5) - a) + b.charCodeAt(0);
+                    return a & a
+                }, 0);
+            };
+
+            //coloration label
+            var COLORS = ["btn-info", "btn-danger", "btn-default", "btn-primary", "btn-success", "btn-warning", "bg-maroon", "bg-purple", "bg-navy", "bg-olive", "bg-orange"];
+            $(".btn-spammeur").each(function () {
+                var $this = $(this);
+                var text = $this.text();
+                var hash = Math.abs(hashCode(text))%COLORS.length;
+                $this.addClass(COLORS[hash]);
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
     <p class="well">Sélectionne ton(a) spammeur(euse) préféré(e) :D</p>
-    {% for s in spammeurs %}
-        <form action="{% url "SpamAlyzer:statsMec" s.id %}">
-            <input type="submit" value="{{ s.nom_fb }}">
-        </form>
-    {% endfor %}
+    <div class="row btn-">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <div class="row">
+                {% for s in spammeurs %}
+                    <div class="col-xs-12 col-md-6">
+                        <a href="{% url "SpamAlyzer:statsMec" s.id %}" class="btn-spammeur btn">{{ s.nom_fb }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

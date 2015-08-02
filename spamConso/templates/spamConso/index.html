@@ -22,7 +22,7 @@
     <script type="text/javascript">
         $(function () {
             $('select#id_type').select2({
-                width: '100%',
+                width: '100%'
             });
             $('select#conso_tag_choice').select2({
                 tags: true,
@@ -86,7 +86,7 @@
             };
 
             //coloration label
-            LABELS_COLOR = ["label-info", "label-danger", "label-default", "label-primary", "label-success", "label-warning"];
+            var LABELS_COLOR = ["label-info", "label-danger", "label-default", "label-primary", "label-success", "label-warning"];
             $("table td span.label").each(function () {
                 var $this = $(this);
                 var text = $this.attr("data-value");
