@@ -16,13 +16,13 @@ def is_downvoted_by(idea, user):
 
 
 @register.filter()
-def is_opened(idea):
-    return idea.statut == Idee.STATUTS["OPENED"]
+def is_pending(idea):
+    return idea.statut == Idee.STATUTS["PENDING"]
 
 
 @register.filter()
-def is_closed(idea):
-    return idea.statut == Idee.STATUTS["CLOSED"]
+def is_validated(idea):
+    return idea.statut == Idee.STATUTS["VALIDATED"]
 
 
 @register.simple_tag()

@@ -68,7 +68,7 @@ class StatsHelper:
         self.graphe_msg_per_user = [{'xaxis': user.nom_fb, 'yaxis': user.nb_de_messages} for user in self.all_users.order_by("-nb_de_messages")]
 
     mots_ignore = [
-       ''' "est",
+       "est",
         "la",
         "le",
         "de",
@@ -115,5 +115,5 @@ class StatsHelper:
         "sur",
         "ne",
         "se",
-        "faire"'''
+        "faire"
     ]

@@ -14,7 +14,7 @@
         <div class="btn-group btn-group-justified col-xs-12">
         <a class="filter btn bg-gray col-xs-4" data-filter="all">Toutes</a>
         <a class="filter btn bg-gray col-xs-4" data-filter=".filter-statut-{% get_idea_statut "PENDING" %}">En cours</a>
-        <a class="filter btn bg-gray col-xs-4" data-filter=".filter-statut-{% get_idea_statut "VALIDATED" %}">Validée</a>
+        <a class="filter btn bg-gray col-xs-4" data-filter=".filter-statut-{% get_idea_statut "VALIDATED" %}">Validées</a>
         </div>
     </div>
     <div class="row margin-bottom hidden-lg">
@@ -121,7 +121,7 @@
                     <!-- Construct the box with style you want. Here we are using box-danger -->
                     <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                     <!-- The contextual class should match the box, so we are using direct-chat-danger -->
-                    <div class="box box-solid {% if idee|is_closed %}box-default {% else %}box-info {% endif %}direct-chat collapsed-box">
+                    <div class="box box-solid {% if idee|is_validated %}box-default {% else %}box-info {% endif %}direct-chat collapsed-box">
                         <div class="box-header with-border idee-header">
                             <div class="box-tools pull-right">
                                 <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}"
@@ -138,7 +138,7 @@
                                 <button class="btn btn-box-tool btn-toggle hidden" data-widget="collapse"><i
                                         class="fa fa-plus"></i></button>
                                 {% ifequal user idee.auteur %}
-                                    {% if idee|is_opened %}
+                                    {% if idee|is_pending %}
                                     <button class="btn btn-box-tool" data-toggle="modal"
                                             data-target="#modal-validate-{{ idee.id }}"><i class="fa fa-check"></i>
                                     </button>
