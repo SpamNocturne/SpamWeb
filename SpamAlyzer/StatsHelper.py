@@ -10,10 +10,10 @@ class StatsHelper:
         self.id = -1
         self.all_messages = models.Message.objects.all()
         self.all_users = models.UtilisateurStats.objects.all()
-        if mec == None:
+        if mec is None:
             self.fill_msg_per_user()
         else:
-            self.all_messages  = self.all_messages.filter(auteur = mec)
+            self.all_messages = self.all_messages.filter(auteur = mec)
             self.id = mec.id
 
         self.fill_nb_messages()
@@ -39,16 +39,16 @@ class StatsHelper:
             for m in all_mots:
                 m.mot = m.mot.lower()
                 if m.mot not in self.mots_ignore and len(m.mot) != 1:
-                    if m.mot in motsScore.keys():
-                        motsScore[m] += 1
+                    if m.mot in motsScore:
+                        motsScore[m.mot] += m.score
                     else:
-                        motsScore[m] = 0
+                        motsScore[m.mot] = m.score
 
         NB_DISPLAYED_WORDS = 20
         i = 0
         self.graphe_most_used_words = []
-        for unMotScore in sorted(motsScore, key=lambda x: x.score, reverse=True):
-            self.graphe_most_used_words.append({'xaxis': unMotScore.mot, 'yaxis': unMotScore.score})
+        for unMotScore in sorted(motsScore, key=motsScore.get, reverse=True):
+            self.graphe_most_used_words.append({'xaxis': unMotScore, 'yaxis': motsScore[unMotScore]})
             i += 1
             if i > NB_DISPLAYED_WORDS:
                 break
@@ -65,10 +65,14 @@ class StatsHelper:
         self.graphe_nb_msg_per_date = collections.OrderedDict(sorted(self.graphe_nb_msg_per_date.items()))
 
     def fill_msg_per_user(self):
-        self.graphe_msg_per_user = [{'xaxis': user.nom_fb, 'yaxis': user.nb_de_messages} for user in self.all_users.order_by("-nb_de_messages")]
+        user_and_msgs = {}
+        for u in self.all_users:
+            user_and_msgs[u.nom_fb] = models.Message.objects.filter(auteur = u).count()
+
+        self.graphe_msg_per_user = [{'xaxis': user, 'yaxis': user_and_msgs[user]} for user in sorted(user_and_msgs, key=user_and_msgs.get, reverse=True)]
 
     mots_ignore = [
-       "est",
+        "est",
         "la",
         "le",
         "de",
@@ -115,5 +119,6 @@ class StatsHelper:
         "sur",
         "ne",
         "se",
-        "faire"
+        "faire",
+        "as",
     ]

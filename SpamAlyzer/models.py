@@ -3,25 +3,9 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from threading import Lock
-
-mutex = Lock()
 
 class UtilisateurStats(models.Model):
     nom_fb = models.CharField(max_length=250, unique=True)
-    nb_de_messages = models.IntegerField(default=0)
-
-    def ajout_mot_score(self, mot):
-        mutex.acquire()
-        mots = MotScore.objects.filter(user = self, mot = mot)
-        if mots.count() == 0:
-            mot = MotScore(mot = mot, user = self)
-        else:
-            mot = mots[0]
-
-        mot.score += 1
-        mot.save()
-        mutex.release()
 
     def get_mots_plus_utilises(self, nb = 0):
         all_mots_tris = MotScore.objects.filter(user = self).order_by("-score")
@@ -30,7 +14,7 @@ class UtilisateurStats(models.Model):
         return all_mots_tris
 
     def __str__(self):
-        return "{0} ({1})".format(self.nom_fb, self.nb_de_messages)
+        return "{0}".format(self.nom_fb)
 
 
 class MotScore(models.Model):
@@ -56,4 +40,6 @@ class Message(models.Model):
     date = models.DateTimeField()
     file = models.ForeignKey(FichierSoumis)
 
+    def __str__(self):
+        return "{0} (le {1})".format(self.texte, self.date)
 
