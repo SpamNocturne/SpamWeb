@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'userManager',
     'LTE',
     'spamusic',
+    'SpamAlyzer',
 	'spamConso'
 )
 

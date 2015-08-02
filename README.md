@@ -73,6 +73,8 @@ Il faut ensuite executer une la commande `python manage.py migrate` une premièr
 * Ensuite installer  Google APIs Client Library for Python : ``pip install --upgrade google-api-python-client`` [lien](https://developers.google.com/api-client-library/python/start/installation?hl=fr)
 * /!\ pour python3 : appliquer la correction de ce commit : [lien](https://github.com/SpamNocturne/SpamWeb/commit/94094aa29d6002b76962df2953aa24a425f067ed)
 
+* Pour le SpamAlyzer, lxml est nécessaire. Très simple à installer sur les systèmes UNIX. Un peu tricky à installer sur Windows, je conseille de passer sur Anaconda et de ne pas se prendre la tête. Sinon ``pip install lxml	``.
+
 ### Super utilisateur
 Pour acceder à l'interface d'administration et se connecter sur le site avec un premier utilisateur, il faut créer un super administrateur :
 Grâce à la commande : `python manage.py createsuperuser`

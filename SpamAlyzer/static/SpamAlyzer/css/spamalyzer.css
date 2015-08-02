@@ -1,0 +1,54 @@
+.error {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+
+.auteur {
+    color: #3B5998;
+    font-weight: bold;
+}
+
+.date {
+    color: #BDC1C9;
+}
+
+img.pouce {
+    max-width : 100px;
+}
+
+.message{
+    margin-top: 5px;
+}
+.message:hover{
+    background-color : #FFFFFF;
+}
+
+.conversation .user-image{
+    height : 48px;
+}
+.choix_page a{
+    display: block;
+}
+
+.choix_page a:hover{
+    background-color: #ffffff;
+    color : #7a090d;
+}
+
+.chart-container{
+    max-height : 400px;
+    height : 400px;
+}
+
+.cest_pour_qui{
+    font-weight: bold;
+    color: #00a55a;
+    font-size: xx-large;
+}
+
+.btn-spammeur{
+    margin: 10px;
+    padding: 10px;
+    display: block;
+}

@@ -10,6 +10,13 @@
                     class="glyphicon glyphicon-plus"></span> J'ai une nouvelle idée !</a>
         </div>
     </div>
+    <div class="row">
+        <div class="btn-group btn-group-justified col-xs-12">
+        <a class="filter btn bg-gray col-xs-4" data-filter="all">Toutes</a>
+        <a class="filter btn bg-gray col-xs-4" data-filter=".filter-statut-{% get_idea_statut "PENDING" %}">En cours</a>
+        <a class="filter btn bg-gray col-xs-4" data-filter=".filter-statut-{% get_idea_statut "VALIDATED" %}">Validées</a>
+        </div>
+    </div>
     <div class="row margin-bottom hidden-lg">
         <div class="col-xs-12">
             <div class="btn-group btn-group-justified">
@@ -27,11 +34,11 @@
             <div class="btn-group btn-group-justified">
                 <a class="sort btn btn-success"
                    data-sort="order-vote:desc">
-                    <i class="fa fa-thumbs-o-up"></i>
+                    Note : <i class="fa fa-thumbs-o-up"></i>
                 </a>
                 <a class="sort btn btn-danger"
                    data-sort="order-vote:asc">
-                    <i class="fa fa-thumbs-o-down"></i>
+                    Note : <i class="fa fa-thumbs-o-down"></i>
                 </a>
             </div>
         </div>
@@ -51,11 +58,11 @@
             <div class="btn-group btn-group-justified">
                 <a class="sort btn btn-primary"
                    data-sort="order-lastcom:desc">
-                    Dernier Commentaire : récent
+                    LastCom : récent
                 </a>
                 <a class="sort btn btn-primary"
                    data-sort="order-lastcom:asc">
-                    Dernier Commentaire : ancien
+                    LastCom : ancien
                 </a>
             </div>
         </div>
@@ -74,11 +81,11 @@
                 </a>
                 <a class="sort btn btn-success"
                    data-sort="order-vote:desc">
-                    <i class="fa fa-thumbs-o-up"></i>
+                    Note : <i class="fa fa-thumbs-o-up"></i>
                 </a>
                 <a class="sort btn btn-danger"
                    data-sort="order-vote:asc">
-                    <i class="fa fa-thumbs-o-down"></i>
+                    Note : <i class="fa fa-thumbs-o-down"></i>
                 </a>
             </div>
         </div>
@@ -90,7 +97,7 @@
                 </a>
                 <a class="sort btn btn-info"
                    data-sort="order-creation:asc">
-                    Création : ancient
+                    Création : ancien
                 </a>
                 <a class="sort btn btn-primary"
                    data-sort="order-lastcom:desc">
@@ -98,7 +105,7 @@
                 </a>
                 <a class="sort btn btn-primary"
                    data-sort="order-lastcom:asc">
-                    Dernier Commentaire : ancient
+                    Dernier Commentaire : ancien
                 </a>
             </div>
         </div>
@@ -106,15 +113,15 @@
 
     <div id="Container">
         {% for idee in idee_list %}
-            <div class="row mix" data-order-vote="{{ idee.get_note }}"
+            <div class="row mix idee-container filter-statut-{{ idee.statut }}" data-order-vote="{{ idee.get_note }}"
                  data-order-creation="{{ idee.pub_date|date:"U" }}"
-                    data-order-lastcom="{{ idee.commentaire_set.last.pub_date|date:"U" }}">
+                 data-order-lastcom="{{ idee.commentaire_set.last.pub_date|date:"U" }}">
                 <!-- idée -->
                 <div class="col-lg-8 col-md-7 col-sm-12" id="block-idee-{{ idee.id }}">
                     <!-- Construct the box with style you want. Here we are using box-danger -->
                     <!-- Then add the class direct-chat and choose the direct-chat-* contexual class -->
                     <!-- The contextual class should match the box, so we are using direct-chat-danger -->
-                    <div class="box box-solid box-info direct-chat collapsed-box">
+                    <div class="box box-solid {% if idee|is_validated %}box-default {% else %}box-info {% endif %}direct-chat collapsed-box">
                         <div class="box-header with-border idee-header">
                             <div class="box-tools pull-right">
                                 <button data-idee="{{ idee.id }}" id="vote-up-{{ idee.id }}"
@@ -128,9 +135,14 @@
                                         class="fa fa-thumbs-o-down"></i><span class="badge bg-red-active"
                                                                               id="cpt-down-{{ idee.id }}">{{ idee.get_downvotes|length }}</span>
                                 </button>
-                                <button class="btn btn-box-tool btn-toggle" data-widget="collapse"><i
+                                <button class="btn btn-box-tool btn-toggle hidden" data-widget="collapse"><i
                                         class="fa fa-plus"></i></button>
                                 {% ifequal user idee.auteur %}
+                                    {% if idee|is_pending %}
+                                    <button class="btn btn-box-tool" data-toggle="modal"
+                                            data-target="#modal-validate-{{ idee.id }}"><i class="fa fa-check"></i>
+                                    </button>
+                                    {% endif %}
                                     <button class="btn btn-box-tool" data-toggle="modal"
                                             data-target="#modal-delete-{{ idee.id }}"><i class="fa fa-times"></i>
                                     </button>
@@ -304,6 +316,34 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
+            <!-- modal de validation -->
+            <div id="modal-validate-{{ idee.id }}" class="modal fade modal-success" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                            <h4 class="modal-title">Validation ...</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>L'idée suivante va être validée :</p>
+                            <h4 class="text-center">{{ idee.titre }}</h4>
+
+                            <p>Une idée est validée lorsque son auteur considère qu'elle a été effectuée, qu'elle est
+                                terminée.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer
+                            </button>
+                            <button type="button" class="btn btn-success btn-validate-idee" data-idee="{{ idee.id }}">
+                                Valider l'idée
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
         {% endifequal %}
     {% endfor %}
 {% endblock %}
@@ -409,7 +449,7 @@
             //Création des parametres pour l'ajax
             var idee = $this.attr("data-idee");
             var params = {
-                idee_id: idee,
+                idee_id: idee
             };
             var paramsEncoded = $.param(params);
 
@@ -453,7 +493,7 @@
             //Création des parametres pour l'ajax
             var idee = $this.attr("data-idee");
             var params = {
-                idee_id: idee,
+                idee_id: idee
             };
             var paramsEncoded = $.param(params);
 
@@ -463,10 +503,44 @@
                 url: "{%  url 'jacquesIdea:ajax_supprimer_idee' %}",
                 data: paramsEncoded,
                 success: function () {
-                    $("#modal-delete-" + idee).modal('hide');
-                    $("#modal-delete-" + idee).on('hidden.bs.modal', function () {
-                        $("#block-idee-" + idee).remove();
+                    $("#modal-delete-" + idee).modal('hide').on('hidden.bs.modal', function () {
+                        $("#block-idee-" + idee).closest(".idee-container").remove();
                         $("#modal-delete-" + idee).remove();
+                    })
+                },
+                error: function () {
+                    alert("Désolé ! Une erreur serveur est survenue, veuillez réessayer.");
+                }
+            });
+        });
+
+        //Suppression d'une idée
+        $(".btn-validate-idee").click(function () {
+            $this = $(this);
+
+            //Création des parametres pour l'ajax
+            var idee = $this.attr("data-idee");
+            var params = {
+                idee_id: idee
+            };
+            var paramsEncoded = $.param(params);
+
+            //envoie de la requete ajax
+            $.ajax({
+                method: "POST",
+                url: "{%  url 'jacquesIdea:ajax_valider_idee' %}",
+                data: paramsEncoded,
+                success: function () {
+                    $("#modal-validate-" + idee).modal('hide').on('hidden.bs.modal', function () {
+                        $("#block-idee-" + idee).closest(".idee-container")
+                                .removeClass("filter-statut-{% get_idea_statut "PENDING" %}")
+                                .addClass("filter-statut-{% get_idea_statut "VALIDATED" %}")
+                                .find(".box.box-info")
+                                .removeClass("box-info")
+                                .addClass("box-default")
+                                .find("button[data-target='#modal-validate-"+idee+"']")
+                                .remove();
+                        $("#modal-validate-" + idee).remove();
                     })
                 },
                 error: function () {
@@ -484,8 +558,8 @@
             //$('.direct-chat-messages').slimscroll({start: $(this).find('.direct-chat-msg').last()});
             //TODO slimscroll empeche de descendre LA PAGE avec le scroll molette si la souris est dans une zone de slimscroll
             $('.direct-chat-messages').slimscroll({start: 'bottom'});
-            // Instantiate MixItUp:
 
+            // Instantiate MixItUp:
             $('#Container').mixItUp({
                 layout: {
                     display: 'block'

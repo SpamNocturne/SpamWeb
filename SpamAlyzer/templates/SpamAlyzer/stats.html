@@ -1,0 +1,177 @@
+{% extends "SpamAlyzer/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active=stats_type_for_menu only %}
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/index.css' %}">
+    {% if not error_message %}
+        <script src="{% static "LTE/plugins/chartjs/Chart.js" %}"></script>
+        <script type="application/javascript">
+            function generateGraphs() {
+                var x1 = [
+                    {% for value in graphe_most_used_words %}
+                        "{{ value.xaxis }}" ,
+                    {% endfor %}
+                ];
+                var y1 = [
+                    {% for value in graphe_most_used_words %}
+                        "{{ value.yaxis }}" ,
+                    {% endfor %}
+                ];
+                generateGraph(x1, y1, "mostUsedWords", "Bar", "Green");
+
+                var x2 = [
+                    {% for key in graphe_nb_msg_per_date %}
+                        "{{ key }}" ,
+                    {% endfor %}
+                ];
+                var y2 = [
+                    {% for value in graphe_nb_msg_per_date.values %}
+                        "{{ value }}" ,
+                    {% endfor %}
+                ];
+                generateGraph(x2, y2, "messagesByPeriod", "Line", "Red");
+
+                {% if graphe_user_most_msg %}
+                    var x3 = [
+                        {% for value in graphe_user_most_msg %}
+                            "{{ value.xaxis }}" ,
+                        {% endfor %}
+                    ];
+                    var y3 = [
+                        {% for value in graphe_user_most_msg %}
+                            "{{ value.yaxis }}" ,
+                        {% endfor %}
+                    ];
+                    generateGraph(x3, y3, "messagesByUsers", "Bar", "Blue");
+                {% endif %}
+            }
+
+            function generateGraph(x, y, elementId, type, color) {
+                var highlightFill;
+                if (color === "Red") {
+                    highlightFill = "#d33";
+                } else if (color === "Green") {
+                    highlightFill = "#3d3";
+                } else if (color === "Blue") {
+                    highlightFill = "#33d";
+                } else {
+                    highlightFill = "#ddd";
+                }
+
+                var grapheContext = document.getElementById(elementId).getContext("2d");
+                var options =  {
+                    responsive: true,
+                    maintainAspectRatio: false
+                };
+
+                var grapheData;
+                if (type === "Line") {
+                    grapheData = {
+                        labels: x,
+                        datasets: [
+                            {
+                                label: "Mots les plus utilisés dans le spam",
+                                fillColor: "rgba(50,50,50,0.5)",
+                                strokeColor: "rgba(220,220,220,0.8)",
+                                pointColor: "rgba(120,120,120,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: highlightFill,
+                                pointHighlightStroke: "#000",
+                                data: y
+                            }
+                        ]
+                    };
+                    new Chart(grapheContext).Line(grapheData, options);
+                } else if (type === "Bar") {
+                    grapheData = {
+                        labels: x,
+                        datasets: [
+                            {
+                                label: "Mots les plus utilisés dans le spam",
+                                fillColor: "rgba(50,50,50,0.5)",
+                                strokeColor: "rgba(220,220,220,0.8)",
+                                highlightFill: highlightFill,
+                                highlightStroke: "#000",
+                                data: y
+                            }
+                        ]
+                    };
+                    new Chart(grapheContext).Bar(grapheData, options);
+                }
+            }
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block page_footer_addons %}
+    <script>
+        $(function () {
+            generateGraphs();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <p class="well">Les statistiques de <span class="cest_pour_qui">{{ cest_pour_qui }} !</span></p>
+
+    {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+    {% else %}
+        <div class="row">
+            <div class="counter-messages col-md-6 jumbotron text-center"><h1>{{ nb_messages }}</h1><b>messages</b> ont
+                été envoyés sur le Spam
+            </div>
+            <div class="counter-pouces col-md-6 jumbotron text-center"><h1>{{ nb_pouces }}</h1> <b><abbr
+                    title="Nombre non contractuel, veuillez consulter notre section - euh c'est quoi ce comptage de pouce n'importe comment ? - dans notre rubrique d'aide">pouces</abbr></b>
+                ont été envoyés sur le Spam
+            </div>
+        </div>
+        <div class="row">
+            <h1 class="col-xs-12">Les mots les plus utilisés :</h1>
+            <div class="col-xs-12 chart-container">
+                <canvas id='mostUsedWords' class="col-xs-12" width="100%" height="400"></canvas>
+            </div>
+        </div>
+        {% if graphe_user_most_msg %}
+            <div class="row">
+                <h1 class="col-xs-12">Le nombre de messages par utilisateurs : </h1>
+                <div class="col-xs-12 chart-container">
+                    <canvas id="messagesByUsers" class="col-xs-12" width="100%" height="400"></canvas>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <h1 class="col-xs-12">Le nombre de message par mois :</h1>
+            <div class="col-xs-12 chart-container">
+                <canvas id="messagesByPeriod" class="col-xs-12" width="100%" height="400"></canvas>
+            </div>
+        </div>
+        <!--
+
+            <div class="row">
+                <canvas id='myChart' class="col-xs-12" width="100%" height="400"></canvas>
+            </div>
+
+            -->
+    {% endif %}
+{% endblock %}

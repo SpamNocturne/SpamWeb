@@ -1,0 +1,62 @@
+{% extends "SpamAlyzer/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}{{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="SpamAlyzer/statsU" only %}
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+    <script>
+        $(function(){
+           var hashCode = function (s) {
+                return s.split("").reduce(function (a, b) {
+                    a = ((a << 5) - a) + b.charCodeAt(0);
+                    return a & a
+                }, 0);
+            };
+
+            //coloration label
+            var COLORS = ["btn-info", "btn-danger", "btn-default", "btn-primary", "btn-success", "btn-warning", "bg-maroon", "bg-purple", "bg-navy", "bg-olive", "bg-orange"];
+            $(".btn-spammeur").each(function () {
+                var $this = $(this);
+                var text = $this.text();
+                var hash = Math.abs(hashCode(text))%COLORS.length;
+                $this.addClass(COLORS[hash]);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <p class="well">Sélectionne ton(a) spammeur(euse) préféré(e) :D</p>
+    <div class="row btn-">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <div class="row">
+                {% for s in spammeurs %}
+                    <div class="col-xs-12 col-md-6">
+                        <a href="{% url "SpamAlyzer:statsMec" s.id %}" class="btn-spammeur btn">{{ s.nom_fb }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

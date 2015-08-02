@@ -1,0 +1,117 @@
+{% extends "LTE/base.html" %}
+{% load staticfiles %}
+
+{# CE TEMPLATE SERT DE MODELE POUR ECRIRE UN LAYOUT DANS VOTRE APP #}
+{# IL PRESENTE TOUS LES BLOCKS QUE L'ON PEUT (RE-)DEFINIR EN HERITANT DE BASE.HTML #}
+{# LES BLOCKS COMMENTES SONT PRESENTS DANS BASE.HTML MAIS N'ONT NORMALEMENT PAS BESOIN D'ETRE MODIFIES #}
+
+<!-- modifie la couleur du site. les classes disponibles sont :
+  |---------------------------------------------------------|
+  | SKINS         | skin-blue                               |
+  |               | skin-black                              |
+  |               | skin-purple                             |
+  |               | skin-yellow                             |
+  |               | skin-red                                |
+  |               | skin-green                              |
+  |---------------------------------------------------------|
+  NB : Elles existent toutes en version "light", exemple : "skin-blue-light"
+   La version light change le menu de gauche en blanc -->
+{% block body_skin_class %}skin-green-light{%  endblock %}
+<!-- changez block-super en la couleur de votre app -->
+
+<!--
+----    HEAD
+---->
+<!-- page head title -->
+{% block base_title %}SpamAlyzer | {{ block.super }}{% endblock %}
+
+<!-- here add you own stylesheet and scripts in header -->
+{% block base_header_addons %}
+    <link rel="stylesheet" type="text/css" href="{% static 'SpamAlyzer/css/spamalyzer.css' %}">
+    <!-- Here : addons for the layout, in the whole App -->
+    {% block page_header_addons %}
+    {% endblock %}
+{% endblock %}
+
+<!-- here add you own stylesheet and scripts in footer-->
+{% block base_footer_addons %}
+    <!-- Here : addons for the layout, in the whole App-->
+    {% block page_footer_addons %}
+    {% endblock %}
+{% endblock %}
+
+
+<!--
+----    TOP NAVBAR
+---->
+<!-- url of the home page -->
+{# block base_index_url #}
+
+ <!-- mini logo for sidebar mini 50x50 pixels -->
+{# block base_mini_logo #}
+
+<!-- logo for regular state and mobile devices -->
+{# block base_logo #}
+
+<!-- top right dropdowns navigation -->
+{# block base_top_navbar #}
+
+<!-- top right dropdown for user profile -->
+{# block base_top_navbar_user #}
+
+<!-- top right in navbar toggle to display controls & settings -->
+{# block base_top_navbar_control_button #}
+
+
+<!--
+----    LEFT SIDEBAR
+---->
+<!-- Left Sidebar user panel  -->
+{# block base_left_sidebar_user_panel #}
+
+<!-- Left Sidebar Search Form-->
+{# block base_left_sidebar_search_form #}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="SpamAlyzer" only %}
+{% endblock %}
+
+
+<!--
+----    PAGE CONTENT HEADER
+---->
+<!-- Page content header title -->
+{% block base_content_header_title %}SpamAlyzer{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}Redécouvre la légendaire discussion du SpamNocture grâce à l'archive Facebook !{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
+{% endblock %}
+
+
+<!--
+----    RIGHT SIDEBAR
+---->
+<!-- Right Sidebar List of tabs -->
+{# block base_right_sidebar_tabs #}
+
+<!-- Right sidebar Contents of tabs -->
+{# block base_right_sidebar_contents #}
+
+
+<!--
+----    FOOTER
+---->
+{# block base_footer #}
+
+<!--
+----    PAGE CONTENT BODY
+---->
+<!-- Page content - body -->
+{% block body %}
+
+{% endblock %}

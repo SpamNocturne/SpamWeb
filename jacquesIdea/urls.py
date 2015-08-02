@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^ajax/ji_dv/', ajax.ajax_downvote, name='ajax_downvote'),
     url(r'^ajax/ji_uv/', ajax.ajax_upvote, name='ajax_upvote'),
     url(r'^ajax/ji_si/', ajax.ajax_supprimer_idee, name='ajax_supprimer_idee'),
+    url(r'^ajax/ji_vi/', ajax.ajax_valider_idee, name='ajax_valider_idee'),
 
 
     # ex: /jacques/idea/a/dit/

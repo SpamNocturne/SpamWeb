@@ -1,0 +1,115 @@
+{% extends "SpamAlyzer/layout.html" %}
+{% load staticfiles %}
+
+<!-- page head title -->
+{% block base_title %}La Conversation | {{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}La Conversation | {{ block.super }}{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}{{ block.super }}{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="SpamAlyzer/conversation" only %}
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='SpamAlyzer' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+    <p class="well">Voici la seule et l'unique conversation du SpamNocturne!</p>
+
+    {% if conversation %}
+        <div class="choix_page row">
+            {% if num_page != 1 %}
+                <a href="{% url "SpamAlyzer:conversation" 1 %}" class="col-xs-1 col-xs-offset-1 text-right"><i
+                        class="fa fa-angle-double-left"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}" class="col-xs-1 text-right"><i
+                        class="fa fa-angle-left"></i></a>
+            {% else %}
+                <div class="col-xs-3"></div>
+            {% endif %}
+            <div class="col-xs-6 text-center">
+                <strong>{{ num_page }}</strong>
+            </div>
+            {% if num_page < nb_pages %}
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-right"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" nb_pages %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-double-right"></i></a>
+            {% else %}
+                <div class="col-xs-3"></div>
+            {% endif %}
+        </div>
+        <div class="conversation row">
+            {% for m in conversation %}
+                <div class="media message col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                    <div class="media-left media-top">
+                        <a href="#">
+                            <img src="{% static 'userManager/avatar_defaut.jpg' %}" class="user-image" alt="User Image"/>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <div class="row">
+                            <div class="auteur col-xs-6">
+                                {{ m.auteur.nom_fb }}
+                            </div>
+                            <div class="date text-right col-xs-6">
+                                {{ m.date }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p class="text col-xs-12">
+                                {% if m.texte %}
+                                    {{ m.texte }}
+                                {% else %}
+                                    <img src="https://fbstatic-a.akamaihd.net/rsrc.php/ya/r/FwHVs2eE5cr.svg"
+                                         class="pouce img-polaroid img-responsive"/><i class="ou_pas">(ou pas)</i>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="choix_page row">
+            {% if num_page != 1 %}
+                <a href="{% url "SpamAlyzer:conversation" 1 %}" class="col-xs-1 col-xs-offset-1 text-right"><i
+                        class="fa fa-angle-double-left"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"-1" %}" class="col-xs-1 text-right"><i
+                        class="fa fa-angle-left"></i></a>
+            {% else %}
+                <div class="col-xs-3"></div>
+            {% endif %}
+            <div class="col-xs-6 text-center">
+                <strong>{{ num_page }}</strong>
+            </div>
+            {% if num_page < nb_pages %}
+                <a href="{% url "SpamAlyzer:conversation" num_page|add:"1" %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-right"></i></a>
+                <a href="{% url "SpamAlyzer:conversation" nb_pages %}" class="col-xs-1 text-left"><i
+                        class="fa fa-angle-double-right"></i></a>
+            {% else %}
+                <div class="col-xs-3"></div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="row">
+            <p class="no_element_found_wesh col-xs-12">
+                Il semblerait qu'il n'y ait aucun message du spam dans le base de dounnées! C'est un scandale!
+                Je t'ordonne de demander ton archive Facebook à Facebook pour charger la conversation! Saperlipopette :D
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}

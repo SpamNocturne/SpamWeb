@@ -70,3 +70,18 @@
     cursor: help;
 }
 
+.navbar-static-top #home::before{
+  content: "\f015";
+}
+
+@media (max-width:767px){
+	.fixed .content-wrapper,.fixed .right-side{
+		padding-top:50px
+	}
+
+    .main-sidebar,.left-side{
+		padding-top:50px!important
+	}
+
+}
+.fixed .content-wrapper, .fixed .right-
