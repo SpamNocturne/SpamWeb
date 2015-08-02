@@ -6,7 +6,6 @@ from django.db import models
 
 class UtilisateurStats(models.Model):
     nom_fb = models.CharField(max_length=250, unique=True)
-    nb_de_messages = models.IntegerField(default=0)
 
     def get_mots_plus_utilises(self, nb = 0):
         all_mots_tris = MotScore.objects.filter(user = self).order_by("-score")
@@ -15,7 +14,7 @@ class UtilisateurStats(models.Model):
         return all_mots_tris
 
     def __str__(self):
-        return "{0} ({1})".format(self.nom_fb, self.nb_de_messages)
+        return "{0}".format(self.nom_fb)
 
 
 class MotScore(models.Model):

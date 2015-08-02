@@ -65,7 +65,11 @@ class StatsHelper:
         self.graphe_nb_msg_per_date = collections.OrderedDict(sorted(self.graphe_nb_msg_per_date.items()))
 
     def fill_msg_per_user(self):
-        self.graphe_msg_per_user = [{'xaxis': user.nom_fb, 'yaxis': user.nb_de_messages} for user in self.all_users.order_by("-nb_de_messages")]
+        user_and_msgs = {}
+        for u in self.all_users:
+            user_and_msgs[u.nom_fb] = models.Message.objects.filter(auteur = u).count()
+
+        self.graphe_msg_per_user = [{'xaxis': user, 'yaxis': user_and_msgs[user]} for user in sorted(user_and_msgs, key=user_and_msgs.get, reverse=True)]
 
     mots_ignore = [
         "est",
@@ -115,5 +119,6 @@ class StatsHelper:
         "sur",
         "ne",
         "se",
-        "faire"
+        "faire",
+        "as"
     ]
