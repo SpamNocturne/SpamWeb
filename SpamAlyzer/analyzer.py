@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.db.models import Manager
 
 __author__ = 'David'
 __date__ = '2015-07-07'
@@ -7,7 +8,7 @@ from lxml import etree
 from datetime import datetime, timezone, timedelta
 import re
 from SpamAlyzer import models
-from threading import Thread
+from threading import Thread, Lock
 
 class Analyzer:
 
@@ -43,16 +44,100 @@ class Analyzer:
     def analyze_the_spam_muhaha(self):
         conversations = self.find_spam_conversations()
 
-        threads = []
+        self.shared_obj_list = []
+        self.list_mutex = Lock()
+        self.producteur_finished = False
+        # Mise en place des 2 threads : producteurs d'objets messages et motScore + consommateurs qui fait les accès DB
+        producteur = Thread(target=self.produce_messages_and_motScore, args=(conversations, ))
+        producteur.setDaemon(True)
+        producteur.start()
+
+        consommateur = Thread(target=self.consume_objects)
+        consommateur.setDaemon(True)
+        consommateur.start()
+
+        producteur.join()
+        self.producteur_finished = True
+        consommateur.join()
+
+
+    def produce_messages_and_motScore(self, conversations):
+        userXPath = "div[@class = 'message_header']/span[@class = 'user']"
+        dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
+        all_users = models.UtilisateurStats.objects.all()
+        nb_conversations = len(conversations)
+        conv_cpt = 1
         for c in conversations: # saves the messages
-            t = Thread(target=self.analyze_conversation, args=(c, ))
-            t.setDaemon(True)
-            threads.append(t)
-            t.start()
+            nb_msg = len(c)
+            for i in range(0, nb_msg, 2):
+                user = c[i].xpath(userXPath)[0].text
+                userDB = all_users.filter(nom_fb = user)[0] # acces BDD
+                date = c[i].xpath(dateXPath)[0].text
+                date = self.to_python_date(date)
+                message_text = c[i+1].text
 
-        for t in threads:
-            t.join()
+                msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
+                self.list_mutex.acquire()
+                self.shared_obj_list.append(msg)
+                self.list_mutex.release()
+                if i % 1000 == 0:
+                    print("Conversation prod {0}/{1} (conv {2}/{3})".format(int(i/2), int(nb_msg/2), conv_cpt, nb_conversations))
 
+            conv_cpt += 1
+
+    def consume_objects(self):
+        all_messages = models.Message.objects.all()
+
+        self.list_mutex.acquire()
+        list_len_msg = len(self.shared_obj_list)
+        self.list_mutex.release()
+        while True:
+            messages_to_add = []
+            motScore_to_add = []
+            if list_len_msg != 0:
+                for i in range(0, list_len_msg):
+                    self.list_mutex.acquire()
+                    msg = self.shared_obj_list[0]
+                    self.list_mutex.release()
+                    if all_messages.filter(date = msg.date, auteur = msg.auteur, texte = msg.texte).count() == 0:
+                        self.new_messages += 1
+                        messages_to_add.append(msg)
+                        if msg.texte is not None:
+                            for mot in self.get_mots_de_texte(msg.texte):
+                                # Find if words already in new list
+                                found_in_list = False
+                                for k in range(0, len(motScore_to_add)):
+                                    # If found
+                                    if motScore_to_add[k].mot == mot and motScore_to_add[k].user == msg.auteur:
+                                        motScore_to_add[k].score += 1
+                                        found_in_list = True
+                                        break
+                                if not found_in_list:
+                                    mots = models.MotScore.objects.filter(user = msg.auteur, mot = mot)
+                                    if mots.count() == 0:
+                                        new_mot = models.MotScore(user = msg.auteur, mot=mot, score=1)
+                                        motScore_to_add.append(new_mot)
+                                    else:
+                                        old_mot = mots[0]
+                                        old_mot.score += 1
+                                        old_mot.save()
+
+                    self.list_mutex.acquire()
+                    self.shared_obj_list.remove(msg)
+                    self.list_mutex.release()
+
+            if len(messages_to_add) != 0:
+                print("Added {0} messages".format(len(messages_to_add)))
+                models.Message.objects.bulk_create(messages_to_add)
+                models.MotScore.objects.bulk_create(motScore_to_add)
+
+            self.list_mutex.acquire()
+            list_len_msg = len(self.shared_obj_list)
+            self.list_mutex.release()
+
+            if list_len_msg == 0 and self.producteur_finished:
+                print("Consommation de messages terminée :D")
+                break;
 
     def find_spam_conversations(self):
         xpath = "//div[@class = 'thread']"
@@ -79,59 +164,6 @@ class Analyzer:
                 return False
 
         return True
-
-
-    def analyze_conversation(self, conversation):
-        nb_messages = len(conversation)
-        self.userXPath = "div[@class = 'message_header']/span[@class = 'user']"
-        self.dateXPath = "div[@class = 'message_header']/span[@class = 'meta']"
-        self.all_users = models.UtilisateurStats.objects.all()
-        self.all_messages = models.Message.objects.all()
-
-        THREAD_FOR_NB_MSG = 3000
-        NB_THREADS = int(nb_messages / THREAD_FOR_NB_MSG) + 1
-        print("Nombres de threads : {0}".format(NB_THREADS))
-        threads = []
-        for i in range(0, NB_THREADS):
-            beg = i * THREAD_FOR_NB_MSG
-            end = (i+1) * THREAD_FOR_NB_MSG
-            if end > nb_messages:
-                end = nb_messages
-
-            t = Thread(target=self.analyze_conversation_from_to, args=(conversation, beg, end, ))
-            t.setDaemon(True)
-            threads.append(t)
-            t.start()
-
-        for t in threads:
-            t.join()
-
-    def analyze_conversation_from_to(self, conversation, beginIdx, endIdx):
-        nb_counting_messages = int((endIdx - beginIdx) / 2)
-
-        cpt = 0
-        for i in range(beginIdx, endIdx, 2):
-            user = conversation[i].xpath(self.userXPath)[0].text
-            userDB = self.all_users.filter(nom_fb = user)[0]
-            date = conversation[i].xpath(self.dateXPath)[0].text
-            date = self.to_python_date(date)
-            message_text = conversation[i+1].text
-
-            if self.all_messages.filter(date = date, auteur = userDB, texte = message_text).count() == 0:
-                self.new_messages += 1
-
-                userDB.nb_de_messages += 1
-                if message_text is not None:
-                    for mot in self.get_mots_de_texte(message_text):
-                        userDB.ajout_mot_score(mot)
-                userDB.save()
-
-                msg = models.Message(auteur = userDB, date = date, texte = message_text, file = self.fichier)
-                msg.save()
-            cpt += 1
-
-            # Messages counting (server log)
-            print("Analyzing a conversation {0}/{1}".format(cpt, nb_counting_messages))
 
     def get_mots_de_texte(self, texte):
         return re.compile('\w+').findall(texte)
