@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block body %}
-    <p class="well" >Charge ton fichier messages.htm de ton archive Facebook et analyse le spam !</p>
+    <p class="well" >Charge ton fichier messages.htm de ton archive Facebook et analyse le spam !<br>L'analyse de la discussion peut être long, avant de déposer ton fichier vérifie que ton archive aura quelque chose à apporter a la discussion en consultant la date du <a href="{% url 'SpamAlyzer:histoDepot' %}">dernier dépot</a></p>
     <section class="row">
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
             <form action="{% url 'SpamAlyzer:index' %}" method="post" enctype="multipart/form-data" class="dropzone dz-clickable" id="myDropzone">
