@@ -123,11 +123,7 @@
 {% endblock %}
 
 {% block body %}
-    {% if nom %}
-        <p class="well">Les statistiques de notre {{ nom }} ! Voyons ce qu'il/elle vaut :D</p>
-    {% else %}
-        <p class="well">Les statistiques de la conversation !</p>
-    {% endif %}
+    <p class="well">Les statistiques de {{ cest_pour_qui }} !</p>
 
     {% if error_message %}
         <p class="error">{{ error_message }}</p>

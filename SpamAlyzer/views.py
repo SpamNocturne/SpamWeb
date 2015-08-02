@@ -30,7 +30,7 @@ def index(request):
                 fichier.save()
                 context["error_message"] = "Ca bidouille ! Et ça peut prendre un peu de temps parce que je code " \
                                            "n'importe comment. Bref, ça enverra une notif' dès ça a fini de charger " \
-                                           "l'internet. Merci aurevoir <3";
+                                           "l'internet. Merci aurevoir <3"
                 return render_to_response("SpamAlyzer/message.html", context)
             except etree.DocumentInvalid:
                 context["error_message"] = "Oh non! Ton fichier est tout naze. " \
@@ -44,7 +44,7 @@ def index(request):
                                            "Normal que je ne pas déduire grand chose de l'erreur. " \
                                            "Mais voilà le message de l'exception si ça peut t'aider. (mais vu que " \
                                            "t'es nul(le), envoie ça à David. Il saura débugger, mieux que toi, " \
-                                           "sa merde qu'il a pondu) : {0}".format(traceback.format_exc())
+                                           "sa merde qu'il a pondu) : <pre>{0}</pre>".format(traceback.format_exc())
                 return render_to_response("SpamAlyzer/message.html", context)
         else:
             context["error_message"] = "Oh non! Ton fichier est tout naze. " \
@@ -111,6 +111,7 @@ def statsGlobales(request):
         "graphe_most_used_words": stats.graphe_most_used_words,
         "graphe_nb_msg_per_date": stats.graphe_nb_msg_per_date,
         "stats_type_for_menu": "SpamAlyzer/statsG",
+        "cest_pour_qui": "la conversation"
     }
 
     return render(request, "SpamAlyzer/stats.html", context)
@@ -132,7 +133,7 @@ def statsMec(request, id_pers):
 
     stats = StatsHelper(mec)
     context = {
-        "nom": mec.nom_fb,
+        "cest_pour_qui": mec.nom_fb,
         "nb_messages" : stats.nb_messages,
         "nb_pouces": stats.nb_pouces,
         "graphe_most_used_words": stats.graphe_most_used_words,

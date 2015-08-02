@@ -120,5 +120,5 @@ class StatsHelper:
         "ne",
         "se",
         "faire",
-        "as"
+        "as",
     ]
