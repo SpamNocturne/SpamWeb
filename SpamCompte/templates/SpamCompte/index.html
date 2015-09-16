@@ -1,0 +1,19 @@
+{% extends "SpamCompte/layout.html" %}
+{% load staticfiles %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {# prev1Name='comptes' prev1Url='spamCompte:index' #}
+    {% include 'LTE/breadcrumb.html' with current='comptes' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}

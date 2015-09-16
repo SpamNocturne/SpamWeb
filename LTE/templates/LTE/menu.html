@@ -4,7 +4,7 @@
     <!-- Optionally, you can add icons to the links -->
     <li {% ifequal active "jacquesIdea" %}class="active" {% endifequal %}><a href="{% url 'jacquesIdea:index' %}"><i class="fa fa-lightbulb-o"></i> <span>Idées</span></a></li>
     <li {% ifequal active "calendrier" %}class="active" {% endifequal %}><a href="#"><i class='fa fa-calendar'></i> <span>Calendrier</span></a></li>
-    <li {% ifequal active "comptes" %}class="active" {% endifequal %}><a href="#"><i class='fa fa-euro'></i> <span>Comptes</span></a></li>
+    <li {% ifequal active "comptes" %}class="active" {% endifequal %}><a href="{% url 'spamCompte:index' %}"><i class='fa fa-euro'></i> <span>Comptes</span></a></li>
     <li class="treeview {% if "spamConso" in active %}active{% endif %}">
       <a href="#">
           <i class='fa fa-bar-chart'></i> <span>SpamConso</span> <i class="fa fa-angle-left pull-right"></i>
