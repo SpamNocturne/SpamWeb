@@ -1,0 +1,59 @@
+{% extends "SpamCompte/layout.html" %}
+{% load staticfiles %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {# prev1Name='comptes' prev1Url='spamCompte:index' #}
+    {% include 'LTE/breadcrumb.html' with current='comptes' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+<div class="box box-warning">
+    <div class="box-header with-border">
+      <h3 class="box-title">Création d'un nouveau SpamCompte</h3>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        <form action="{% url 'spamCompte:ajout_depense' battle.id %}" method="post">
+        <!-- text input -->
+
+        <div class="form-group {% if form.description.errors %}has-error{% endif %}">
+            {{ form.description.label_tag }} {{ form.description }}
+            {% for error in form.description.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="form-group {% if form.payeurs.errors %}has-error{% endif %}">
+            {{ form.payeurs.label_tag }} {{ form.payeurs }}
+            {% for error in form.payeurs.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="form-group {% if form.beneficiaires.errors %}has-error{% endif %}">
+            {{ form.beneficiaires.label_tag }} {{ form.beneficiaires }}
+            {% for error in form.beneficiaires.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="col-xs-4 col-xs-offset-4">
+            <button type="submit" class="btn btn-danger btn-block btn-flat">
+                <i class="fa fa-euro"></i>
+                Ajouter cette dépense
+            </button>
+        </div><!-- /.col -->
+        {% csrf_token %}
+
+      </form>
+    </div><!-- /.box-body -->
+</div>
+
+{% endblock %}

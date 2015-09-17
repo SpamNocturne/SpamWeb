@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import BattleDArgent
+from .models import BattleDArgent, Depense
 from django.contrib.auth.models import User
 from django.forms.widgets import CheckboxSelectMultiple
 
@@ -38,3 +38,17 @@ class BattleDArgentForm(forms.ModelForm):
         wanted_participants.extend(self.users)
         participants_plus_user = User.objects.filter(pk__in=wanted_participants)
         return participants_plus_user
+
+
+class DepenseForm(forms.ModelForm):
+    class Meta:
+        model = Depense
+        fields = ["description", "payeurs", "beneficiaires"]
+        labels = {
+            'description': "Description ou titre de la transaction",
+            'payeurs': "Ceux qui ont payé",
+            'beneficiaires': "Ceux qui ont profité",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(DepenseForm, self).__init__(*args, **kwargs)
