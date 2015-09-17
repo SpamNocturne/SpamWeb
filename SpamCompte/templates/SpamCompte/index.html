@@ -15,5 +15,29 @@
 {% endblock %}
 
 {% block body %}
+    <div class="box box-warning">
+        <div class="box-header with-border">
+          <h3 class="box-title">Vous voulez créer un <b>règlement de compte</b> ? C'est ici :</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="col-sm-6 col-sm-offset-3">
+                <a class="btn btn-flat btn-danger" href="{% url 'spamCompte:ajout_battle' %}" style="display: block;">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un règlement de compte !
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Vos règlements de compte existants :</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            {% for compte in mes_comptes %}
+            <a href="{% url 'spamCompte:consulter_battle' compte.id %}">{{ compte.nom }}</a><br>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

@@ -12,6 +12,7 @@ LOG_PARAMS = {
         "userManager",
         "SpamAlyzer",
         "spamConso",
+        "SpamCompte",
     ],
     "log_type": [
         "spamusic_add_playlist",
@@ -25,6 +26,9 @@ LOG_PARAMS = {
         "userManager_register",
         "spamConso_add_conso_beer",
         "spamConso_add_conso_tacos",
+        "SpamCompte_ajout_battle",
+        "SpamCompte_modification_battle",
+        "SpamCompte_ajout_depense",
     ],
 }
 

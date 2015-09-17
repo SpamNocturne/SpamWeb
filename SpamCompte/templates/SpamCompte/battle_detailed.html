@@ -1,0 +1,66 @@
+{% extends "SpamCompte/layout.html" %}
+{% load staticfiles %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='détail compte' prev1Name='comptes' prev1Url='spamCompte:index' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+<h2 class="text-center">SpamCompte : <i>{{ battle }}</i></h2>
+<div class="box box-default">
+    <div class="box-header with-border">
+      <h2 class="box-title">Ajouter une dépense via le bouton ci-dessous :</h2>
+    </div>
+    <div class="box-body">
+        <div class="col-xs-4 col-xs-offset-4">
+            <a href="#" class="btn btn-default btn-block btn-flat">
+                <i class="fa fa-plus"></i>
+                Ajouter une dépense
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="box box-warning">
+    <div class="box-header with-border">
+      <h2 class="box-title">Modifier les paramètres du <i>SpamCompte</i> :</h2>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        <form action="{% url 'spamCompte:consulter_battle' battle.id %}" method="post">
+        <!-- text input -->
+        {{ form.errors }}
+        <div class="form-group {% if form.nom.errors %}has-error{% endif %}">
+            {{ form.nom.label_tag }} {{ form.nom }}
+            {% for error in form.nom.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="form-group {% if form.participants.errors %}has-error{% endif %}">
+            {{ form.participants.label_tag }} {{ form.participants }}
+            {% for error in form.participants.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="col-xs-4 col-xs-offset-4">
+            <button type="submit" class="btn btn-danger btn-block btn-flat">
+                <i class="fa fa-pencil"></i>
+                Actualiser les paramètres de <i>{{ battle }}</i>
+            </button>
+        </div><!-- /.col -->
+        {% csrf_token %}
+
+      </form>
+    </div><!-- /.box-body -->
+</div>
+
+{% endblock %}

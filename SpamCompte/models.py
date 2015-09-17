@@ -11,9 +11,15 @@ class SpammeurConsommateur(models.Model):
 
 
 class BattleDArgent(models.Model):
+    nom = models.CharField(max_length=255)
+    participants = models.ManyToManyField(User, blank=True)
+    pub_date = models.DateTimeField(blank=True, null=True)
 
     def balance(self):
         return {}
+
+    def __str__(self):
+        return self.nom
 
 
 class Depense(models.Model):
