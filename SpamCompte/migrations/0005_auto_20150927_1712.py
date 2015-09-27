@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('userManager', '0003_auto_20150622_2330'),
+        ('SpamCompte', '0004_auto_20150927_1207'),
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='userprofile',
-            old_name='image_profil',
-            new_name='avatar',
+        migrations.AlterField(
+            model_name='battledargent',
+            name='nom',
+            field=models.CharField(unique=True, max_length=255),
         ),
     ]

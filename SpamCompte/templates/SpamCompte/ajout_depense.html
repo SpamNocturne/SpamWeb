@@ -1,8 +1,7 @@
 {% extends "SpamCompte/layout.html" %}
 {% load staticfiles %}
+{% load my_filters %}
 
-<!-- Page content breadcrumb (fil d'arianne) -->
-<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
 {% block base_content_header_breadcrumb %}
     {# prev1Name='comptes' prev1Url='spamCompte:index' #}
     {% include 'LTE/breadcrumb.html' with current='comptes' only %}
@@ -17,40 +16,99 @@
 {% block body %}
 <div class="box box-warning">
     <div class="box-header with-border">
-      <h3 class="box-title">Création d'un nouveau SpamCompte</h3>
+        {% if is_update %}
+            <h3 class="box-title">Mise à jour de la dépense de <i>{{ battle }}</i></h3>
+        {% else %}
+            <h3 class="box-title">Ajout d'une dépense à : <i>{{ battle }}</i></h3>
+        {% endif %}
     </div><!-- /.box-header -->
     <div class="box-body">
-        <form action="{% url 'spamCompte:ajout_depense' battle.id %}" method="post">
+        <form action="{% url 'spamCompte:ajout_depense' battle.id %}" method="post" id="form_depense">
         <!-- text input -->
+            {{ form.id }}
+            {{ form.somme }}
+            {% if form.non_field_errors %}
+            <div class="row">
+                <div class="alert alert-danger alert-dismissable col-sm-8 col-sm-offset-2">
+                    <i class="fa fa-ban">
+                    </i>
+                    <button class="close" aria-hidden="true" data-dismiss="alert" type="button">
+                        ×
+                    </button>
+                    <b>
+                        Erreur !
+                    </b>
+                    {{ form.non_field_errors }}
+                </div>
+            </div>
+            {% endif %}
 
-        <div class="form-group {% if form.description.errors %}has-error{% endif %}">
-            {{ form.description.label_tag }} {{ form.description }}
-            {% for error in form.description.errors %}
-            <p class="text-red">{{ error }}</p>
-            {% endfor %}
-        </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-sm-offset-3 {% if form.description.errors %}has-error{% endif %}">
+                    {{ form.description.label_tag }} {{ form.description }}
+                    {% for error in form.description.errors %}
+                    <p class="text-red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
 
-        <div class="form-group {% if form.payeurs.errors %}has-error{% endif %}">
-            {{ form.payeurs.label_tag }} {{ form.payeurs }}
-            {% for error in form.payeurs.errors %}
-            <p class="text-red">{{ error }}</p>
-            {% endfor %}
-        </div>
+            <div class="row">
+                <div class="col-sm-1">{# marge déguelasse, flemme de recheflir #}</div>
+                <fieldset class="col-sm-10">
+                    <legend>Dépenses par participant</legend>
+                    {% for user in participants %}
+                        <div class="row">
+                            <h4 class="col-sm-1 col-sm-offset-1">
+                                <i>{{ user.username }} :</i>
+                            </h4>
 
-        <div class="form-group {% if form.beneficiaires.errors %}has-error{% endif %}">
-            {{ form.beneficiaires.label_tag }} {{ form.beneficiaires }}
-            {% for error in form.beneficiaires.errors %}
-            <p class="text-red">{{ error }}</p>
-            {% endfor %}
-        </div>
+                            {% with nom_montant_depense='montant_depense_'|addstr:user.username %}
+                            {% with montant_depense=form|keyvalue:nom_montant_depense %}
+                            <div class="form-group col-sm-4 {% if montant_depense.errors %}has-error{% endif %}">
+                                {{ montant_depense.label_tag }} {{ montant_depense }}
+                                {% for error in montant_depense.errors %}
+                                <p class="text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endwith %}
+                            {% endwith %}
 
-        <div class="col-xs-4 col-xs-offset-4">
-            <button type="submit" class="btn btn-danger btn-block btn-flat">
-                <i class="fa fa-euro"></i>
-                Ajouter cette dépense
-            </button>
-        </div><!-- /.col -->
-        {% csrf_token %}
+                            {% with nom_montant_utilise='montant_utilise_'|addstr:user.username %}
+                            {% with montant_utilise=form|keyvalue:nom_montant_utilise %}
+                            <div class="form-group col-sm-4 {% if montant_utilise.errors %}has-error{% endif %}">
+                                {{ montant_utilise.label_tag }} {{ montant_utilise }}
+                                {% for error in montant_utilise.errors %}
+                                <p class="text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endwith %}
+                            {% endwith %}
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </fieldset>
+            </div>
+
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="submit" class="btn btn-default btn-block btn-flat">
+                    <i class="fa fa-euro"></i>
+                    {% if is_update %}
+                        Mettre à jour cette dépense
+                    {% else %}
+                        Ajouter cette dépense
+                    {% endif %}
+                </button>
+            <br>
+            </div>
+            {% if is_update %}
+            <div class="col-xs-4 col-xs-offset-4">
+                <a class="btn btn-danger btn-block btn-flat" href="{% url 'spamCompte:supprimer_depense' battle.id depense.id %}">
+                    <i class="fa fa-trash"></i>
+                    Supprimer
+                </a>
+            </div><!-- /.col -->
+            {% endif %}
+            {% csrf_token %}
 
       </form>
     </div><!-- /.box-body -->

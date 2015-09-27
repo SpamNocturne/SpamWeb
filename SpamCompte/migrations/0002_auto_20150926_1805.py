@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('userManager', '0005_auto_20150712_1808'),
+        ('SpamCompte', '0001_initial'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='userprofile',
-            name='avatar',
-            field=models.ImageField(blank=True, upload_to='content_file_name', null=True),
+            model_name='spammeurconsommateur',
+            name='depense_pour_laquelle_on_contribue',
+            field=models.ForeignKey(to='SpamCompte.Depense', null=True),
         ),
     ]

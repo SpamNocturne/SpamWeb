@@ -15,25 +15,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Commentaire',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('commentaire_text', models.TextField()),
+                ('pub_date', models.DateTimeField()),
                 ('auteur', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='Idee',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
-                ('titre', models.CharField(max_length=100)),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
+                ('titre', models.CharField(max_length=150)),
                 ('idee_text', models.TextField()),
                 ('pub_date', models.DateTimeField()),
-                ('auteur', models.ForeignKey(related_name='idees', to=settings.AUTH_USER_MODEL)),
+                ('statut', models.IntegerField(default=0)),
+                ('auteur', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='idees')),
             ],
         ),
         migrations.CreateModel(
             name='Vote',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('valeur', models.IntegerField(default=0)),
                 ('auteur', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
                 ('idee', models.ForeignKey(to='jacquesIdea.Idee')),
@@ -48,5 +50,9 @@ class Migration(migrations.Migration):
             model_name='commentaire',
             name='idee',
             field=models.ForeignKey(to='jacquesIdea.Idee'),
+        ),
+        migrations.AlterUniqueTogether(
+            name='vote',
+            unique_together=set([('auteur', 'idee')]),
         ),
     ]

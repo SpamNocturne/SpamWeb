@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import BattleDArgent, Depense
+from decimal import Decimal
+from .models import BattleDArgent, Depense, SpammeurConsommateur
 from django.contrib.auth.models import User
 from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.models import formset_factory
+from django.utils import timezone
+from functools import partial, wraps
 
 
 class BattleDArgentForm(forms.ModelForm):
@@ -19,13 +23,13 @@ class BattleDArgentForm(forms.ModelForm):
         super(BattleDArgentForm, self).__init__(*args, **kwargs)
         self.fields['nom'].widget.attrs \
             .update({
-                'placeholder': "ex: Holidays!",
-                'class': 'form-control'
-            })
+            'placeholder': "ex: Holidays!",
+            'class': 'form-control'
+        })
         self.fields['participants'].widget.attrs \
             .update({
-                'class': 'form-control'
-            })
+            'class': 'form-control'
+        })
         self.fields['participants'].widget = CheckboxSelectMultiple()
         self.fields['participants'].queryset = User.objects.exclude(pk__in=self.users)
 
@@ -40,15 +44,70 @@ class BattleDArgentForm(forms.ModelForm):
         return participants_plus_user
 
 
-class DepenseForm(forms.ModelForm):
-    class Meta:
-        model = Depense
-        fields = ["description", "payeurs", "beneficiaires"]
-        labels = {
-            'description': "Description ou titre de la transaction",
-            'payeurs': "Ceux qui ont payé",
-            'beneficiaires': "Ceux qui ont profité",
-        }
+class DepenseForm(forms.Form):
+    error_messages = {
+        'total_non_nul': "Le total de la transaction n'est pas nul, il y a une différence de : %s€",
+        'montant_inutile': "La transaction que vous essayez d'effectuer est inutile. Veuillez remplir quelques champs svp.",
+    }
+    description = forms.CharField(widget=forms.Textarea)
+    somme = forms.DecimalField(widget=forms.HiddenInput(), initial=0, decimal_places=2)
 
     def __init__(self, *args, **kwargs):
+        self.users = kwargs.pop('users', [])
+        self.depense = kwargs.pop('instance', None)
         super(DepenseForm, self).__init__(*args, **kwargs)
+        self.fields['description'].widget.attrs \
+            .update({
+                'class': 'form-control',
+                'rows': '2',
+            })
+        if self.users:
+            for u in self.users:
+                self.fields['montant_depense_{user}'.format(user=u.username)] = \
+                                                            forms.DecimalField(
+                                                                    min_value=0,
+                                                                    initial=0,
+                                                                    decimal_places=2,
+                                                                    label='Montant dépensé'
+                                                            )
+                self.fields['montant_depense_{user}'.format(user=u.username)].widget.attrs \
+                    .update({
+                        'class': 'form-control',
+                    })
+                self.fields['montant_utilise_{user}'.format(user=u.username)] = \
+                                                    forms.DecimalField(
+                                                                    min_value=0,
+                                                                    initial=0,
+                                                                    decimal_places=2,
+                                                                    label='Montant utilisé'
+                                                    )
+                self.fields['montant_utilise_{user}'.format(user=u.username)].widget.attrs \
+                    .update({
+                        'class': 'form-control',
+                    })
+        if self.depense:
+            for s_c in self.depense.spammeurconsommateur_set.all():
+                print(s_c.user.username)
+                self.fields['montant_depense_{user}'.format(user=s_c.user.username)].initial = s_c.montant_depense
+                self.fields['montant_utilise_{user}'.format(user=s_c.user.username)].initial = s_c.montant_utilise
+            self.fields['description'].initial = self.depense.description
+
+    def clean(self):
+        somme = Decimal(0.00)
+        depense = Decimal(0.00)
+        for u in self.users:
+            depense += self.cleaned_data.get('montant_depense_{user}'.format(user=u.username))
+            somme += self.cleaned_data.get('montant_depense_{user}'.format(user=u.username))
+            somme -= self.cleaned_data.get('montant_utilise_{user}'.format(user=u.username))
+        if somme != Decimal(0.00):
+            raise forms.ValidationError(
+                self.error_messages['total_non_nul'] % str(somme),
+                code='total_non_nul',
+            )
+        if depense == 0:
+            raise forms.ValidationError(
+                self.error_messages['montant_inutile'],
+                code='montant_inutile',
+            )
+        self.cleaned_data['somme'] = somme
+        return self.cleaned_data

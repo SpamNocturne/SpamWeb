@@ -15,27 +15,40 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='FichierSoumis',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('date', models.DateField()),
-                ('fichier', models.FileField(upload_to='uploads/%Y/%m/%d/')),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('date_depot', models.DateField(auto_now_add=True)),
+                ('date_fichier', models.DateField()),
+                ('fichier', models.FileField(upload_to='uploads/SpamAlyzer/%Y-%m-%d/')),
                 ('auteur', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='Message',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('texte', models.CharField(max_length=5000)),
-                ('date', models.DateField()),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('texte', models.CharField(null=True, max_length=5000)),
+                ('date', models.DateTimeField()),
+            ],
+        ),
+        migrations.CreateModel(
+            name='MotScore',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('mot', models.CharField(max_length=500)),
+                ('score', models.IntegerField(default=0)),
             ],
         ),
         migrations.CreateModel(
             name='UtilisateurStats',
             fields=[
-                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
-                ('nom_fb', models.CharField(max_length=250)),
-                ('nb_de_messages', models.IntegerField(default=0)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('nom_fb', models.CharField(unique=True, max_length=250)),
             ],
+        ),
+        migrations.AddField(
+            model_name='motscore',
+            name='user',
+            field=models.ForeignKey(to='SpamAlyzer.UtilisateurStats'),
         ),
         migrations.AddField(
             model_name='message',
@@ -46,5 +59,9 @@ class Migration(migrations.Migration):
             model_name='message',
             name='file',
             field=models.ForeignKey(to='SpamAlyzer.FichierSoumis'),
+        ),
+        migrations.AlterUniqueTogether(
+            name='motscore',
+            unique_together=set([('user', 'mot')]),
         ),
     ]

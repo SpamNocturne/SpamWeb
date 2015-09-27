@@ -1,5 +1,6 @@
 {% extends "SpamCompte/layout.html" %}
 {% load staticfiles %}
+{% load my_filters %}
 
 <!-- Page content breadcrumb (fil d'arianne) -->
 <!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
@@ -11,10 +12,74 @@
 {% endblock %}
 
 {% block page_footer_addons %}
+    <script src="{% static 'LTE/plugins/morris/raphael-min.js' %}"></script>
+    <script src="{% static 'LTE/plugins/morris/morris.min.js' %}"></script>
+    <script src="{% static 'LTE/dist/js/demo.js' %}"></script>
+    <script type="text/javascript">
+            $(function() {
+                "use strict";
+                var bar = new Morris.Bar({
+                    element: 'bar-chart',
+                    resize: true,
+                    data: [
+                        {% for user, score in score_participants.items %}
+                            {% if score < 0 %}
+                                {y: '{{ user }}', spammeurPositif: 0, spammeurNegatif: {{ score|replace_comma_dot }}},
+                            {% else %}
+                                {y: '{{ user }}', spammeurPositif: {{ score|replace_comma_dot }}, spammeurNegatif: 0},
+                            {% endif %}
+                        {% endfor %}
+                    ],
+                    barColors: ['#00a65a', '#f56954'],
+                    xkey: 'y',
+                    ykeys: ['spammeurPositif', 'spammeurNegatif'],
+                    labels: ['KJ', 'KI'],
+{#                    hideHover: false,#}
+                    stacked: true
+                });
+            });
+    </script>
 {% endblock %}
 
 {% block body %}
 <h2 class="text-center">SpamCompte : <i>{{ battle }}</i></h2>
+
+<div class="box box-success">
+    <div class="box-header">
+        <h3 class="box-title">Résumé du SpamCompte</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="box-body chart-responsive">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="chart" id="bar-chart" style="height: 300px;"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>
+                    Equilibrage:
+                </h3>
+                {% for item in equilibrage %}
+                    {% if item.0 == request.user.username %}
+                        <div style="font-size: 130%;">
+                            <i>Vous</i> devez <b>{{ item.2 }}€</b> à <i>{{ item.1 }}</i>. <br>
+                        </div>
+                    {% elif item.1 == request.user.username %}
+                        <div style="font-size: 130%;">
+                            <i>{{ item.0 }} vous</i> doit <b>{{ item.2 }}€</b>. <br>
+                        </div>
+                    {% else %}
+                        <i>{{ item.0 }}</i> doit <b>{{ item.2 }}€</b> à <i>{{ item.1 }}</i>. <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="box box-default">
     <div class="box-header with-border">
       <h2 class="box-title">Ajouter une dépense via le bouton ci-dessous :</h2>
@@ -28,6 +93,52 @@
         </div>
     </div>
 </div>
+
+<div class="box box-default">
+    <div class="box-header">
+        <h3 class="box-title">Liste des dépenses</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover table-bordered">
+            <tbody>
+                <tr>
+                    <th class="text-center">Description</th>
+                    <th class="text-center">Montant</th>
+                    <th class="text-center">Date</th>
+                </tr>
+
+                {% if depenses_et_montant %}
+                {% for depense, montant in depenses_et_montant.items %}
+                    <tr class="{% cycle 'active' '' %} text-center"
+                        onclick="javascript:location.href='{% url 'spamCompte:consulter_depense' battle.id  depense.id %}'"
+                        style="cursor: pointer;">
+
+                        <td>
+                            {{ depense.description }}
+                        </td>
+                        <td>
+                            <span class="badge bg-green">{{ montant }}€</span>
+                        </td>
+                        <td>
+                            {{ depense.date }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                    <tr>
+                        <td>Ce SpamCompte</td>
+                        <td>ne contient aucune</td>
+                        <td>dépense.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 <div class="box box-warning">
     <div class="box-header with-border">
@@ -44,12 +155,14 @@
             {% endfor %}
         </div>
 
+        {% if form.participants.queryset %}
         <div class="form-group {% if form.participants.errors %}has-error{% endif %}">
             {{ form.participants.label_tag }} {{ form.participants }}
             {% for error in form.participants.errors %}
             <p class="text-red">{{ error }}</p>
             {% endfor %}
         </div>
+        {% endif %}
 
         <div class="col-xs-4 col-xs-offset-4">
             <button type="submit" class="btn btn-danger btn-block btn-flat">
