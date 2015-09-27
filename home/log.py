@@ -29,6 +29,9 @@ LOG_PARAMS = {
         "SpamCompte_ajout_battle",
         "SpamCompte_modification_battle",
         "SpamCompte_ajout_depense",
+        "SpamCompte_supprimer_depense",
+        "SpamCompte_modifier_depense",
+        "SpamCompte_supprimer_battle",
     ],
 }
 

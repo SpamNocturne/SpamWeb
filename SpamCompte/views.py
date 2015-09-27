@@ -145,7 +145,7 @@ def consulter_depense(request, battle_id, depense_id):
             add_log(text="%s a modifié la dépense %s du SpamCompte : %s" %
                          (request.user.username, depense.description[:20], battle.nom),
                     app="SpamCompte",
-                    log_type="SpamCompte_ajout_depense",
+                    log_type="SpamCompte_modifier_depense",
                     user=request.user)
             return redirect(reverse('spamCompte:consulter_battle', args=(battle.id,)))
         else:
@@ -158,11 +158,24 @@ def consulter_depense(request, battle_id, depense_id):
 
 def supprimer_depense(request, battle_id, depense_id):
     depense = get_object_or_404(Depense, pk=depense_id)
+    battle = get_object_or_404(BattleDArgent, pk=battle_id)
+    nom = battle.nom
     depense.delete()
+    add_log(text="%s a supprimé la dépense %s du SpamCompte : %s" %
+                 (request.user.username, depense.description[:20], nom),
+            app="SpamCompte",
+            log_type="SpamCompte_supprimer_depense",
+            user=request.user)
     return redirect(reverse('spamCompte:consulter_battle', args=(battle_id,)))
 
 
 def supprimer_compte(request, battle_id):
     battle = get_object_or_404(BattleDArgent, pk=battle_id)
+    nom = battle.nom
     battle.delete()
+    add_log(text="%s a supprimé le SpamCompte : %s" %
+                 (request.user.username, nom),
+            app="SpamCompte",
+            log_type="SpamCompte_supprimer_battle",
+            user=request.user)
     return redirect(reverse('spamCompte:index'))
