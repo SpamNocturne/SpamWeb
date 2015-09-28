@@ -59,6 +59,7 @@ def ajout_battle(request):
 def consulter_battle(request, battle_id):
     battle = get_object_or_404(BattleDArgent, pk=battle_id)
     participants = battle.participants.all()
+    reste_users_a_ajouter = len(participants) < len(User.objects.all())
     score_participants, equilibrage = battle.calcul_equilibre()
     depenses_et_montant = {}
     for depense in battle.depense_set.all():

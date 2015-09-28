@@ -96,9 +96,9 @@ class DepenseForm(forms.Form):
         somme = Decimal(0.00)
         depense = Decimal(0.00)
         for u in self.users:
-            depense += self.cleaned_data.get('montant_depense_{user}'.format(user=u.username))
-            somme += self.cleaned_data.get('montant_depense_{user}'.format(user=u.username))
-            somme -= self.cleaned_data.get('montant_utilise_{user}'.format(user=u.username))
+            depense += self.cleaned_data.get('montant_depense_{user}'.format(user=u.username)) or 0
+            somme += self.cleaned_data.get('montant_depense_{user}'.format(user=u.username)) or 0
+            somme -= self.cleaned_data.get('montant_utilise_{user}'.format(user=u.username)) or 0
         if somme != Decimal(0.00):
             raise forms.ValidationError(
                 self.error_messages['total_non_nul'] % str(somme),

@@ -155,7 +155,7 @@
             {% endfor %}
         </div>
 
-        {% if form.participants.queryset %}
+        {% if reste_users_a_ajouter %}
         <div class="form-group {% if form.participants.errors %}has-error{% endif %}">
             {{ form.participants.label_tag }} {{ form.participants }}
             {% for error in form.participants.errors %}
