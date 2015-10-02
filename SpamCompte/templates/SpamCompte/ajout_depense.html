@@ -11,6 +11,44 @@
 {% endblock %}
 
 {% block page_footer_addons %}
+    <script>
+        $(function(){
+            var $montant_depense = $(".montant-depense input");
+            var $montant_utilise = $(".montant-utilise input");
+            var num_participant = $montant_utilise.length;
+            $montant_depense.change(function(){
+                var total = 0;
+                $montant_depense.each(function(){
+                    var val = +$(this).val();
+                    if($.isNumeric(val)){
+                        $(this).parent().removeClass("has-error");
+                        total += val;
+                    }
+                    else{
+                        alert("error");
+                        $(this).parent().addClass("has-error");
+                    }
+                });
+                var part = total / num_participant;
+                part = Math.round(part*100)/100;
+                var rest = total;
+                $montant_utilise.each(function(index){
+                    if(index === $montant_utilise.length-1){
+                        $(this).val(rest);
+                    }
+                    else{
+                        $(this).val(part);
+                        rest -= part;
+                    }
+                    /*
+                    console.log("NUM "+index);
+                    console.log("part : "+part);
+                    console.log("rest : "+rest);
+                    */
+                });
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -54,7 +92,7 @@
 
             <div class="row">
                 <div class="col-sm-1">{# marge déguelasse, flemme de recheflir #}</div>
-                <fieldset class="col-sm-10">
+                <fieldset class="col-sm-10" id="depenses-fieldset">
                     <legend>Dépenses par participant</legend>
                     {% for user in participants %}
                         <div class="row">
@@ -64,8 +102,8 @@
 
                             {% with nom_montant_depense='montant_depense_'|addstr:user.username %}
                             {% with montant_depense=form|keyvalue:nom_montant_depense %}
-                            <div class="form-group col-sm-4 {% if montant_depense.errors %}has-error{% endif %}">
-                                {{ montant_depense.label_tag }} {{ montant_depense }}
+                            <div class="montant-depense form-group col-sm-4 {% if montant_depense.errors %}has-error{% endif %}">
+                                {% if forloop.first %}{{ montant_depense.label_tag }}{% endif %} {{ montant_depense }}
                                 {% for error in montant_depense.errors %}
                                 <p class="text-red">{{ error }}</p>
                                 {% endfor %}
@@ -75,8 +113,8 @@
 
                             {% with nom_montant_utilise='montant_utilise_'|addstr:user.username %}
                             {% with montant_utilise=form|keyvalue:nom_montant_utilise %}
-                            <div class="form-group col-sm-4 {% if montant_utilise.errors %}has-error{% endif %}">
-                                {{ montant_utilise.label_tag }} {{ montant_utilise }}
+                            <div class="montant-utilise form-group col-sm-4 {% if montant_utilise.errors %}has-error{% endif %}">
+                                {% if forloop.first %}{{ montant_utilise.label_tag }}{% endif %} {{ montant_utilise }}
                                 {% for error in montant_utilise.errors %}
                                 <p class="text-red">{{ error }}</p>
                                 {% endfor %}
