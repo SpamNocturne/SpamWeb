@@ -1,0 +1,48 @@
+{% extends "LTE/base.html" %}
+{% load staticfiles %}
+
+{% block body_skin_class %}skin-purple{%  endblock %}
+
+<!-- page head title -->
+{% block base_title %}SpamCompte | {{ block.super }}{% endblock %}
+
+<!-- Page content header title -->
+{% block base_content_header_title %}SpamCompte | Rendez l'argent !{% endblock %}
+
+<!-- Page content header optional description -->
+{% block base_content_header_title_description %}<span onmouseout="deconnifier(this)" onmouseover="connifier(this)">Les bons comptes font les bons amis :)</span>{% endblock %}
+
+<!-- here add you own stylesheet and scripts in header -->
+{% block base_header_addons %}
+    <!-- Here : addons for the layout, in the whole App -->
+    {% block page_header_addons %}
+    {% endblock %}
+{% endblock %}
+
+<!-- here add you own stylesheet and scripts in footer-->
+{% block base_footer_addons %}
+    <!-- Here : addons for the layout, in the whole App-->
+    <script>
+        function connifier(span_con){
+            span_con.innerHTML = 'Les bons <b>cons</b> font les bons amis :)';
+        }
+        function deconnifier(span_con){
+            span_con.innerHTML = 'Les bons comptes font les bons amis :)';
+        }
+    </script>
+    {% block page_footer_addons %}
+    {% endblock %}
+{% endblock %}
+
+<!-- Left Sidebar Menu -->
+{% block base_left_sidebar_menu %}
+    {% include "LTE/menu.html" with active="comptes" only %}
+{% endblock %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+{% block base_content_header_breadcrumb %}
+    {% include 'LTE/breadcrumb.html' with current='comptes' only %}
+{% endblock %}
+
+<!-- Page content - body -->
+{% block body %}{% endblock %}

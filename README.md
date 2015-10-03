@@ -109,8 +109,8 @@ Pour vous aider a créer un nouvelle application (*monApp*) sur le site voici qu
 * *Pour les* **templates** *:*  
   * Copier le fichier **LTE/templates/LTE/starter.html**, et le renommer en **layout.html** dans **monApp/templates/monApp/**  
   * Adapter et redéfinir tout les blocks du **layout.html** pour *monApp*  
-  * Ce fichier **layout.html** sera la base de votre application, toute vos pages seront basées dessus  
-  * Creer maintenant un *nouveau* template basé sur le fichier **LTE/templates/LTE/page.html**   
+  * Ce fichier **layout.html** sera la base de votre application, toutes vos pages seront basées dessus  
+  * Créer maintenant un *nouveau* template basé sur le fichier **LTE/templates/LTE/page.html**   
   * Faire donc hériter le nouveau template de **monApp/templates/monApp/layout.html**   
   * Modifier le contenu de ce fichier pour qu'il corresponde à votre page   
   * *C'est bon !* Le templating en 3 couches (Base / Layout / Page) est terminé ! 

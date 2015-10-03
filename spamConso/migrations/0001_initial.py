@@ -15,11 +15,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Consommation',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('type', models.CharField(max_length=60, choices=[('tacos', 'tacos'), ('biere', 'biere')])),
-                ('description', models.CharField(max_length=60)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('type', models.CharField(max_length=20, choices=[('tacos', 'Tacos'), ('biere', 'Biere')])),
+                ('description', models.CharField(default='', max_length=60, blank=True)),
+                ('tags', models.CharField(default='', max_length=255, blank=True)),
                 ('conso_date', models.DateTimeField()),
-                ('consommateur', models.ForeignKey(related_name='Consommation', to=settings.AUTH_USER_MODEL)),
+                ('consommateur', models.ForeignKey(related_name='consommations', to=settings.AUTH_USER_MODEL, related_query_name='consommation')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ConsoTag',
+            fields=[
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('name', models.CharField(max_length=50)),
+                ('value', models.CharField(max_length=50, unique=True)),
             ],
         ),
     ]

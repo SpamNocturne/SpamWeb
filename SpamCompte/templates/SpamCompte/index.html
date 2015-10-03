@@ -1,0 +1,89 @@
+{% extends "SpamCompte/layout.html" %}
+{% load staticfiles %}
+{% load my_filters %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {# prev1Name='comptes' prev1Url='spamCompte:index' #}
+    {% include 'LTE/breadcrumb.html' with current='comptes' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+    <div class="box box-warning">
+        <div class="box-header with-border">
+          <h3 class="box-title">Ajouter un <i>SpamCompte</i> via le bouton ci-dessous :</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="col-sm-4 col-sm-offset-4">
+                <a class="btn btn-flat btn-danger" href="{% url 'spamCompte:ajout_battle' %}" style="display: block;">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un <i>SpamCompte</i> !
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Vos <i>SpamCompte</i> existants :</h3>
+        </div>
+
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="text-center">Participants</th>
+                        <th class="text-center">Votre statut</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center"></th>
+                    </tr>
+
+                    {% if mes_comptes %}
+                    {% for compte in mes_comptes %}
+                        <tr class="{% cycle 'active' '' %}"
+                            style="cursor: pointer;">
+
+                            <td onclick="javascript:location.href='{% url 'spamCompte:consulter_battle' compte.id %}'">
+                                {% for p in compte.participants.all %}
+                                <span class="badge bg-blue">{{ p.username|truncatechars:30 }}</span>
+                                {% endfor %}
+                            </td>
+                            <td onclick="javascript:location.href='{% url 'spamCompte:consulter_battle' compte.id %}'">
+                            {% with score=mes_scores|keyvalue:compte.nom %}
+                            {% if score < 0 %}
+                                <span class="badge bg-red">Vous êtes en dête de {{ score }}€</span>
+                            {% elif score > 0 %}
+                                <span class="badge bg-green">On vous doit {{ score }}€</span>
+                            {% else %}
+                                <span class="badge bg-blue">Parfait ! Vous ne devez rien.</span>
+                            {% endif %}
+                            {% endwith %}
+                            </td>
+                            <td onclick="javascript:location.href='{% url 'spamCompte:consulter_battle' compte.id %}'">
+                            {{ compte.pub_date }}
+                            </td>
+                            <td onclick="javascript:location.href='{% url 'spamCompte:supprimer_compte' compte.id %}'">
+                                <a href="{% url 'spamCompte:supprimer_compte' compte.id %}" class="badge bg-red"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Vous</td>
+                            <td>n'avez aucun</td>
+                            <td>SpamCompte</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

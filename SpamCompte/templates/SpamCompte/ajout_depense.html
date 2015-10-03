@@ -1,0 +1,166 @@
+{% extends "SpamCompte/layout.html" %}
+{% load staticfiles %}
+{% load my_filters %}
+
+{% block base_content_header_breadcrumb %}
+    {% if is_update %}
+        {% include 'LTE/breadcrumb.html' with current='consulter/modifier dépense' prev1Name='comptes' prev1Url='spamCompte:index' only %}
+    {% else %}
+        {% include 'LTE/breadcrumb.html' with current='ajout dépense' prev1Name='comptes' prev1Url='spamCompte:index' only %}
+    {% endif %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+    <script>
+        $(function(){
+            var $montant_depense = $(".montant-depense input");
+            var $montant_utilise = $(".montant-utilise input");
+            var num_participant = $montant_utilise.length;
+            $montant_depense.on("change keyup", function(){
+                var total = 0;
+                $montant_depense.each(function(){
+                    var val = +$(this).val();
+                    if($.isNumeric(val)){
+                        $(this).parent().removeClass("has-error");
+                        total += val;
+                    }
+                    else{
+                        alert("error");
+                        $(this).parent().addClass("has-error");
+                    }
+                });
+
+                /* on fait un tour en approximant,
+                 * ex: 6 participants, 50€ => 8.33 chacun */
+                var part = total / num_participant;
+                part = Math.round(part*100)/100;
+                var rest = total;
+                $montant_utilise.each(function(){
+                    $(this).val(Math.round(part*100)/100);
+                    rest -= Math.round(part*100)/100;
+                });
+
+                /* puis on refait un tour avec les 2 centimes qui reste */
+                $montant_utilise.each(function(){
+                    if(rest > 0.009){
+                        $(this).val(parseFloat($(this).val()) + 0.01);
+                        rest -= 0.01;
+                    }else if(rest < -0.009){ // pour traiter les valeurs négatives
+                        $(this).val(parseFloat($(this).val()) - 0.01);
+                        rest += 0.01;
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="box box-warning">
+    <div class="box-header with-border">
+        {% if is_update %}
+            <h3 class="box-title">Mise à jour de la dépense de <i>{{ battle }}</i></h3>
+        {% else %}
+            <h3 class="box-title">Ajout d'une dépense à : <i>{{ battle }}</i></h3>
+        {% endif %}
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        {% if is_update %}
+        <form action="{% url 'spamCompte:consulter_depense' battle.id depense.id %}" method="post" id="form_depense">
+        {% else %}
+        <form action="{% url 'spamCompte:ajout_depense' battle.id %}" method="post" id="form_depense">
+        {% endif %}
+        <!-- text input -->
+            {{ form.id }}
+            {{ form.somme }}
+            {% if form.non_field_errors %}
+            <div class="row">
+                <div class="alert alert-danger alert-dismissable col-sm-8 col-sm-offset-2">
+                    <i class="fa fa-ban">
+                    </i>
+                    <button class="close" aria-hidden="true" data-dismiss="alert" type="button">
+                        ×
+                    </button>
+                    <b>
+                        Erreur !
+                    </b>
+                    {{ form.non_field_errors }}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="form-group col-sm-6 col-sm-offset-3 {% if form.description.errors %}has-error{% endif %}">
+                    {{ form.description.label_tag }} {{ form.description }}
+                    {% for error in form.description.errors %}
+                    <p class="text-red">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-1">{# marge déguelasse, flemme de recheflir #}</div>
+                <fieldset class="col-sm-10" id="depenses-fieldset">
+                    <legend>Dépenses par participant</legend>
+                    {% for user in participants %}
+                        <div class="row">
+                            <h4 class="col-sm-1 col-sm-offset-1">
+                                <i>{{ user.username }} :</i>
+                            </h4>
+
+                            {% with nom_montant_depense='montant_depense_'|addstr:user.username %}
+                            {% with montant_depense=form|keyvalue:nom_montant_depense %}
+                            <div class="montant-depense form-group col-sm-4 {% if montant_depense.errors %}has-error{% endif %}">
+                                {% if forloop.first %}{{ montant_depense.label_tag }}{% endif %} {{ montant_depense }}
+                                {% for error in montant_depense.errors %}
+                                <p class="text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endwith %}
+                            {% endwith %}
+
+                            {% with nom_montant_utilise='montant_utilise_'|addstr:user.username %}
+                            {% with montant_utilise=form|keyvalue:nom_montant_utilise %}
+                            <div class="montant-utilise form-group col-sm-4 {% if montant_utilise.errors %}has-error{% endif %}">
+                                {% if forloop.first %}{{ montant_utilise.label_tag }}{% endif %} {{ montant_utilise }}
+                                {% for error in montant_utilise.errors %}
+                                <p class="text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endwith %}
+                            {% endwith %}
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </fieldset>
+            </div>
+
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="submit" class="btn btn-default btn-block btn-flat">
+                    <i class="fa fa-euro"></i>
+                    {% if is_update %}
+                        Mettre à jour cette dépense
+                    {% else %}
+                        Ajouter cette dépense
+                    {% endif %}
+                </button>
+            <br>
+            </div>
+            {% if is_update %}
+            <div class="col-xs-4 col-xs-offset-4">
+                <a class="btn btn-danger btn-block btn-flat" href="{% url 'spamCompte:supprimer_depense' battle.id depense.id %}">
+                    <i class="fa fa-trash"></i>
+                    Supprimer
+                </a>
+            </div><!-- /.col -->
+            {% endif %}
+            {% csrf_token %}
+
+      </form>
+    </div><!-- /.box-body -->
+</div>
+
+{% endblock %}

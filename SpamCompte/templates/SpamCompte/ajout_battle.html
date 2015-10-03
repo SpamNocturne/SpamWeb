@@ -1,0 +1,49 @@
+{% extends "SpamCompte/layout.html" %}
+{% load staticfiles %}
+
+<!-- Page content breadcrumb (fil d'arianne) -->
+<!-- le breadcrumb peut aller jusqu'a une profondeur de 4 (previous4) -->
+{% block base_content_header_breadcrumb %}
+    {# prev1Name='comptes' prev1Url='spamCompte:index' #}
+    {% include 'LTE/breadcrumb.html' with current='ajout compte' prev1Name='comptes' prev1Url='spamCompte:index' only %}
+{% endblock %}
+
+{% block page_header_addons %}
+{% endblock %}
+
+{% block page_footer_addons %}
+{% endblock %}
+
+{% block body %}
+<div class="box box-warning">
+    <div class="box-header with-border">
+      <h3 class="box-title">Création d'un nouveau SpamCompte</h3>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+        <form action="{% url 'spamCompte:ajout_battle' %}" method="post">
+        <!-- text input -->
+
+        <div class="form-group {% if form.nom.errors %}has-error{% endif %}">
+            {{ form.nom.label_tag }} {{ form.nom }}
+            {% for error in form.nom.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="form-group {% if form.participants.errors %}has-error{% endif %}">
+            {{ form.participants.label_tag }} {{ form.participants }}
+            {% for error in form.participants.errors %}
+            <p class="text-red">{{ error }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="col-xs-4 col-xs-offset-4">
+            <button type="submit" class="btn btn-danger btn-block btn-flat">Lancer ce SpamCompte !</button>
+        </div><!-- /.col -->
+        {% csrf_token %}
+
+      </form>
+    </div><!-- /.box-body -->
+</div>
+
+{% endblock %}
