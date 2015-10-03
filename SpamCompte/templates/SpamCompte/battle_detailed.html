@@ -52,7 +52,16 @@
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
     </div>
+
     <div class="box-body chart-responsive">
+    {% if not depenses_et_montant %}
+        <div class="row">
+            <div class="col-sm-12">
+                <b>Le SpamCompte est vide, vous pouvez ajouter des dépenses ci-dessous.</b>
+            </div>
+        </div>
+
+    {% else %}
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <div class="chart" id="bar-chart" style="height: 300px;"></div>
@@ -78,6 +87,7 @@
                 {% endfor %}
             </div>
         </div>
+    {% endif %}
     </div>
 </div>
 
@@ -112,9 +122,9 @@
                 </tr>
 
                 {% if depenses_et_montant %}
-                {% for depense, montant in depenses_et_montant.items %}
+                {% for depense, montant in depenses_et_montant %}
                     <tr class="{% cycle 'active' '' %} text-center"
-                        onclick="javascript:location.href='{% url 'spamCompte:consulter_depense' battle.id  depense.id %}'"
+                        onclick="javascript:location.href='{% url 'spamCompte:consulter_depense' battle.id depense.id %}'"
                         style="cursor: pointer;">
 
                         <td>
