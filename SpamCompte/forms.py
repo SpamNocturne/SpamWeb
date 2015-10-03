@@ -87,7 +87,6 @@ class DepenseForm(forms.Form):
                     })
         if self.depense:
             for s_c in self.depense.spammeurconsommateur_set.all():
-                print(s_c.user.username)
                 self.fields['montant_depense_{user}'.format(user=s_c.user.username)].initial = s_c.montant_depense
                 self.fields['montant_utilise_{user}'.format(user=s_c.user.username)].initial = s_c.montant_utilise
             self.fields['description'].initial = self.depense.description

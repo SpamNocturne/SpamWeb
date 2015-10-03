@@ -117,6 +117,8 @@ def ajouter_depense(request, battle_id):
     return render(request, 'SpamCompte/ajout_depense.html', locals())
 
 
+@login_required
+@fait_partie_battle()
 def consulter_depense(request, battle_id, depense_id):
     battle = get_object_or_404(BattleDArgent, pk=battle_id)
     depense = get_object_or_404(Depense, pk=depense_id)
@@ -132,7 +134,7 @@ def consulter_depense(request, battle_id, depense_id):
                 s_c.montant_depense = form.cleaned_data['montant_depense_{user}'.format(user=s_c.user.username)]
                 s_c.montant_utilise = form.cleaned_data['montant_utilise_{user}'.format(user=s_c.user.username)]
                 s_c.save()
-            s_c_to_create = participants - [sc.user for sc in depense.spammeurconsommateur_set.all()]
+            s_c_to_create = [p for p in participants if p not in depense.spammeurconsommateur_set.all()]
             for u in s_c_to_create:
                 s_c = SpammeurConsommateur(
                     montant_depense=form.cleaned_data['montant_depense_{user}'.format(user=u.username)],
@@ -157,6 +159,8 @@ def consulter_depense(request, battle_id, depense_id):
     return render(request, 'SpamCompte/ajout_depense.html', locals())
 
 
+@login_required
+@fait_partie_battle()
 def supprimer_depense(request, battle_id, depense_id):
     depense = get_object_or_404(Depense, pk=depense_id)
     battle = get_object_or_404(BattleDArgent, pk=battle_id)
@@ -170,6 +174,8 @@ def supprimer_depense(request, battle_id, depense_id):
     return redirect(reverse('spamCompte:consulter_battle', args=(battle_id,)))
 
 
+@login_required
+@fait_partie_battle()
 def supprimer_compte(request, battle_id):
     battle = get_object_or_404(BattleDArgent, pk=battle_id)
     nom = battle.nom
