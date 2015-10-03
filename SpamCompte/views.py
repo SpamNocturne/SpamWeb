@@ -25,7 +25,7 @@ def fait_partie_battle():
 
 @login_required
 def index(request):
-    mes_comptes = BattleDArgent.objects.filter(participants__in=[request.user])
+    mes_comptes = BattleDArgent.objects.filter(participants__in=[request.user]).order_by("-pub_date")
     mes_scores = {}
     for c in mes_comptes:
         score_participants = c.calcul_score()
@@ -61,9 +61,9 @@ def consulter_battle(request, battle_id):
     participants = battle.participants.all()
     reste_users_a_ajouter = len(participants) < len(User.objects.all())
     score_participants, equilibrage = battle.calcul_equilibre()
-    depenses_et_montant = {}
-    for depense in battle.depense_set.all():
-        depenses_et_montant[depense] = depense.argent_depense()
+    depenses_et_montant = []
+    for depense in battle.depense_set.all().order_by("-date"):
+        depenses_et_montant.append((depense, depense.argent_depense()))
     if request.method == "POST":
         form = BattleDArgentForm(request.POST, instance=battle, users=[u.pk for u in participants])
         if form.is_valid():
