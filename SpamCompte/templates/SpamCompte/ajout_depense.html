@@ -15,44 +15,67 @@
 
 {% block page_footer_addons %}
     <script>
+        function updateUtilise(){
+            var $montant_depense = $(".montant-depense input");
+            var $montant_utilise_non_edite = $(".montant-utilise input:not(.manually_edited)");
+            var $montant_utilise_edite = $(".manually_edited");
+            var num_participant = $montant_utilise_non_edite.length;
+            var total = 0;
+            /* on calcule le montant total de la dépense */
+            $montant_depense.each(function(){
+                var val = +$(this).val();
+                if($.isNumeric(val)){
+                    $(this).parent().removeClass("has-error");
+                    total += val;
+                }
+                else{
+                    alert("error");
+                    $(this).parent().addClass("has-error");
+                }
+            });
+            /* on enlève au montant total ce que l'utilisateur a renseigné manuellement */
+            $montant_utilise_edite.each(function(){
+                var val = +$(this).val();
+                if($.isNumeric(val)){
+                    $(this).parent().removeClass("has-error");
+                    total -= val;
+                }
+                else{
+                    $(this).parent().addClass("has-error");
+                }
+            });
+            console.log($montant_utilise_edite.length);
+
+            /* on fait un tour en approximant,
+             * ex: 6 participants, 50€ => 8.33 chacun */
+            var part = total / num_participant;
+            part = Math.round(part*100)/100;
+            var rest = total;
+            $montant_utilise_non_edite.each(function(){
+                $(this).val(Math.round(part*100)/100);
+                rest -= Math.round(part*100)/100;
+            });
+
+            /* puis on refait un tour avec les 2 centimes qui reste */
+            $montant_utilise_non_edite.each(function(){
+                if(rest > 0.009){
+                    $(this).val(parseFloat($(this).val()) + 0.01);
+                    rest -= 0.01;
+                }else if(rest < -0.009){ // pour traiter les valeurs négatives
+                    $(this).val(parseFloat($(this).val()) - 0.01);
+                    rest += 0.01;
+                }
+            });
+        }
         $(function(){
             var $montant_depense = $(".montant-depense input");
             var $montant_utilise = $(".montant-utilise input");
-            var num_participant = $montant_utilise.length;
             $montant_depense.on("change keyup", function(){
-                var total = 0;
-                $montant_depense.each(function(){
-                    var val = +$(this).val();
-                    if($.isNumeric(val)){
-                        $(this).parent().removeClass("has-error");
-                        total += val;
-                    }
-                    else{
-                        alert("error");
-                        $(this).parent().addClass("has-error");
-                    }
-                });
-
-                /* on fait un tour en approximant,
-                 * ex: 6 participants, 50€ => 8.33 chacun */
-                var part = total / num_participant;
-                part = Math.round(part*100)/100;
-                var rest = total;
-                $montant_utilise.each(function(){
-                    $(this).val(Math.round(part*100)/100);
-                    rest -= Math.round(part*100)/100;
-                });
-
-                /* puis on refait un tour avec les 2 centimes qui reste */
-                $montant_utilise.each(function(){
-                    if(rest > 0.009){
-                        $(this).val(parseFloat($(this).val()) + 0.01);
-                        rest -= 0.01;
-                    }else if(rest < -0.009){ // pour traiter les valeurs négatives
-                        $(this).val(parseFloat($(this).val()) - 0.01);
-                        rest += 0.01;
-                    }
-                });
+                updateUtilise();
+            });
+            $montant_utilise.on("keyup", function(){
+                $(this).addClass("manually_edited");
+                updateUtilise();
             });
         });
     </script>
