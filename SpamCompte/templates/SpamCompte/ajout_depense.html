@@ -102,12 +102,11 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-1">{# marge déguelasse, flemme de recheflir #}</div>
-                <fieldset class="col-sm-10" id="depenses-fieldset">
+                <fieldset class="col-sm-12" id="depenses-fieldset">
                     <legend>Dépenses par participant</legend>
                     {% for user in participants %}
                         <div class="row">
-                            <h4 class="col-sm-1 col-sm-offset-1">
+                            <h4 class="col-sm-3" style="text-align: right;">
                                 <i>{{ user.username }} :</i>
                             </h4>
 
